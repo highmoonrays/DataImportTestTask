@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -14,7 +13,6 @@ class TblProductData
 {
     /**
      * @var int
-     *
      * @ORM\Column(name="intProductDataId", type="integer", nullable=false, options={"unsigned"=true})
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")

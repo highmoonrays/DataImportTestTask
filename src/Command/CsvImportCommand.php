@@ -1,6 +1,4 @@
 <?php
-
-
 namespace App\Command;
 
 use App\Entity\TblProductData;
@@ -59,7 +57,13 @@ class CsvImportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $testOrNot = 0;
         $io = new SymfonyStyle($input, $output);
+
+        if ($input->getArgument('test') == 'test'){
+            $io->success("Test mode is on, no records will be altered.");
+            $testOrNot = 1;
+        }
 
         $reader = Reader::createFromPath('data/stock.csv');
 
@@ -92,22 +96,21 @@ class CsvImportCommand extends Command
                         ->setCostInGBP($row['Cost in GBP'])
                         ->setStmTimestamp(new \DateTime())
                         ->setDtmAdded(new \DateTime())
-                        ->setStock($row['Stock'])
                     ;
                     if ($row['Discontinued'] == 'yes'){
                         $product->setDtmDiscontinued(new \DateTime());
                     }
-                    $this->em->persist($product);
-                    $successItems += 1;
+                    if (is_numeric($row['Stock'])) {
+                        $product->setStock($row['Stock']);
+                        $this->em->persist($product);
+                        $successItems += 1;
+                    }
                 }
             }
         }
-        if ($input->getArgument('test') == 'test'){
-            $output->writeln("<fg=green>Test is complite, there $brokenItems records that wont be saved, and $successItems could be save</>"
-            );
-        }
-        else {
+        if ($testOrNot == 0){
             $this->em->flush();
+        }
             foreach ($arrayWIthBrokenItems as $brokenItem) {
                 $brokenItem = json_encode($brokenItem);
                 $output->writeln("<fg=red>Not Saved!</>");
@@ -115,7 +118,6 @@ class CsvImportCommand extends Command
             }
             $io->success('Command exited cleanly, and there ' . "$brokenItems" . ' broken items, '
                 . "$successItems" . ' items are saved');
-        }
         return 0;
     }
 }

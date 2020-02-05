@@ -3,6 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="68aa0101-d037-4b01-993b-1310ba3f7409" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Command/CsvImportCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Command/CsvImportCommand.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/TblProductData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/TblProductData.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -175,6 +177,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -193,7 +196,7 @@
       <option name="presentableId" value="Default" />
       <updated>1580820168371</updated>
       <workItem from="1580820169600" duration="8039000" />
-      <workItem from="1580886332230" duration="2782000" />
+      <workItem from="1580886332230" duration="6953000" />
     </task>
     <servers />
   </component>
@@ -205,10 +208,22 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="588" y="214" width="800" height="677" key="#com.intellij.execution.impl.EditConfigurationsDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1580825927265" />
-    <state x="703" y="358" width="559" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1580821357581">
+    <state x="703" y="358" width="643" height="390" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1580890195727">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
-    <state x="703" y="358" width="559" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1580821357581" />
+    <state x="703" y="358" width="643" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1580890195727" />
+    <state x="644" y="366" width="689" height="373" key="NewPhpClassDialog" timestamp="1580890210973">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="644" y="366" width="689" height="373" key="NewPhpClassDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1580890210973" />
+    <state x="789" y="478" width="399" height="149" key="NewPhpFileDialog" timestamp="1580890199436">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="789" y="478" width="399" height="149" key="NewPhpFileDialog/67.27.1853.1053@67.27.1853.1053" timestamp="1580890199436" />
+    <state x="482" y="187" key="SettingsEditor" timestamp="1580892233393">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="482" y="187" key="SettingsEditor/67.27.1853.1053@67.27.1853.1053" timestamp="1580892233393" />
     <state x="649" y="380" key="com.intellij.ide.util.TipDialog" timestamp="1580886332731">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>

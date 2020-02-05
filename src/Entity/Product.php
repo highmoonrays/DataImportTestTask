@@ -21,57 +21,55 @@ class Product
 
     /**
      * @var string
-     *
      * @ORM\Column(name="strProductName", type="string", length=50, nullable=false)
      */
     private $name;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="strProductDesc", type="string", length=255, nullable=false)
      */
     private $description;
 
     /**
      * @var string
-     *
      * @ORM\Column(name="strProductCode", type="string", length=10, nullable=false)
      */
     private $code;
 
     /**
      * @var \DateTime|null
-     *
      * @ORM\Column(name="dtmAdded", type="datetime", nullable=true)
      */
     private $added;
 
     /**
      * @var \DateTime|null
-     *
      * @ORM\Column(name="dtmDiscontinued", type="datetime", nullable=true)
      */
     private $discontinued;
 
     /**
      * @var \DateTime
-     *
      * @ORM\Column(name="stmTimestamp", type="datetime", nullable=false, options={"default"="CURRENT_TIMESTAMP"})
      */
     private $timestamp;
 
     /**
-     * @ORM\Column(type="integer", nullable=true)
+     * @ORM\Column(name="intStock", type="integer", nullable=true)
+     * @var int
      */
     private $stock;
 
     /**
-     * @ORM\Column(name="costInGBP", type="integer")
+     * @ORM\Column(name="intCostInGBP", type="integer")
+     * @var int
      */
     private $cost;
 
-    public function __construct($name, $description, $code, $added, $timestamp, $stock, $cost, $discontinued)
+    public function __construct(string $name, string $description, string $code,
+                                \DateTime $added, \DateTime $timestamp, int $stock,
+                                int $cost,string $discontinued)
     {
         $this->name = $name;
         $this->description = $description;
@@ -83,28 +81,44 @@ class Product
         $this->discontinued = $discontinued;
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * @return string|null
+     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
+    /**
+     * @param string $name
+     * @return $this
+     */
     public function setName(string $name): self
     {
         $this->name = $name;
-
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
+    /**
+     * @param string $description
+     * @return $this
+     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -112,35 +126,54 @@ class Product
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getCode(): ?string
     {
         return $this->code;
     }
 
+    /**
+     * @param string $code
+     * @return $this
+     */
     public function setCode(string $code): self
     {
         $this->code = $code;
-
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getAdded(): ?\DateTimeInterface
     {
         return $this->added;
     }
 
+    /**
+     * @param \DateTimeInterface|null $added
+     * @return $this
+     */
     public function setAdded(?\DateTimeInterface $added): self
     {
         $this->added = $added;
-
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getDiscontinued(): ?\DateTimeInterface
     {
         return $this->discontinued;
     }
 
+    /**
+     * @param \DateTimeInterface|null $discontinued
+     * @return $this
+     */
     public function setDiscontinued(?\DateTimeInterface $discontinued): self
     {
         $this->discontinued = $discontinued;
@@ -148,11 +181,18 @@ class Product
         return $this;
     }
 
+    /**
+     * @return \DateTimeInterface|null
+     */
     public function getTimestamp(): ?\DateTimeInterface
     {
         return $this->timestamp;
     }
 
+    /**
+     * @param \DateTimeInterface $timestamp
+     * @return $this
+     */
     public function setTimestamp(\DateTimeInterface $timestamp): self
     {
         $this->timestamp = $timestamp;
@@ -160,32 +200,41 @@ class Product
         return $this;
     }
 
+    /**
+     * @return int|null
+     */
     public function getStock(): ?int
     {
-        return $this->Stock;
+        return $this->stock;
     }
 
+    /**
+     * @param int|null $Stock
+     * @return $this
+     */
     public function setStock(?int $Stock): self
     {
-        $this->Stock = $Stock;
+        $this->stock = $Stock;
 
         return $this;
     }
 
-    public function getCost(): ?float
+    /**
+     * @return int|null
+     */
+    public function getCost(): ?int
     {
-        return $this->Cost;
+        return $this->cost;
     }
 
-    public function setCost(float $Cost): self
+    /**
+     * @param int $Cost
+     * @return $this
+     */
+    public function setCost(int $Cost): self
     {
-        $this->Cost = $Cost;
+        $this->cost = $Cost;
 
         return $this;
     }
-
-
-
-
-
 }

@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use App\Entity\Product;
+use App\Service\ProductImportCSVFileReader;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
@@ -18,6 +18,30 @@ use Symfony\Component\Console\Style\SymfonyStyle;
  */
 class ImportProductsFromFileCommand extends Command
 {
+    /**
+     * @var string
+     */
+    private const OPTION_TEST_MODE = 'test-mode';
+
+    /**
+     * @var array
+     */
+    private $invalidProducts;
+
+    /**
+     * @var int
+     */
+    private $counterInvalidItems = 0;
+
+    /**
+     * @var int
+     */
+    private $counterSavedItems = 0;
+
+    /**
+     * @var bool
+     */
+    private $isTestMode = false;
 
     /**
      * @var EntityManagerInterface
@@ -46,75 +70,44 @@ class ImportProductsFromFileCommand extends Command
         $this
             ->setName('csv:import')
             ->setDescription('Imports the mock CSV data file')
-            ->addOption('test-mode', null, InputOption::VALUE_NONE)
+            ->addOption(self::OPTION_TEST_MODE, null, InputOption::VALUE_NONE)
         ;
     }
 
+
     /**
-     * @param InputInterface  $input
+     * @param InputInterface $input
      * @param OutputInterface $output
-     * @return void
+     * @return int
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $testOrNot = 0;
         $io = new SymfonyStyle($input, $output);
-
-        if ($input->getOption('test-mode') !== false){
+        if ($input->getOption(self::OPTION_TEST_MODE) !== false){
             $io->success("Test mode is on, no records will be altered.");
-            $testOrNot = 1;
+            $this->isTestMode = true;
         }
-
         $reader = Reader::createFromPath('data/stock.csv');
-
-        $results = $reader->fetchAssoc();
-
-        $brokenItems = 0;
-
-        $successItems = 0;
-
-        $arrayWIthBrokenItems = [];
-
-        foreach ($results as $row) {
-
-            if($row['Stock'] < 10 && (int)$row['Cost in GBP'] < 5 or $row['Cost in GBP'] > 1000){
-                $brokenItems += 1;
-                $arrayWIthBrokenItems []= $row;
+        $rows = $reader->fetchAssoc();
+        foreach ($rows as $row) {
+            $validateRow = new ProductImportCSVFileReader();
+            if ($validateRow->validate($row) === true){
+                $this->counterSavedItems += 1;
+                $validateRow->save($row, $this->isTestMode, $this->em);
             }
-            else {
-                if (!is_string($row['Product Name'])
-                    or !is_string($row['Product Code']) or !is_string($row['Product Description'])
-                    or !is_numeric($row['Cost in GBP']) or !is_numeric($row['Stock'])){
-                    $brokenItems += 1;
-                    $arrayWIthBrokenItems []= $row;
-                }
-                else {
-                    $product = (new Product($row['Product Name'],
-                                            $row['Product Description'],
-                                            $row['Product Code'],
-                                            new \DateTime(),
-                                            new \DateTime(),
-                                            $row['Stock'],
-                                            $row['Cost in GBP'],
-                                 null));
-                    if ($row['Discontinued'] == 'yes'){
-                        $product->setDiscontinued(new \DateTime());
-                    }
-                    $this->em->persist($product);
-                    $successItems += 1;
-                }
+            else{
+                $this->counterInvalidItems += 1;
+                $this->invalidProducts []= $row;
             }
         }
-        if ($testOrNot == 0){
-            $this->em->flush();
+        foreach ($this->invalidProducts as $invalidItem) {
+            $invalidItem = json_encode($invalidItem);
+            $output->writeln("<fg=red>Not Saved!</>");
+            $output->writeln("<fg=blue>$invalidItem</>");
         }
-            foreach ($arrayWIthBrokenItems as $brokenItem) {
-                $brokenItem = json_encode($brokenItem);
-                $output->writeln("<fg=red>Not Saved!</>");
-                $output->writeln("<fg=blue>$brokenItem</>");
-            }
-            $io->success('Command exited cleanly, and there ' . "$brokenItems" . ' broken items, '
-                . "$successItems" . ' items are saved');
+        $io->success('Command exited cleanly, and there ' . "$this->counterInvalidItems" . ' broken items, '
+            . "$this->counterSavedItems" . ' items are saved');
         return 0;
     }
 }

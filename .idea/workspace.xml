@@ -3,9 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="68aa0101-d037-4b01-993b-1310ba3f7409" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.json" beforeDir="false" afterPath="$PROJECT_DIR$/composer.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/composer.lock" beforeDir="false" afterPath="$PROJECT_DIR$/composer.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Command/CsvImportCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Command/CsvImportCommand.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -196,7 +193,7 @@
       <option name="presentableId" value="Default" />
       <updated>1580820168371</updated>
       <workItem from="1580820169600" duration="8039000" />
-      <workItem from="1580886332230" duration="1635000" />
+      <workItem from="1580886332230" duration="2782000" />
     </task>
     <servers />
   </component>

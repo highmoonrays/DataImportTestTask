@@ -7,8 +7,8 @@ use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Exception\LogicException;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -46,7 +46,7 @@ class ImportProductsFromFileCommand extends Command
         $this
             ->setName('csv:import')
             ->setDescription('Imports the mock CSV data file')
-            ->addArgument('test', InputArgument::OPTIONAL)
+            ->addOption('test-mode', null, InputOption::VALUE_NONE)
         ;
     }
 
@@ -60,7 +60,7 @@ class ImportProductsFromFileCommand extends Command
         $testOrNot = 0;
         $io = new SymfonyStyle($input, $output);
 
-        if ($input->getArgument('test') == 'test'){
+        if ($input->getOption('test-mode') !== false){
             $io->success("Test mode is on, no records will be altered.");
             $testOrNot = 1;
         }

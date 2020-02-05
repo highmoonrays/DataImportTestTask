@@ -2,6 +2,7 @@
 namespace App\Command;
 
 use App\Service\ProductImportCSVFileReader;
+use App\Service\SaveService;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
@@ -39,26 +40,33 @@ class ImportProductsFromFileCommand extends Command
     private $counterSavedItems = 0;
 
     /**
-     * @var bool
-     */
-    private $isTestMode = false;
-
-    /**
      * @var EntityManagerInterface
      */
     private $em;
 
     /**
-     * ImportProductsFromFileCommand constructor.
-     *
-     * @param EntityManagerInterface $em
-     * @throws LogicException
+     * @var ProductImportCSVFileReader
      */
-    public function __construct(EntityManagerInterface $em)
+    private $validator;
+
+    /**
+     * @var SaveService
+     */
+    private $saver;
+
+    /**
+     * ImportProductsFromFileCommand constructor.
+     * @param EntityManagerInterface $em
+     * @param ProductImportCSVFileReader $validator
+     * @param SaveService $saver
+     */
+    public function __construct(EntityManagerInterface $em, ProductImportCSVFileReader $validator, SaveService $saver)
     {
         parent::__construct();
 
         $this->em = $em;
+        $this->validator = $validator;
+        $this->saver = $saver;
     }
 
     /**
@@ -74,7 +82,6 @@ class ImportProductsFromFileCommand extends Command
         ;
     }
 
-
     /**
      * @param InputInterface $input
      * @param OutputInterface $output
@@ -84,17 +91,19 @@ class ImportProductsFromFileCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        if ($input->getOption(self::OPTION_TEST_MODE) !== false){
+
+        $isTestMode = $input->getOption(self::OPTION_TEST_MODE);
+
+        if ($isTestMode){
             $io->success("Test mode is on, no records will be altered.");
-            $this->isTestMode = true;
         }
         $reader = Reader::createFromPath('data/stock.csv');
         $rows = $reader->fetchAssoc();
         foreach ($rows as $row) {
-            $validateRow = new ProductImportCSVFileReader();
-            if ($validateRow->validate($row) === true){
+            $isValid = $this->validator->validate($row);
+            if ($isValid == true){
                 $this->counterSavedItems += 1;
-                $validateRow->save($row, $this->isTestMode, $this->em);
+                $this->saver->save($row);
             }
             else{
                 $this->counterInvalidItems += 1;
@@ -105,6 +114,9 @@ class ImportProductsFromFileCommand extends Command
             $invalidItem = json_encode($invalidItem);
             $output->writeln("<fg=red>Not Saved!</>");
             $output->writeln("<fg=blue>$invalidItem</>");
+        }
+        if (!$isTestMode) {
+            $this->em->flush();
         }
         $io->success('Command exited cleanly, and there ' . "$this->counterInvalidItems" . ' broken items, '
             . "$this->counterSavedItems" . ' items are saved');

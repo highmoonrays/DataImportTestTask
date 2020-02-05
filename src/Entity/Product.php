@@ -63,22 +63,22 @@ class Product
 
     /**
      * @ORM\Column(name="intCostInGBP", type="integer")
-     * @var int
+     * @var float
      */
     private $cost;
 
-    public function __construct(string $name, string $description, string $code,
-                                \DateTime $added, \DateTime $timestamp, int $stock,
-                                int $cost,string $discontinued)
+    public function __construct(string $name, string $description, string $code, int $stock,
+                                float $cost, string $discontinued)
     {
         $this->name = $name;
         $this->description = $description;
         $this->code = $code;
-        $this->added = $added;
-        $this->timestamp = $timestamp;
+        $this->added = new \DateTime();
+        $this->timestamp = new \DateTime;
         $this->stock = $stock;
         $this->cost = $cost;
-        $this->discontinued = $discontinued;
+        if ($discontinued == 'yes')
+            $this->discontinued = new \DateTime();
     }
 
     /**
@@ -220,18 +220,18 @@ class Product
     }
 
     /**
-     * @return int|null
+     * @return float|null
      */
-    public function getCost(): ?int
+    public function getCost(): ?float
     {
         return $this->cost;
     }
 
     /**
-     * @param int $Cost
+     * @param float $Cost
      * @return $this
      */
-    public function setCost(int $Cost): self
+    public function setCost(float $Cost): self
     {
         $this->cost = $Cost;
 

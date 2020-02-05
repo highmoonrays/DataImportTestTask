@@ -1,42 +1,39 @@
 <?php
 namespace App\Service;
 
-
-use App\Command\ImportProductsFromFileCommand;
-use App\Entity\Product;
-use Doctrine\ORM\EntityManagerInterface;
-
 class ProductImportCSVFileReader
 {
     /**
      * @var string
      */
-    private const PRODUCT_NAME_COLUMN = 'Product Name';
+    public const PRODUCT_NAME_COLUMN = 'Product Name';
 
     /**
      * @var string
      */
-    private const PRODUCT_DESCRIPTION_COLUMN = 'Product Description';
+    public const PRODUCT_DESCRIPTION_COLUMN = 'Product Description';
 
     /**
      * @var string
      */
-    private const PRODUCT_CODE_COLUMN = 'Product Code';
+    public const PRODUCT_CODE_COLUMN = 'Product Code';
 
     /**
      * @var string
      */
-    private const PRODUCT_COST_COLUMN = 'Cost in GBP';
+    public const PRODUCT_COST_COLUMN = 'Cost in GBP';
 
     /**
      * @var string
      */
-    private const PRODUCT_STOCK_COLUMN = 'Stock';
+    public const PRODUCT_STOCK_COLUMN = 'Stock';
 
     /**
      * @var string
      */
-    private const PRODUCT_DISCONTINUED_COLUMN = 'Discontinued';
+    public const PRODUCT_DISCONTINUED_COLUMN = 'Discontinued';
+
+    public $validator;
 
     /**
      * @param $row
@@ -55,32 +52,7 @@ class ProductImportCSVFileReader
                 $isValid = false;
             }
         }
+
         return $isValid;
-    }
-
-
-    /**
-     * @param $row
-     * @param $isTestMode
-     * @param EntityManagerInterface $em
-     * @throws \Exception
-     */
-    public function save($row, $isTestMode, EntityManagerInterface $em)
-    {
-        $product = (new Product($row[self::PRODUCT_NAME_COLUMN],
-            $row[self::PRODUCT_DESCRIPTION_COLUMN],
-            $row[self::PRODUCT_CODE_COLUMN],
-            new \DateTime(),
-            new \DateTime(),
-            $row[self::PRODUCT_STOCK_COLUMN],
-            $row[self::PRODUCT_COST_COLUMN],
-            ''));
-        if ($row[self::PRODUCT_DISCONTINUED_COLUMN] == 'yes') {
-            $product->setDiscontinued(new \DateTime());
-            if ($isTestMode == false) {
-                $em->persist($product);
-                $em->flush();
-            }
-        }
     }
 }

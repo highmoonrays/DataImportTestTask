@@ -63,12 +63,12 @@ class Product
 
     /**
      * @ORM\Column(name="intCostInGBP", type="integer")
-     * @var float
+     * @var int
      */
     private $cost;
 
     public function __construct(string $name, string $description, string $code, int $stock,
-                                float $cost, string $discontinued)
+                                int $cost, string $discontinued)
     {
         $this->name = $name;
         $this->description = $description;
@@ -220,15 +220,15 @@ class Product
     }
 
     /**
-     * @return float|null
+     * @return int|null
      */
-    public function getCost(): ?float
+    public function getCost(): ?int
     {
         return $this->cost;
     }
 
     /**
-     * @param float $Cost
+     * @param int $Cost
      * @return $this
      */
     public function setCost(float $Cost): self

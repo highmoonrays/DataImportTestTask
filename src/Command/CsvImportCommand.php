@@ -96,15 +96,13 @@ class CsvImportCommand extends Command
                         ->setCostInGBP($row['Cost in GBP'])
                         ->setStmTimestamp(new \DateTime())
                         ->setDtmAdded(new \DateTime())
+                        ->setStock($row['Stock'])
                     ;
                     if ($row['Discontinued'] == 'yes'){
                         $product->setDtmDiscontinued(new \DateTime());
                     }
-                    if (is_numeric($row['Stock'])) {
-                        $product->setStock($row['Stock']);
-                        $this->em->persist($product);
-                        $successItems += 1;
-                    }
+                    $this->em->persist($product);
+                    $successItems += 1;
                 }
             }
         }

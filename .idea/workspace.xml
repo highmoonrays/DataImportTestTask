@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="68aa0101-d037-4b01-993b-1310ba3f7409" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Command/CsvImportCommand.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Command/CsvImportCommand.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Entity/TblProductData.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Product.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Product.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Product.php" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,13 +41,6 @@
         <item name="importTest@localhost" type="feb32156:DbDataSourceImpl" />
         <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
         <item name="importTest: schema" type="76f4a085:MysqlImplModel$Schema" />
-      </path>
-      <path>
-        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
-        <item name="importTest@localhost" type="feb32156:DbDataSourceImpl" />
-        <item name="schemas" type="d4e8921:DatabaseStructure$FamilyGroup" />
-        <item name="importTest: schema" type="76f4a085:MysqlImplModel$Schema" />
-        <item name="Product: table" type="285a2a93:MysqlImplModel$Table" />
       </path>
     </expand>
     <select />
@@ -183,7 +174,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/src" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/Migrations" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
@@ -203,7 +194,7 @@
       <option name="presentableId" value="Default" />
       <updated>1580820168371</updated>
       <workItem from="1580820169600" duration="8039000" />
-      <workItem from="1580886332230" duration="8101000" />
+      <workItem from="1580886332230" duration="8384000" />
     </task>
     <servers />
   </component>
@@ -219,6 +210,10 @@
       <screen x="67" y="27" width="1853" height="1053" />
     </state>
     <state x="703" y="358" width="643" height="390" key="#com.intellij.fileTypes.FileTypeChooser/67.27.1853.1053@67.27.1853.1053" timestamp="1580890195727" />
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl" timestamp="1580894737531">
+      <screen x="67" y="27" width="1853" height="1053" />
+    </state>
+    <state x="776" y="310" width="424" height="484" key="FileChooserDialogImpl/67.27.1853.1053@67.27.1853.1053" timestamp="1580894737531" />
     <state x="644" y="366" width="689" height="373" key="NewPhpClassDialog" timestamp="1580890210973">
       <screen x="67" y="27" width="1853" height="1053" />
     </state>

@@ -64,12 +64,12 @@ class Product
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $Stock;
+    private $stock;
 
     /**
-     * @ORM\Column(name="costInGBP", type="float")
+     * @ORM\Column(name="costInGBP", type="integer")
      */
-    private $Cost;
+    private $cost;
 
     public function getId(): ?int
     {

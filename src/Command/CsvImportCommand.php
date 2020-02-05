@@ -1,7 +1,7 @@
 <?php
 namespace App\Command;
 
-use App\Entity\TblProductData;
+use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
@@ -89,17 +89,17 @@ class CsvImportCommand extends Command
                     $arrayWIthBrokenItems []= $row;
                 }
                 else {
-                    $product = (new TblProductData())
-                        ->setStrProductCode($row['Product Code'])
-                        ->setStrProductName($row['Product Name'])
-                        ->setStrProductDesc(($row['Product Description']))
-                        ->setCostInGBP($row['Cost in GBP'])
-                        ->setStmTimestamp(new \DateTime())
-                        ->setDtmAdded(new \DateTime())
+                    $product = (new Product())
+                        ->setCode($row['Product Code'])
+                        ->setName($row['Product Name'])
+                        ->setDescription(($row['Product Description']))
+                        ->setCost($row['Cost in GBP'])
+                        ->setTimestamp(new \DateTime())
+                        ->setAdded(new \DateTime())
                         ->setStock($row['Stock'])
                     ;
                     if ($row['Discontinued'] == 'yes'){
-                        $product->setDtmDiscontinued(new \DateTime());
+                        $product->setDiscontinued(new \DateTime());
                     }
                     $this->em->persist($product);
                     $successItems += 1;

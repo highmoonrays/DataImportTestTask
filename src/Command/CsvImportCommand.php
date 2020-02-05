@@ -69,33 +69,37 @@ class CsvImportCommand extends Command
 
         $successItems = 0;
 
-        $skippedItems = 0;
-
         $arrayWIthBrokenItems = [];
 
         foreach ($results as $row) {
 
-            if($row['Stock'] < 10 or $row['Cost in GBP'] > 1000 or $row['Cost in GBP'] < 5){
+            if($row['Stock'] < 10 && (int)$row['Cost in GBP'] < 5 or $row['Cost in GBP'] > 1000){
                 $brokenItems += 1;
                 $arrayWIthBrokenItems []= $row;
             }
             else {
-                $product = (new TblProductData())
-                    ->setStrProductCode($row['Product Code'])
-                    ->setStrProductName($row['Product Name'])
-                    ->setStrProductDesc(($row['Product Description']))
-                    ->setStock($row['Stock'])
-                    ->setCostInGBP($row['Cost in GBP'])
-                    ->setStmTimestamp(new \DateTime())
-                    ->setDtmAdded(new \DateTime())
-                ;
-                if ($row['Discontinued'] == 'yes'){
-                    $product->setDtmDiscontinued(new \DateTime());
+                if (!is_string($row['Product Name'])
+                    or !is_string($row['Product Code']) or !is_string($row['Product Description'])
+                    or !is_numeric($row['Cost in GBP']) or !is_numeric($row['Stock'])){
+                    $brokenItems += 1;
+                    $arrayWIthBrokenItems []= $row;
                 }
-
-                $this->em->persist($product);
-                $successItems += 1;
-
+                else {
+                    $product = (new TblProductData())
+                        ->setStrProductCode($row['Product Code'])
+                        ->setStrProductName($row['Product Name'])
+                        ->setStrProductDesc(($row['Product Description']))
+                        ->setCostInGBP($row['Cost in GBP'])
+                        ->setStmTimestamp(new \DateTime())
+                        ->setDtmAdded(new \DateTime())
+                        ->setStock($row['Stock'])
+                    ;
+                    if ($row['Discontinued'] == 'yes'){
+                        $product->setDtmDiscontinued(new \DateTime());
+                    }
+                    $this->em->persist($product);
+                    $successItems += 1;
+                }
             }
         }
         if ($input->getArgument('test') == 'test'){

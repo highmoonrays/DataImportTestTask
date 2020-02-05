@@ -71,6 +71,18 @@ class Product
      */
     private $cost;
 
+    public function __construct($name, $description, $code, $added, $timestamp, $stock, $cost, $discontinued)
+    {
+        $this->name = $name;
+        $this->description = $description;
+        $this->code = $code;
+        $this->added = $added;
+        $this->timestamp = $timestamp;
+        $this->stock = $stock;
+        $this->cost = $cost;
+        $this->discontinued = $discontinued;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

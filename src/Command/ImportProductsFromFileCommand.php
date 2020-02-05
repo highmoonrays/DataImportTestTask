@@ -13,10 +13,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class CsvImportCommand
+ * Class ImportProductsFromFileCommand
  * @package AppBundle\ConsoleCommand
  */
-class CsvImportCommand extends Command
+class ImportProductsFromFileCommand extends Command
 {
 
     /**
@@ -25,7 +25,7 @@ class CsvImportCommand extends Command
     private $em;
 
     /**
-     * CsvImportCommand constructor.
+     * ImportProductsFromFileCommand constructor.
      *
      * @param EntityManagerInterface $em
      * @throws LogicException
@@ -89,15 +89,14 @@ class CsvImportCommand extends Command
                     $arrayWIthBrokenItems []= $row;
                 }
                 else {
-                    $product = (new Product())
-                        ->setCode($row['Product Code'])
-                        ->setName($row['Product Name'])
-                        ->setDescription(($row['Product Description']))
-                        ->setCost($row['Cost in GBP'])
-                        ->setTimestamp(new \DateTime())
-                        ->setAdded(new \DateTime())
-                        ->setStock($row['Stock'])
-                    ;
+                    $product = (new Product($row['Product Name'],
+                                            $row['Product Description'],
+                                            $row['Product Code'],
+                                            new \DateTime(),
+                                            new \DateTime(),
+                                            $row['Stock'],
+                                            $row['Cost in GBP'],
+                                 null));
                     if ($row['Discontinued'] == 'yes'){
                         $product->setDiscontinued(new \DateTime());
                     }

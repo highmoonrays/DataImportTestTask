@@ -14,7 +14,7 @@ class SaveService
      */
     private $em;
 
-    public $saver;
+    private $saver;
 
     /**
      * SaveService constructor.

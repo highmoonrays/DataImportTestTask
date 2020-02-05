@@ -33,7 +33,7 @@ class ProductImportCSVFileReader
      */
     public const PRODUCT_DISCONTINUED_COLUMN = 'Discontinued';
 
-    public $validator;
+    private $validator;
 
     /**
      * @param $row

@@ -41,24 +41,13 @@ class ImportHelperFactory
 
     /**
      * @param $pathToProcessFile
-     *
      * @throws \Exception
      */
-    public function setPathToFile($pathToProcessFile)
+    public function useProcessor($pathToProcessFile)
     {
         $fileNameParts = pathinfo($pathToProcessFile);
-
-        $this->pathToProcessFile = $pathToProcessFile;
-
         $this->fileExtension = $fileNameParts['extension'];
-    }
-
-    /**
-     * @throws \Exception
-     */
-    public function findRightProcessor()
-    {
-        $reader = Reader::createFromPath($this->pathToProcessFile);
+        $reader = Reader::createFromPath($pathToProcessFile);
         $rows = $reader->fetchAssoc();
         $this->productFileProcessor->validateAndCreate($rows);
     }

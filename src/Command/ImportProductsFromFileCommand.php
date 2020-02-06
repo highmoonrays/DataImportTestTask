@@ -81,9 +81,7 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $this->helper->setPathToFile($pathToProcessFile);
-
-        $this->helper->findRightProcessor();
+        $this->helper->useProcessor($pathToProcessFile);
 
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');

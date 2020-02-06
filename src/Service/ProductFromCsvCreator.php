@@ -6,6 +6,7 @@ namespace App\Service;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 
 class ProductFromCsvCreator implements ProductCreatorInterface
 {
@@ -26,7 +27,7 @@ class ProductFromCsvCreator implements ProductCreatorInterface
     /**
      * @param $row
      *
-     * @throws \Exception
+     * @throws Exception
      */
     public function save($row): void
     {

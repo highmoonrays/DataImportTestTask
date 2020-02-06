@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Service\ProductFromCsvCreator;
 use App\Service\ProductImportCSVFileReader;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -60,7 +61,9 @@ class ImportProductsFromFileCommand extends Command
      * @param ProductImportCSVFileReader $validator
      * @param ProductFromCsvCreator $saver
      */
-    public function __construct(EntityManagerInterface $em, ProductImportCSVFileReader $validator, ProductFromCsvCreator $saver)
+    public function __construct(EntityManagerInterface $em,
+                                ProductImportCSVFileReader $validator,
+                                ProductFromCsvCreator $saver)
     {
         parent::__construct();
 
@@ -89,7 +92,7 @@ class ImportProductsFromFileCommand extends Command
      * @param OutputInterface $output
      * @return int
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -99,33 +102,41 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
+        $fileNameParts = pathinfo($pathToProcessFile);
+
+        $fileExtension = $fileNameParts['extension'];
+
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');
         }
         $reader = Reader::createFromPath($pathToProcessFile);
 
         $rows = $reader->fetchAssoc();
-        foreach ($rows as $row) {
-            $isValid = $this->validator->validate($row);
-            if (true == $isValid) {
-                ++$this->counterSavedItems;
-                $this->saver->save($row);
-            } else {
-                ++$this->counterInvalidItems;
-                $this->invalidProducts[] = $row;
-            }
-        }
 
-        foreach ($this->invalidProducts as $invalidItem) {
-            $invalidItem = json_encode($invalidItem);
-            $output->writeln('<fg=red>Not Saved!</>');
-            $output->writeln("<fg=blue>$invalidItem</>");
+        if ('xlsx' === $fileExtension or 'csv' === $fileExtension) {
+            $output->writeln("<fg=green> $fileExtension </>");
+            foreach ($rows as $row) {
+                $isValid = $this->validator->validate($row);
+                if (true == $isValid) {
+                    ++$this->counterSavedItems;
+                    $this->saver->save($row);
+                } else {
+                    ++$this->counterInvalidItems;
+                    $this->invalidProducts[] = $row;
+                }
+            }
+
+            foreach ($this->invalidProducts as $invalidItem) {
+                $invalidItem = json_encode($invalidItem);
+                $output->writeln('<fg=red>Not Saved!</>');
+                $output->writeln("<fg=blue>$invalidItem</>");
+            }
+            if (!$isTestMode) {
+                $this->em->flush();
+            }
+            $io->success('Command exited cleanly, and there '."$this->counterInvalidItems".' broken items, '
+                ."$this->counterSavedItems".' items are saved');
         }
-        if (!$isTestMode) {
-            $this->em->flush();
-        }
-        $io->success('Command exited cleanly, and there '."$this->counterInvalidItems".' broken items, '
-            ."$this->counterSavedItems".' items are saved');
 
         return 0;
     }

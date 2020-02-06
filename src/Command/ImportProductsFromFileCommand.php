@@ -71,6 +71,7 @@ class ImportProductsFromFileCommand extends Command
 
     /**
      * @return int
+     * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -81,6 +82,8 @@ class ImportProductsFromFileCommand extends Command
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
         $this->helper->setPathToFile($pathToProcessFile);
+
+        $this->helper->findRightProcessor();
 
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');
@@ -97,7 +100,7 @@ class ImportProductsFromFileCommand extends Command
             $this->em->flush();
         }
         $io->success('Command exited cleanly, and there '.$this->helper->getNumberInvalidProducts().' broken items, '.
-            $this->helper->getNumberInvalidProducts().' items are saved');
+            $this->helper->getNumberSavedProducts().' items are saved');
 
         return 0;
     }

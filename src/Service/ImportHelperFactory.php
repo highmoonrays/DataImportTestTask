@@ -24,40 +24,30 @@ class ImportHelperFactory
     private $productFileProcessor;
 
     /**
-     * @var string
-     */
-    private $pathToProcessFile;
-
-    /**
      * ImportProductsFromFileCommand constructor.
      */
     public function __construct(ImportProductsFromCsvFile $productCsvFileProcessor)
     {
         $this->productCsvFileProcessor = $productCsvFileProcessor;
-        if ('csv' === $this->getFileExtension()) {
-            $this->productFileProcessor = $productCsvFileProcessor;
-        }
     }
 
     /**
-     * @param $pathToProcessFile
      * @throws \Exception
      */
-    public function useProcessor($pathToProcessFile)
+    public function process($pathToProcessFile)
     {
         $fileNameParts = pathinfo($pathToProcessFile);
         $this->fileExtension = $fileNameParts['extension'];
-        $reader = Reader::createFromPath($pathToProcessFile);
-        $rows = $reader->fetchAssoc();
-        $this->productFileProcessor->validateAndCreate($rows);
-    }
+        echo "$this->fileExtension";
 
-    /**
-     * @return string
-     */
-    public function getFileExtension()
-    {
-        return $this->fileExtension;
+        switch ($this->fileExtension) {
+            case 'csv':
+                $reader = Reader::createFromPath($pathToProcessFile);
+                $rows = $reader->fetchAssoc();
+                $this->productCsvFileProcessor->validateAndCreate($rows);
+                $this->productFileProcessor = $this->productCsvFileProcessor;
+                break;
+        }
     }
 
     /**
@@ -66,6 +56,14 @@ class ImportHelperFactory
     public function getInvalidProducts()
     {
         return $this->productFileProcessor->getInvalidProducts();
+    }
+
+    /**
+     * @return string
+     */
+    public function getExtension()
+    {
+        return $this->fileExtension;
     }
 
     /**

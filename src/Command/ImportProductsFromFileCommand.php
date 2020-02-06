@@ -38,6 +38,7 @@ class ImportProductsFromFileCommand extends Command
      * @var EntityManagerInterface
      */
     private $em;
+
     /**
      * @var ImportHelperFactory
      */
@@ -71,6 +72,7 @@ class ImportProductsFromFileCommand extends Command
 
     /**
      * @return int
+     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -81,13 +83,11 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $this->helper->useProcessor($pathToProcessFile);
+        $this->helper->process($pathToProcessFile);
 
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');
         }
-
-        $io->success('Extension is '.$this->helper->getFileExtension());
 
         foreach ($this->helper->getInvalidProducts() as $invalidItem) {
             $invalidItem = json_encode($invalidItem);
@@ -97,8 +97,8 @@ class ImportProductsFromFileCommand extends Command
         if (!$isTestMode) {
             $this->em->flush();
         }
-        $io->success('Command exited cleanly, and there '.$this->helper->getNumberInvalidProducts().' broken items, '.
-            $this->helper->getNumberSavedProducts().' items are saved');
+        $io->success('Command exited cleanly,'.$this->helper->getNumberInvalidProducts().' and there broken items, '
+                    .$this->helper->getNumberSavedProducts().' items are saved');
 
         return 0;
     }

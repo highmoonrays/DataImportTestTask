@@ -1,7 +1,6 @@
 <?php
 declare(strict_types=1);
 namespace App\Service;
-
 class ProductImportCSVFileReader
 {
     /**
@@ -33,11 +32,6 @@ class ProductImportCSVFileReader
      * @var string
      */
     public const PRODUCT_DISCONTINUED_COLUMN = 'Discontinued';
-
-    /**
-     * @var
-     */
-    private $validator;
 
     /**
      * @param $row

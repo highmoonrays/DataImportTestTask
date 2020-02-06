@@ -66,18 +66,18 @@ class ImportHelperFactory
      */
     public function findRightHandler()
     {
-        switch ($this->fileExtension):
-            case 'xlsx':
-            case 'csv':
-                $reader = Reader::createFromPath($this->pathToProcessFile);
-        $rows = $reader->fetchAssoc();
-        $this->handlerCsv->validateAndCreate($rows);
-        $this->report[self::INVALID_PRODUCTS] = $this->handlerCsv->getInvalidProducts();
-        $this->report[self::NUMBER_SAVED_PRODUCTS] = $this->handlerCsv->getNumberSavedProducts();
-        $this->report[self::NUMBER_INVALID_PRODUCTS] = $this->handlerCsv->getNumberInvalidProducts();
+        if ('csv' === $this->fileExtension) {
+            $reader = Reader::createFromPath($this->pathToProcessFile);
+            $rows = $reader->fetchAssoc();
+            $this->handlerCsv->validateAndCreate($rows);
+            $this->report[self::INVALID_PRODUCTS] = $this->handlerCsv->getInvalidProducts();
+            $this->report[self::NUMBER_SAVED_PRODUCTS] = $this->handlerCsv->getNumberSavedProducts();
+            $this->report[self::NUMBER_INVALID_PRODUCTS] = $this->handlerCsv->getNumberInvalidProducts();
+        }
 
-        break;
-        endswitch;
+        elseif ('xlsx' === $this->fileExtension){
+            echo "not done yet";
+        }
     }
 
     /**

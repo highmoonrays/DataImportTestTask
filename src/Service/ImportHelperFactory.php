@@ -51,6 +51,9 @@ class ImportHelperFactory
         $this->handlerCsv = $handlerCsv;
     }
 
+    /**
+     * @param $pathToProcessFile
+     */
     public function setPathToFile($pathToProcessFile)
     {
         $fileNameParts = pathinfo($pathToProcessFile);
@@ -58,6 +61,9 @@ class ImportHelperFactory
         $this->fileExtension = $fileNameParts['extension'];
     }
 
+    /**
+     * @throws \Exception
+     */
     public function findRightHandler()
     {
         switch ($this->fileExtension):
@@ -74,6 +80,9 @@ class ImportHelperFactory
         endswitch;
     }
 
+    /**
+     * @return string
+     */
     public function getFileExtension()
     {
         return $this->fileExtension;

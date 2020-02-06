@@ -1,8 +1,11 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Command;
-use App\Service\ProductImportCSVFileReader;
+
 use App\Service\ProductFromCsvCreator;
+use App\Service\ProductImportCSVFileReader;
 use Doctrine\ORM\EntityManagerInterface;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
@@ -12,11 +15,12 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 /**
- * Class ImportProductsFromFileCommand
+ * Class ImportProductsFromFileCommand.
+ *
  * @property ProductImportCSVFileReader validator
  * @property ProductFromCsvCreator saver
- * @package AppBundle\ConsoleCommand
  */
 class ImportProductsFromFileCommand extends Command
 {
@@ -66,7 +70,8 @@ class ImportProductsFromFileCommand extends Command
     }
 
     /**
-     * Configure
+     * Configure.
+     *
      * @throws InvalidArgumentException
      */
     protected function configure()
@@ -83,6 +88,7 @@ class ImportProductsFromFileCommand extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
+     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -93,33 +99,34 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        if ($isTestMode){
-            $io->success("Test mode is on, no records will be altered.");
+        if ($isTestMode) {
+            $io->success('Test mode is on, no records will be altered.');
         }
         $reader = Reader::createFromPath($pathToProcessFile);
 
         $rows = $reader->fetchAssoc();
         foreach ($rows as $row) {
             $isValid = $this->validator->validate($row);
-            if ($isValid == true){
-                $this->counterSavedItems += 1;
+            if (true == $isValid) {
+                ++$this->counterSavedItems;
                 $this->saver->save($row);
-            }
-            else{
-                $this->counterInvalidItems += 1;
-                $this->invalidProducts []= $row;
+            } else {
+                ++$this->counterInvalidItems;
+                $this->invalidProducts[] = $row;
             }
         }
+
         foreach ($this->invalidProducts as $invalidItem) {
             $invalidItem = json_encode($invalidItem);
-            $output->writeln("<fg=red>Not Saved!</>");
+            $output->writeln('<fg=red>Not Saved!</>');
             $output->writeln("<fg=blue>$invalidItem</>");
         }
         if (!$isTestMode) {
             $this->em->flush();
         }
-        $io->success('Command exited cleanly, and there ' . "$this->counterInvalidItems" . ' broken items, '
-            . "$this->counterSavedItems" . ' items are saved');
+        $io->success('Command exited cleanly, and there '."$this->counterInvalidItems".' broken items, '
+            ."$this->counterSavedItems".' items are saved');
+
         return 0;
     }
 }

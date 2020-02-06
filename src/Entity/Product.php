@@ -1,9 +1,13 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
+
 /**
- * Product
+ * Product.
  *
  * @ORM\Table(name="tblProductData", uniqueConstraints={@ORM\UniqueConstraint(name="tblProductData", columns={"intProductDataId"})})
  * @ORM\Entity
@@ -56,18 +60,21 @@ class Product
 
     /**
      * @ORM\Column(name="intStock", type="integer", nullable=true)
+     *
      * @var int
      */
     private $stock;
 
     /**
      * @ORM\Column(name="intCostInGBP", type="integer")
+     *
      * @var int
      */
     private $cost;
 
     /**
      * Product constructor.
+     *
      * @param string $name
      * @param string $description
      * @param string $code
@@ -83,24 +90,19 @@ class Product
         $this->description = $description;
         $this->code = $code;
         $this->added = new \DateTime();
-        $this->timestamp = new \DateTime;
+        $this->timestamp = new \DateTime();
         $this->stock = $stock;
         $this->cost = $cost;
-        if ('yes' === $discontinued)
+        if ('yes' === $discontinued) {
             $this->discontinued = new \DateTime();
+        }
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
@@ -113,12 +115,10 @@ class Product
     public function setName(string $name): self
     {
         $this->name = $name;
+
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
@@ -135,9 +135,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCode(): ?string
     {
         return $this->code;
@@ -150,12 +147,10 @@ class Product
     public function setCode(string $code): self
     {
         $this->code = $code;
+
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getAdded(): ?\DateTimeInterface
     {
         return $this->added;
@@ -168,12 +163,10 @@ class Product
     public function setAdded(?\DateTimeInterface $added): self
     {
         $this->added = $added;
+
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getDiscontinued(): ?\DateTimeInterface
     {
         return $this->discontinued;
@@ -190,9 +183,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
     public function getTimestamp(): ?\DateTimeInterface
     {
         return $this->timestamp;
@@ -209,9 +199,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getStock(): ?int
     {
         return $this->stock;
@@ -228,9 +215,6 @@ class Product
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getCost(): ?int
     {
         return $this->cost;
@@ -238,9 +222,10 @@ class Product
 
     /**
      * @param int $Cost
+     *
      * @return $this
      */
-    public function setCost(float $Cost): self
+    public function setCost(int $Cost): self
     {
         $this->cost = $Cost;
 

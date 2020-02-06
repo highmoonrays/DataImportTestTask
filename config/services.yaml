@@ -32,6 +32,6 @@ services:
 #        calls:
 #            - [validate, ['@validator']]
 #    app.save_service:
-#        class: App\Service\ProductCreator
+#        class: App\Service\ProductCreatorInterface
 #        calls:
 #            - [save, ['@saver']]

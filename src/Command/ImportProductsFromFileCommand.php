@@ -8,6 +8,7 @@ use App\Service\ImportProductsFromCsvFile;
 use App\Service\ProductFromCsvCreator;
 use App\Service\ProductImportCSVFileReader;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -46,11 +47,6 @@ class ImportProductsFromFileCommand extends Command
     private $handler;
 
     /**
-     * @var array
-     */
-    private $report;
-
-    /**
      * ImportProductsFromFileCommand constructor.
      */
     public function __construct(ImportProductsFromCsvFile $handler,
@@ -79,7 +75,7 @@ class ImportProductsFromFileCommand extends Command
     /**
      * @return int
      *
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 
 /**
  * Product.
@@ -81,7 +82,7 @@ class Product
      * @param int $stock
      * @param int $cost
      * @param string $discontinued
-     * @throws \Exception
+     * @throws Exception
      */
     public function __construct(string $name,
                                 string $description,

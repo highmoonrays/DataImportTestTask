@@ -36,21 +36,6 @@ class ImportProductsFromFileCommand extends Command
     const ARGUMENT_PATH_TO_FILE = 'path';
 
     /**
-     * @var string
-     */
-    const INVALID_PRODUCTS = 'invalid_items';
-
-    /**
-     * @var string
-     */
-    const NUMBER_SAVED_PRODUCTS = 'number_saved_items';
-
-    /**
-     * @var string
-     */
-    const NUMBER_INVALID_PRODUCTS = 'number_invalid_items';
-
-    /**
      * @var EntityManagerInterface
      */
     private $em;

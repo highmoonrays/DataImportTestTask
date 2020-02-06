@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Service\ImportProductsFromCsvFile;
+use App\Service\ImportHelperFactory;
 use App\Service\ProductFromCsvCreator;
 use App\Service\ProductImportCSVFileReader;
 use Doctrine\ORM\EntityManagerInterface;
-use Exception;
-use League\Csv\Reader;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -40,21 +38,20 @@ class ImportProductsFromFileCommand extends Command
      * @var EntityManagerInterface
      */
     private $em;
-
     /**
-     * @var ImportProductsFromCsvFile
+     * @var ImportHelperFactory
      */
-    private $handler;
+    private $helper;
 
     /**
      * ImportProductsFromFileCommand constructor.
      */
-    public function __construct(ImportProductsFromCsvFile $handler,
+    public function __construct(ImportHelperFactory $helper,
                                 EntityManagerInterface $em)
     {
         parent::__construct();
         $this->em = $em;
-        $this->handler = $handler;
+        $this->helper = $helper;
     }
 
     /**
@@ -74,8 +71,6 @@ class ImportProductsFromFileCommand extends Command
 
     /**
      * @return int
-     *
-     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
@@ -85,27 +80,15 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $fileNameParts = pathinfo($pathToProcessFile);
-
-        $fileExtension = $fileNameParts['extension'];
+        $this->helper->setPathToFile($pathToProcessFile);
 
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');
         }
-        $reader = Reader::createFromPath($pathToProcessFile);
 
-        $rows = $reader->fetchAssoc();
+        $io->success('Extension is '.$this->helper->getFileExtension());
 
-        $output->writeln("<fg=green> $fileExtension </>");
-
-        switch ($fileExtension):
-            case 'xlsx':
-            case 'csv':
-                $this->handler->validateAndCreate($rows);
-        break;
-        endswitch;
-
-        foreach ($this->handler->getInvalidProducts() as $invalidItem) {
+        foreach ($this->helper->getInvalidProducts() as $invalidItem) {
             $invalidItem = json_encode($invalidItem);
             $output->writeln('<fg=red>Not Saved!</>');
             $output->writeln("<fg=blue>$invalidItem</>");
@@ -113,8 +96,8 @@ class ImportProductsFromFileCommand extends Command
         if (!$isTestMode) {
             $this->em->flush();
         }
-        $io->success('Command exited cleanly, and there '.$this->handler->getNumberInvalidProducts().' broken items, '.
-            $this->handler->getNumberSavedProducts().' items are saved');
+        $io->success('Command exited cleanly, and there '.$this->helper->getNumberInvalidProducts().' broken items, '.
+            $this->helper->getNumberInvalidProducts().' items are saved');
 
         return 0;
     }

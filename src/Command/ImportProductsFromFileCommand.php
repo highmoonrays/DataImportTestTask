@@ -36,6 +36,21 @@ class ImportProductsFromFileCommand extends Command
     const ARGUMENT_PATH_TO_FILE = 'path';
 
     /**
+     * @var string
+     */
+    const INVALID_PRODUCTS = 'invalid_items';
+
+    /**
+     * @var string
+     */
+    const NUMBER_SAVED_PRODUCTS = 'number_saved_items';
+
+    /**
+     * @var string
+     */
+    const NUMBER_INVALID_PRODUCTS = 'number_invalid_items';
+
+    /**
      * @var EntityManagerInterface
      */
     private $em;
@@ -105,18 +120,11 @@ class ImportProductsFromFileCommand extends Command
         switch ($fileExtension):
             case 'xlsx':
             case 'csv':
-                $this->report = $this->handler->validateAndCreate($rows);
+                $this->handler->validateAndCreate($rows);
         break;
         endswitch;
-        if (!$isTestMode) {
-            $this->em->flush();
-        }
 
-        $invalidItems = $this->report[0];
-        $numInvalidItems = $this->report[1];
-        $numSavedItems = $this->report[2];
-
-        foreach ($invalidItems as $invalidItem) {
+        foreach ($this->handler->getInvalidProducts() as $invalidItem) {
             $invalidItem = json_encode($invalidItem);
             $output->writeln('<fg=red>Not Saved!</>');
             $output->writeln("<fg=blue>$invalidItem</>");
@@ -124,8 +132,8 @@ class ImportProductsFromFileCommand extends Command
         if (!$isTestMode) {
             $this->em->flush();
         }
-        $io->success('Command exited cleanly, and there '."$numInvalidItems".' broken items, '
-            ."$numSavedItems".' items are saved');
+        $io->success('Command exited cleanly, and there '.$this->handler->getNumberInvalidProducts().' broken items, '.
+            $this->handler->getNumberSavedProducts().' items are saved');
 
         return 0;
     }

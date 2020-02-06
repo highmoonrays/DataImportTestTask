@@ -83,8 +83,12 @@ class Product
      * @param string $discontinued
      * @throws \Exception
      */
-    public function __construct(string $name, string $description, string $code, int $stock,
-                                int $cost, string $discontinued)
+    public function __construct(string $name,
+                                string $description,
+                                string $code,
+                                int $stock,
+                                int $cost,
+                                string $discontinued)
     {
         $this->name = $name;
         $this->description = $description;
@@ -98,6 +102,9 @@ class Product
         }
     }
 
+    /**
+     * @return int|null
+     */
     public function getId(): ?int
     {
         return $this->id;

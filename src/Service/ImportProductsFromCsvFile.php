@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service;
 
+use App\Command\ImportProductsFromFileCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -30,17 +31,17 @@ class ImportProductsFromCsvFile
     /**
      * @var int
      */
-    private $counterInvalidItems = 0;
+    private $numberInvalidProducts = 0;
 
     /**
      * @var int
      */
-    private $counterSavedItems = 0;
+    private $numberSavedProducts = 0;
 
     /**
      * @var array
      */
-    public $report;
+    private $report = [];
 
     /**
      * ImportProductsFromFileCommand constructor.
@@ -61,8 +62,6 @@ class ImportProductsFromCsvFile
     /**
      * @param $rows
      *
-     * @return array
-     *
      * @throws Exception
      */
     public function validateAndCreate($rows)
@@ -70,17 +69,36 @@ class ImportProductsFromCsvFile
         foreach ($rows as $row) {
             $isValid = $this->validator->validate($row);
             if (true === $isValid) {
-                ++$this->counterSavedItems;
+                ++$this->numberSavedProducts;
                 $this->saver->save($row);
             } else {
-                ++$this->counterInvalidItems;
+                ++$this->numberInvalidProducts;
                 $this->invalidProducts[] = $row;
             }
         }
-        array_push($this->report, $this->invalidProducts);
-        array_push($this->report, $this->counterInvalidItems);
-        array_push($this->report, $this->counterSavedItems);
+    }
 
-        return $this->report;
+    /**
+     * @return array
+     */
+    public function getInvalidProducts()
+    {
+        return $this->invalidProducts;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberSavedProducts()
+    {
+        return $this->numberSavedProducts;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumberInvalidProducts()
+    {
+        return $this->numberInvalidProducts;
     }
 }

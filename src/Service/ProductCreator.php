@@ -1,13 +1,10 @@
 <?php
-
-
 namespace App\Service;
-
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 
-class SaveService
+class ProductCreator
 {
     /**
      * @var EntityManagerInterface
@@ -17,14 +14,13 @@ class SaveService
     private $saver;
 
     /**
-     * SaveService constructor.
+     * ProductCreator constructor.
      * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManagerInterface $em){
+    public function __construct(EntityManagerInterface $em)
+    {
         $this->em = $em;
     }
-
-
     /**
      * @param $row
      * @throws \Exception

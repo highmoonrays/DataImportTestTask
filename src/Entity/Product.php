@@ -1,8 +1,7 @@
 <?php
+declare(strict_types=1);
 namespace App\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Product
  *
@@ -67,6 +66,16 @@ class Product
      */
     private $cost;
 
+    /**
+     * Product constructor.
+     * @param string $name
+     * @param string $description
+     * @param string $code
+     * @param int $stock
+     * @param int $cost
+     * @param string $discontinued
+     * @throws \Exception
+     */
     public function __construct(string $name, string $description, string $code, int $stock,
                                 int $cost, string $discontinued)
     {
@@ -77,7 +86,7 @@ class Product
         $this->timestamp = new \DateTime;
         $this->stock = $stock;
         $this->cost = $cost;
-        if ($discontinued == 'yes')
+        if ('yes' === $discontinued)
             $this->discontinued = new \DateTime();
     }
 

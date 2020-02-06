@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 namespace App\Service;
 
 class ProductImportCSVFileReader
@@ -33,6 +34,9 @@ class ProductImportCSVFileReader
      */
     public const PRODUCT_DISCONTINUED_COLUMN = 'Discontinued';
 
+    /**
+     * @var
+     */
     private $validator;
 
     /**
@@ -47,8 +51,10 @@ class ProductImportCSVFileReader
             $isValid = false;
         } else {
             if (!is_string($row[self::PRODUCT_NAME_COLUMN])
-                or !is_string($row[self::PRODUCT_DESCRIPTION_COLUMN]) or !is_string($row[self::PRODUCT_CODE_COLUMN])
-                or !is_numeric($row[self::PRODUCT_COST_COLUMN]) or !is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
+                or !is_string($row[self::PRODUCT_DESCRIPTION_COLUMN])
+                or !is_string($row[self::PRODUCT_CODE_COLUMN])
+                or !is_numeric($row[self::PRODUCT_COST_COLUMN])
+                or !is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
                 $isValid = false;
             }
         }

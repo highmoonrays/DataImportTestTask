@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Service\CSV;
+namespace App\Service\ImportTools;
 
 use App\Entity\Product;
 use App\Service\ProductCreatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class ProductFromCsvCreator implements ProductCreatorInterface
+class ProductImportFileCreator implements ProductCreatorInterface
 {
     /**
      * @var EntityManagerInterface
@@ -32,12 +32,12 @@ class ProductFromCsvCreator implements ProductCreatorInterface
      */
     public function save($row): void
     {
-        $product = new Product($row[ProductImportCSVFileValidator::PRODUCT_NAME_COLUMN],
-            $row[ProductImportCSVFileValidator::PRODUCT_DESCRIPTION_COLUMN],
-            $row[ProductImportCSVFileValidator::PRODUCT_CODE_COLUMN],
-            (int) $row[ProductImportCSVFileValidator::PRODUCT_STOCK_COLUMN],
-            (int) $row[ProductImportCSVFileValidator::PRODUCT_COST_COLUMN],
-            $row[ProductImportCSVFileValidator::PRODUCT_DISCONTINUED_COLUMN]);
+        $product = new Product($row[ProductImportFileValidator::PRODUCT_NAME_COLUMN],
+            $row[ProductImportFileValidator::PRODUCT_DESCRIPTION_COLUMN],
+            $row[ProductImportFileValidator::PRODUCT_CODE_COLUMN],
+            (int) $row[ProductImportFileValidator::PRODUCT_STOCK_COLUMN],
+            (int) $row[ProductImportFileValidator::PRODUCT_COST_COLUMN],
+            (string) $row[ProductImportFileValidator::PRODUCT_DISCONTINUED_COLUMN]);
         $this->em->persist($product);
     }
 }

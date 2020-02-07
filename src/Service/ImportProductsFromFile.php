@@ -2,24 +2,26 @@
 
 declare(strict_types=1);
 
-namespace App\Service\CSV;
+namespace App\Service;
 
+use App\Service\ImportTools\ProductImportFileCreator;
+use App\Service\ImportTools\ProductImportFileValidator;
 use App\Service\Reporter\AfterReadReporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class ImportProductsFromCsvFile
+class ImportProductsFromFile
 {
     /**
      * @var EntityManagerInterface
      */
     private $em;
     /**
-     * @var ProductImportCSVFileValidator
+     * @var ProductImportFileValidator
      */
     private $validator;
     /**
-     * @var ProductFromCsvCreator
+     * @var ProductImportFileCreator
      */
     private $saver;
 
@@ -43,17 +45,18 @@ class ImportProductsFromCsvFile
      */
 
     /**
-     * ImportProductsFromCsvFile constructor.
+     * ImportProductsFromFile constructor.
      * @param EntityManagerInterface $em
-     * @param ProductImportCSVFileValidator $validator
-     * @param ProductFromCsvCreator $saver
+     * @param ProductImportFileValidator $validator
+     * @param ProductImportFileCreator $saver
      * @param AfterReadReporter $reporter
      */
-    public function __construct(EntityManagerInterface $em,
-                                ProductImportCSVFileValidator $validator,
-                                ProductFromCsvCreator $saver,
-                                AfterReadReporter $reporter)
-    {
+    public function __construct(
+        EntityManagerInterface $em,
+        ProductImportFileValidator $validator,
+        ProductImportFileCreator $saver,
+        AfterReadReporter $reporter
+    ) {
         $this->em = $em;
         $this->validator = $validator;
         $this->saver = $saver;
@@ -65,7 +68,7 @@ class ImportProductsFromCsvFile
      *
      * @throws Exception
      */
-    public function validateAndCreate($rows)
+    public function Import($rows)
     {
         foreach ($rows as $row) {
             $isValid = $this->validator->validate($row);

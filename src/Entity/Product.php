@@ -37,7 +37,7 @@ class Product
 
     /**
      * @var string
-     * @ORM\Column(name="strProductCode", type="string", length=10, nullable=false)
+     * @ORM\Column(name="strProductCode", type="string", length=10, nullable=false, unique=true)
      */
     private $code;
 

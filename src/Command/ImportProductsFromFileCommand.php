@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
+use App\Service\Processor\ImportProcessor;
 use App\Service\Reporter\AfterReadReporter;
-use App\Service\Factory\ImportHelperFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -37,9 +37,9 @@ class ImportProductsFromFileCommand extends Command
     private $em;
 
     /**
-     * @var ImportHelperFactory
+     * @var ImportProcessor
      */
-    private $helper;
+    private $processor;
 
     /**
      * @var AfterReadReporter
@@ -48,17 +48,18 @@ class ImportProductsFromFileCommand extends Command
 
     /**
      * ImportProductsFromFileCommand constructor.
-     * @param ImportHelperFactory $helper
+     * @param ImportProcessor $processor
      * @param EntityManagerInterface $em
      * @param AfterReadReporter $reporter
      */
-    public function __construct(ImportHelperFactory $helper,
-                                EntityManagerInterface $em,
-                                AfterReadReporter $reporter)
-    {
+    public function __construct(
+        ImportProcessor $processor,
+        EntityManagerInterface $em,
+        AfterReadReporter $reporter
+    ) {
         parent::__construct();
         $this->em = $em;
-        $this->helper = $helper;
+        $this->processor = $processor;
         $this->reporter = $reporter;
     }
 
@@ -96,9 +97,9 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $isWorked = $this->helper->process($pathToProcessFile);
+        $isProcessed = $this->processor->process($pathToProcessFile);
 
-        if (!$isWorked) {
+        if (false === $isProcessed) {
             $output->writeln('<fg=red>Unsupported Extension!</>');
         } else {
             $report = $this->reporter->getReport();

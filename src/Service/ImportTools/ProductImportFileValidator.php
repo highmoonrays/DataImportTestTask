@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service\CSV;
+namespace App\Service\ImportTools;
 
-class ProductImportCSVFileValidator
+class ProductImportFileValidator
 {
     /**
      * @var string

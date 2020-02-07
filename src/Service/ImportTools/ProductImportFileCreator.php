@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service\ImportTools;
 
 use App\Entity\Product;
-use App\Service\ProductCreatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 

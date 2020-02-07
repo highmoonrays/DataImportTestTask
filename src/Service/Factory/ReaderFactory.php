@@ -31,6 +31,7 @@ class ReaderFactory
             case 'xml':
                 $this->reader = new Xml();
                 break;
+            // just add new case with extension if you need to read other extensions
             default:
                 return null;
         }

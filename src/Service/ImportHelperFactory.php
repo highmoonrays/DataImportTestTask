@@ -19,9 +19,19 @@ class ImportHelperFactory
     private $productCsvFileProcessor;
 
     /**
-     * @var ImportProductsFromCsvFile
+     * @var array
      */
-    private $productFileProcessor;
+    private $report = [];
+
+    /**
+     * @var string
+     */
+    public const REPORT_INVALID_PRODUCTS = 'invalid_products';
+
+    /**
+     * @var string
+     */
+    public const REPORT_NUMBER_SAVED_PRODUCTS = 'number_saved_products';
 
     /**
      * ImportProductsFromFileCommand constructor.
@@ -32,6 +42,8 @@ class ImportHelperFactory
     }
 
     /**
+     * @param $pathToProcessFile
+     * @return array
      * @throws \Exception
      */
     public function process($pathToProcessFile)
@@ -45,40 +57,13 @@ class ImportHelperFactory
                 $reader = Reader::createFromPath($pathToProcessFile);
                 $rows = $reader->fetchAssoc();
                 $this->productCsvFileProcessor->validateAndCreate($rows);
-                $this->productFileProcessor = $this->productCsvFileProcessor;
+                $this->report = $this->productCsvFileProcessor->getReport();
+                break;
+            case 'xlsx':
+                echo ' dude, wrong house';
                 break;
         }
-    }
 
-    /**
-     * @return array
-     */
-    public function getInvalidProducts()
-    {
-        return $this->productFileProcessor->getInvalidProducts();
-    }
-
-    /**
-     * @return string
-     */
-    public function getExtension()
-    {
-        return $this->fileExtension;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberSavedProducts()
-    {
-        return $this->productFileProcessor->getNumberSavedProducts();
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberInvalidProducts()
-    {
-        return $this->productFileProcessor->getNumberInvalidProducts();
+        return $this->report;
     }
 }

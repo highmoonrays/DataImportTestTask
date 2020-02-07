@@ -83,13 +83,13 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $this->helper->process($pathToProcessFile);
+        $report = $this->helper->process($pathToProcessFile);
 
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');
         }
 
-        foreach ($this->helper->getInvalidProducts() as $invalidItem) {
+        foreach ($report[ImportHelperFactory::REPORT_INVALID_PRODUCTS] as $invalidItem) {
             $invalidItem = json_encode($invalidItem);
             $output->writeln('<fg=red>Not Saved!</>');
             $output->writeln("<fg=blue>$invalidItem</>");
@@ -97,8 +97,10 @@ class ImportProductsFromFileCommand extends Command
         if (!$isTestMode) {
             $this->em->flush();
         }
-        $io->success('Command exited cleanly,'.$this->helper->getNumberInvalidProducts().' and there broken items, '
-                    .$this->helper->getNumberSavedProducts().' items are saved');
+        $io->success('Command exited cleanly,'.count($report[ImportHelperFactory::REPORT_INVALID_PRODUCTS])
+            .' and there broken items, '
+            .$report[ImportHelperFactory::REPORT_NUMBER_SAVED_PRODUCTS]
+            .' items are saved');
 
         return 0;
     }

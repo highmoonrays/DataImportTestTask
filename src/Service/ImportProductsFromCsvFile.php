@@ -30,11 +30,6 @@ class ImportProductsFromCsvFile
     /**
      * @var int
      */
-    private $numberInvalidProducts = 0;
-
-    /**
-     * @var int
-     */
     private $numberSavedProducts = 0;
 
     /**
@@ -71,33 +66,16 @@ class ImportProductsFromCsvFile
                 ++$this->numberSavedProducts;
                 $this->saver->save($row);
             } else {
-                ++$this->numberInvalidProducts;
                 $this->invalidProducts[] = $row;
             }
         }
     }
 
-    /**
-     * @return array
-     */
-    public function getInvalidProducts()
+    public function getReport()
     {
-        return $this->invalidProducts;
-    }
+        $this->report[ImportHelperFactory::REPORT_INVALID_PRODUCTS] = $this->invalidProducts;
+        $this->report[ImportHelperFactory::REPORT_NUMBER_SAVED_PRODUCTS] = $this->numberSavedProducts;
 
-    /**
-     * @return int
-     */
-    public function getNumberSavedProducts()
-    {
-        return $this->numberSavedProducts;
-    }
-
-    /**
-     * @return int
-     */
-    public function getNumberInvalidProducts()
-    {
-        return $this->numberInvalidProducts;
+        return $this->report;
     }
 }

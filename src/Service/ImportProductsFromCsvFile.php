@@ -33,9 +33,9 @@ class ImportProductsFromCsvFile
     private $numberSavedProducts = 0;
 
     /**
-     * @var array
+     * @var AfterReadReporter
      */
-    private $report = [];
+    private $reporter;
 
     /**
      * ImportProductsFromFileCommand constructor.
@@ -43,14 +43,20 @@ class ImportProductsFromCsvFile
 
     /**
      * ImportProductsFromCsvFile constructor.
+     * @param EntityManagerInterface $em
+     * @param ProductImportCSVFileReader $validator
+     * @param ProductFromCsvCreator $saver
+     * @param AfterReadReporter $reporter
      */
     public function __construct(EntityManagerInterface $em,
                                 ProductImportCSVFileReader $validator,
-                                ProductFromCsvCreator $saver)
+                                ProductFromCsvCreator $saver,
+                                AfterReadReporter $reporter)
     {
         $this->em = $em;
         $this->validator = $validator;
         $this->saver = $saver;
+        $this->reporter = $reporter;
     }
 
     /**
@@ -69,13 +75,6 @@ class ImportProductsFromCsvFile
                 $this->invalidProducts[] = $row;
             }
         }
-    }
-
-    public function getReport()
-    {
-        $this->report[ImportHelperFactory::REPORT_INVALID_PRODUCTS] = $this->invalidProducts;
-        $this->report[ImportHelperFactory::REPORT_NUMBER_SAVED_PRODUCTS] = $this->numberSavedProducts;
-
-        return $this->report;
+        $this->reporter->setReport($this->invalidProducts, $this->numberSavedProducts);
     }
 }

@@ -19,22 +19,8 @@ class ImportHelperFactory
     private $productCsvFileProcessor;
 
     /**
-     * @var array
-     */
-    private $report = [];
-
-    /**
-     * @var string
-     */
-    public const REPORT_INVALID_PRODUCTS = 'invalid_products';
-
-    /**
-     * @var string
-     */
-    public const REPORT_NUMBER_SAVED_PRODUCTS = 'number_saved_products';
-
-    /**
      * ImportProductsFromFileCommand constructor.
+     * @param ImportProductsFromCsvFile $productCsvFileProcessor
      */
     public function __construct(ImportProductsFromCsvFile $productCsvFileProcessor)
     {
@@ -43,27 +29,26 @@ class ImportHelperFactory
 
     /**
      * @param $pathToProcessFile
-     * @return array
+     *
+     * @return null
+     *
      * @throws \Exception
      */
     public function process($pathToProcessFile)
     {
         $fileNameParts = pathinfo($pathToProcessFile);
         $this->fileExtension = $fileNameParts['extension'];
-        echo "$this->fileExtension";
 
         switch ($this->fileExtension) {
             case 'csv':
                 $reader = Reader::createFromPath($pathToProcessFile);
                 $rows = $reader->fetchAssoc();
                 $this->productCsvFileProcessor->validateAndCreate($rows);
-                $this->report = $this->productCsvFileProcessor->getReport();
                 break;
             case 'xlsx':
-                echo ' dude, wrong house';
                 break;
+            default:
+                return null;
         }
-
-        return $this->report;
     }
 }

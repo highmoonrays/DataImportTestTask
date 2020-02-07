@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\CSV;
 
+use App\Service\Reporter\AfterReadReporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -14,7 +15,7 @@ class ImportProductsFromCsvFile
      */
     private $em;
     /**
-     * @var ProductImportCSVFileReader
+     * @var ProductImportCSVFileValidator
      */
     private $validator;
     /**
@@ -44,12 +45,12 @@ class ImportProductsFromCsvFile
     /**
      * ImportProductsFromCsvFile constructor.
      * @param EntityManagerInterface $em
-     * @param ProductImportCSVFileReader $validator
+     * @param ProductImportCSVFileValidator $validator
      * @param ProductFromCsvCreator $saver
      * @param AfterReadReporter $reporter
      */
     public function __construct(EntityManagerInterface $em,
-                                ProductImportCSVFileReader $validator,
+                                ProductImportCSVFileValidator $validator,
                                 ProductFromCsvCreator $saver,
                                 AfterReadReporter $reporter)
     {

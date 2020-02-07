@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Factory;
 
+use App\Service\CSV\ImportProductsFromCsvFile;
 use League\Csv\Reader;
 
 class ImportHelperFactory
@@ -20,7 +21,6 @@ class ImportHelperFactory
 
     /**
      * ImportProductsFromFileCommand constructor.
-     * @param ImportProductsFromCsvFile $productCsvFileProcessor
      */
     public function __construct(ImportProductsFromCsvFile $productCsvFileProcessor)
     {
@@ -30,7 +30,7 @@ class ImportHelperFactory
     /**
      * @param $pathToProcessFile
      *
-     * @return null
+     * @return int|null
      *
      * @throws \Exception
      */
@@ -50,5 +50,7 @@ class ImportHelperFactory
             default:
                 return null;
         }
+
+        return 1;
     }
 }

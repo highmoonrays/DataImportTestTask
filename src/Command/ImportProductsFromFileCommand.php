@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Service\AfterReadReporter;
-use App\Service\ImportHelperFactory;
-use App\Service\ProductFromCsvCreator;
-use App\Service\ProductImportCSVFileReader;
+use App\Service\Reporter\AfterReadReporter;
+use App\Service\Factory\ImportHelperFactory;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -20,8 +18,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 /**
  * Class ImportProductsFromFileCommand.
  *
- * @property ProductImportCSVFileReader validator
- * @property ProductFromCsvCreator saver
  */
 class ImportProductsFromFileCommand extends Command
 {

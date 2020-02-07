@@ -15,17 +15,17 @@ class ImportProcessor
     /**
      * @var ReaderFactory
      */
-    private $helperFactory;
+    private $readerFactory;
 
     /**
      * ImportProductsFromFileCommand constructor.
      */
     public function __construct(
         ImportProductsFromFile $productCsvFileProcessor,
-        ReaderFactory $helperFactory
+        ReaderFactory $readerFactory
     ) {
         $this->productFileProcessor = $productCsvFileProcessor;
-        $this->helperFactory = $helperFactory;
+        $this->readerFactory = $readerFactory;
     }
 
     /**
@@ -39,7 +39,7 @@ class ImportProcessor
     {
         $fileNameParts = pathinfo($pathToProcessFile);
         $fileExtension = $fileNameParts['extension'];
-        $reader = $this->helperFactory->getFileReader($fileExtension);
+        $reader = $this->readerFactory->getFileReader($fileExtension);
         if (null === $reader) {
             return false;
         } else {

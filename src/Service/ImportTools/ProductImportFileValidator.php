@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\ImportTools;
 
+use App\Entity\Product;
+use App\Repository\ProductRepository;
 use App\Service\Reporter\FileImportReporter;
 
 class ProductImportFileValidator
@@ -59,12 +61,19 @@ class ProductImportFileValidator
     private $reporter;
 
     /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    /**
      * ProductImportFileValidator constructor.
      * @param FileImportReporter $reporter
      */
-    public function __construct(FileImportReporter $reporter)
+    public function __construct(FileImportReporter $reporter, ProductRepository $productRepository)
     {
         $this->reporter = $reporter;
+        $this->productRepository = $productRepository;
+
     }
 
     /**
@@ -89,6 +98,11 @@ class ProductImportFileValidator
         elseif (!is_string($row[self::PRODUCT_NAME_COLUMN])) {
             $this->reporter->setMessages('Invalid product name');
         }
+
+        elseif ($this->productRepository->findBy(['code' => $row[self::PRODUCT_CODE_COLUMN]])) {
+            $this->reporter->setMessages('This product already exists');
+        }
+
 
         elseif (!is_string($row[self::PRODUCT_DESCRIPTION_COLUMN])) {
             $this->reporter->setMessages('Invalid product description');

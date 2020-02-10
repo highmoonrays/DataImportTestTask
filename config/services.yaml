@@ -28,10 +28,10 @@ services:
 
 # if i will somewhy write wiring by your hands pal
 #    app.productimportcsvfile_reader:
-#        class: App\Service\ProductImportCsvFileReader
+#        class: App\Entity\ProductImportCsvFileReader
 #        calls:
 #            - [validate, ['@validator']]
 #    app.save_service:
-#        class: App\Service\ProductCreatorInterface
+#        class: App\Entity\ProductCreatorInterface
 #        calls:
 #            - [save, ['@saver']]

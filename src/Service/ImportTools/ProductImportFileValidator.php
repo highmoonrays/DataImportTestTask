@@ -58,6 +58,7 @@ class ProductImportFileValidator
     public function validate($row): bool
     {
         $isValid = true;
+
         if ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
             && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST
             or $row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {

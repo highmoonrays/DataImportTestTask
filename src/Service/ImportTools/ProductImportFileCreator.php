@@ -17,7 +17,6 @@ class ProductImportFileCreator implements ProductCreatorInterface
 
     /**
      * ProductCreatorInterface constructor.
-     * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
     {
@@ -31,12 +30,18 @@ class ProductImportFileCreator implements ProductCreatorInterface
      */
     public function save($row): void
     {
+        $isDiscontinued = false;
+
+        if ('yes' === $row[ProductImportFileValidator::PRODUCT_DISCONTINUED_COLUMN]) {
+            $isDiscontinued = true;
+        }
         $product = new Product($row[ProductImportFileValidator::PRODUCT_NAME_COLUMN],
             $row[ProductImportFileValidator::PRODUCT_DESCRIPTION_COLUMN],
             $row[ProductImportFileValidator::PRODUCT_CODE_COLUMN],
             (int) $row[ProductImportFileValidator::PRODUCT_STOCK_COLUMN],
             (int) $row[ProductImportFileValidator::PRODUCT_COST_COLUMN],
-            (string) $row[ProductImportFileValidator::PRODUCT_DISCONTINUED_COLUMN]);
+            $isDiscontinued
+            );
         $this->em->persist($product);
     }
 }

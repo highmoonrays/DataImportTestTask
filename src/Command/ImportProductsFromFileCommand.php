@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\Service\Processor\ImportProcessor;
-use App\Service\Reporter\AfterReadReporter;
+use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
@@ -17,7 +17,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
  * Class ImportProductsFromFileCommand.
- *
  */
 class ImportProductsFromFileCommand extends Command
 {
@@ -42,20 +41,17 @@ class ImportProductsFromFileCommand extends Command
     private $processor;
 
     /**
-     * @var AfterReadReporter
+     * @var FileImportReporter
      */
     private $reporter;
 
     /**
      * ImportProductsFromFileCommand constructor.
-     * @param ImportProcessor $processor
-     * @param EntityManagerInterface $em
-     * @param AfterReadReporter $reporter
      */
     public function __construct(
         ImportProcessor $processor,
         EntityManagerInterface $em,
-        AfterReadReporter $reporter
+        FileImportReporter $reporter
     ) {
         parent::__construct();
         $this->em = $em;
@@ -79,13 +75,11 @@ class ImportProductsFromFileCommand extends Command
     }
 
     /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
      * @return int
      *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -102,18 +96,18 @@ class ImportProductsFromFileCommand extends Command
         if (false === $isProcessed) {
             $output->writeln('<fg=red>Unsupported Extension!</>');
         } else {
-            $report = $this->reporter->getReport();
-            foreach ($report[AfterReadReporter::REPORT_INVALID_PRODUCTS] as $invalidItem) {
+            foreach ($this->reporter->getInvalidProducts() as $invalidItem) {
                 $invalidItem = json_encode($invalidItem);
                 $output->writeln('<fg=red>Not Saved!</>');
                 $output->writeln("<fg=blue>$invalidItem</>");
             }
+
             if (!$isTestMode) {
                 $this->em->flush();
             }
-            $io->success('Command exited cleanly,'.count($report[AfterReadReporter::REPORT_INVALID_PRODUCTS])
+            $io->success('Command exited cleanly,'.count($this->reporter->getInvalidProducts())
                 .' and there broken items, '
-                .$report[AfterReadReporter::REPORT_NUMBER_SAVED_PRODUCTS]
+                .$this->reporter->getNumberSavedProducts()
                 .' items are saved');
         }
 

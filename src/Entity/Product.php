@@ -51,7 +51,7 @@ class Product
      * @var \DateTime|null
      * @ORM\Column(name="dtmDiscontinued", type="datetime", nullable=true)
      */
-    private $discontinued;
+    private $isDiscontinued;
 
     /**
      * @var \DateTime
@@ -81,7 +81,7 @@ class Product
      * @param string $code
      * @param int $stock
      * @param int $cost
-     * @param string $discontinued
+     * @param bool $isDiscontinued
      * @throws Exception
      */
     public function __construct(string $name,
@@ -89,7 +89,7 @@ class Product
                                 string $code,
                                 int $stock,
                                 int $cost,
-                                string $discontinued)
+                                bool $isDiscontinued)
     {
         $this->name = $name;
         $this->description = $description;
@@ -98,8 +98,8 @@ class Product
         $this->timestamp = new \DateTime();
         $this->stock = $stock;
         $this->cost = $cost;
-        if ('yes' === $discontinued) {
-            $this->discontinued = new \DateTime();
+        if (true === $isDiscontinued) {
+            $this->isDiscontinued = new \DateTime();
         }
     }
 
@@ -175,18 +175,18 @@ class Product
         return $this;
     }
 
-    public function getDiscontinued(): ?\DateTimeInterface
+    public function getIsDiscontinued(): ?\DateTimeInterface
     {
-        return $this->discontinued;
+        return $this->isDiscontinued;
     }
 
     /**
-     * @param \DateTimeInterface|null $discontinued
+     * @param \DateTimeInterface|null $isDiscontinued
      * @return $this
      */
-    public function setDiscontinued(?\DateTimeInterface $discontinued): self
+    public function setIsDiscontinued(?\DateTimeInterface $isDiscontinued): self
     {
-        $this->discontinued = $discontinued;
+        $this->isDiscontinued = $isDiscontinued;
 
         return $this;
     }

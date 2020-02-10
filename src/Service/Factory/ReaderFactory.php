@@ -17,9 +17,10 @@ class ReaderFactory
 
     /**
      * @param $fileExtension
+     *
      * @return object|null
      */
-    public function getFileReader($fileExtension)
+    public function getFileReader($fileExtension): object
     {
         switch ($fileExtension) {
             case 'csv':
@@ -35,6 +36,7 @@ class ReaderFactory
             default:
                 return null;
         }
+
         return $this->reader;
     }
 }

@@ -6,7 +6,7 @@ namespace App\Service;
 
 use App\Service\ImportTools\ProductImportFileCreator;
 use App\Service\ImportTools\ProductImportFileValidator;
-use App\Service\Reporter\AfterReadReporter;
+use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
@@ -26,17 +26,7 @@ class ImportProductsFromFile
     private $saver;
 
     /**
-     * @var array
-     */
-    private $invalidProducts;
-
-    /**
-     * @var int
-     */
-    private $numberSavedProducts = 0;
-
-    /**
-     * @var AfterReadReporter
+     * @var FileImportReporter
      */
     private $reporter;
 
@@ -46,16 +36,12 @@ class ImportProductsFromFile
 
     /**
      * ImportProductsFromFile constructor.
-     * @param EntityManagerInterface $em
-     * @param ProductImportFileValidator $validator
-     * @param ProductImportFileCreator $saver
-     * @param AfterReadReporter $reporter
      */
     public function __construct(
         EntityManagerInterface $em,
         ProductImportFileValidator $validator,
         ProductImportFileCreator $saver,
-        AfterReadReporter $reporter
+        FileImportReporter $reporter
     ) {
         $this->em = $em;
         $this->validator = $validator;
@@ -68,17 +54,17 @@ class ImportProductsFromFile
      *
      * @throws Exception
      */
-    public function Import($rows)
+    public function import($rows): void
     {
         foreach ($rows as $row) {
             $isValid = $this->validator->validate($row);
+
             if (true === $isValid) {
-                ++$this->numberSavedProducts;
+                $this->reporter->setNumberSavedProducts($this->reporter->getNumberSavedProducts() + 1);
                 $this->saver->save($row);
             } else {
-                $this->invalidProducts[] = $row;
+                $this->reporter->setInvalidProducts($row);
             }
         }
-        $this->reporter->setReport($this->invalidProducts, $this->numberSavedProducts);
     }
 }

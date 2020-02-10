@@ -21,6 +21,8 @@ class ImportProcessor
 
     /**
      * ImportProductsFromFileCommand constructor.
+     * @param ProductFileProcessor $productCsvFileProcessor
+     * @param ReaderFactory $readerFactory
      */
     public function __construct(
         ProductFileProcessor $productCsvFileProcessor,
@@ -33,6 +35,7 @@ class ImportProcessor
     /**
      * @param $pathToProcessFile
      *
+     * @return bool
      * @throws \Exception
      */
     public function process($pathToProcessFile): bool

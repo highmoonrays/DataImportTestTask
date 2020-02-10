@@ -36,6 +36,10 @@ class ProductFileProcessor
 
     /**
      * ProductFileProcessor constructor.
+     * @param EntityManagerInterface $em
+     * @param ProductImportFileValidator $validator
+     * @param ProductImportFileCreator $saver
+     * @param FileImportReporter $reporter
      */
     public function __construct(
         EntityManagerInterface $em,

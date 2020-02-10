@@ -60,6 +60,7 @@ class ProductImportFileValidator
 
     /**
      * ProductImportFileValidator constructor.
+     * @param FileImportReporter $reporter
      */
     public function __construct(FileImportReporter $reporter)
     {
@@ -68,6 +69,8 @@ class ProductImportFileValidator
 
     /**
      * @param $row
+     *
+     * @return bool
      */
     public function validate($row): bool
     {
@@ -104,6 +107,7 @@ class ProductImportFileValidator
         } else {
             $isValid = true;
         }
+
         return $isValid;
     }
 }

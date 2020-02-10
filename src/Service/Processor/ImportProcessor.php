@@ -50,19 +50,7 @@ class ImportProcessor
         } else {
             $spreadSheet = $reader->load($pathToProcessFile);
             $rows = $spreadSheet->getActiveSheet()->toArray();
-            $headers = $rows[0];
-            unset($rows[0]);
-            $rowsWithKeys = [];
-
-            foreach ($rows as $row) {
-                $newRow = [];
-
-                foreach ($headers as $k => $key) {
-                    $newRow[$key] = $row[$k];
-                }
-                $rowsWithKeys[] = $newRow;
-            }
-            $this->productFileProcessor->import($rowsWithKeys);
+            $this->productFileProcessor->importProductsFromFile($rows);
         }
 
         return true;

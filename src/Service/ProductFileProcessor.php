@@ -54,9 +54,22 @@ class ImportProductsFromFile
      *
      * @throws Exception
      */
-    public function import($rows): void
+    public function importProductsFromFile($rows): void
     {
+        $headers = $rows[0];
+        unset($rows[0]);
+        $rowsWithKeys = [];
+
         foreach ($rows as $row) {
+            $newRow = [];
+
+            foreach ($headers as $key => $value) {
+                $newRow[$value] = $row[$key];
+            }
+            $rowsWithKeys[] = $newRow;
+        }
+
+        foreach ($rowsWithKeys as $row) {
             $isValid = $this->validator->validate($row);
 
             if (true === $isValid) {

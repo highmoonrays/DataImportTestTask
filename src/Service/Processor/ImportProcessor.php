@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
-use App\Service\ProductFileProcessor;
 
 class ImportProcessor
 {

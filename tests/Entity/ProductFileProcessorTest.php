@@ -32,11 +32,11 @@ class ProductTest extends TestCase
         $this->assertSame(0, $product->getCost());
 
         if (true === $product->getIsDiscontinued()) {
-            $this->assertIsObject($product->getIsDiscontinued(), 'An object');
+            $this->assertIsObject($product->getIsDiscontinued());
         }
 
         else {
-            $this->assertEmpty($product->getIsDiscontinued(), 'Not an object');
+            $this->assertEmpty($product->getIsDiscontinued());
         }
 
     }

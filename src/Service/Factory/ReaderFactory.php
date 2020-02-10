@@ -20,7 +20,7 @@ class ReaderFactory
      *
      * @return object|null
      */
-    public function getFileReader($fileExtension): object
+    public function getFileReader($fileExtension): ?object
     {
         switch ($fileExtension) {
             case 'csv':

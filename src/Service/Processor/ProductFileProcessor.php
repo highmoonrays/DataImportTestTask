@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service;
+namespace App\Service\Processor;
 
 use App\Service\ImportTools\ProductImportFileCreator;
 use App\Service\ImportTools\ProductImportFileValidator;

@@ -17,6 +17,7 @@ class ProductImportFileCreator implements ProductCreatorInterface
 
     /**
      * ProductCreatorInterface constructor.
+     * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)
     {

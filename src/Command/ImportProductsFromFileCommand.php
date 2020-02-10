@@ -95,13 +95,13 @@ class ImportProductsFromFileCommand extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $isProcessed = $this->processor->process($pathToProcessFile);
-
-        $messages = $this->reporter->getMessages();
+            $isProcessed = $this->processor->process($pathToProcessFile);
 
         if (false === $isProcessed) {
             $output->writeln('<fg=red>Unsupported Extension!</>');
         } else {
+            $messages = $this->reporter->getMessages();
+
             foreach ($this->reporter->getInvalidProducts() as $key => $invalidItem) {
                 $invalidItem = json_encode($invalidItem);
                 $output->writeln('<fg=red>Not Saved!</>');
@@ -113,7 +113,7 @@ class ImportProductsFromFileCommand extends Command
                 $this->em->flush();
             }
             $io->success('Command exited cleanly,'.count($this->reporter->getInvalidProducts())
-                .' and there broken items, '
+                .' and there invalid items, '
                 .$this->reporter->getNumberSavedProducts()
                 .' items are saved');
         }

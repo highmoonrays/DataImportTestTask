@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Service\ImportTools;
 
-use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\Reporter\FileImportReporter;
 
@@ -68,6 +67,7 @@ class ProductImportFileValidator
     /**
      * ProductImportFileValidator constructor.
      * @param FileImportReporter $reporter
+     * @param ProductRepository $productRepository
      */
     public function __construct(FileImportReporter $reporter, ProductRepository $productRepository)
     {

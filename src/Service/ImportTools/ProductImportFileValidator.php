@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Service\ImportTools;
 
+use App\Service\Reporter\FileImportReporter;
+
 class ProductImportFileValidator
 {
     /**
@@ -52,27 +54,56 @@ class ProductImportFileValidator
     private const PRODUCT_RULE_STOCK_MIN_RULE = 10;
 
     /**
+     * @var FileImportReporter
+     */
+    private $reporter;
+
+    /**
+     * ProductImportFileValidator constructor.
+     */
+    public function __construct(FileImportReporter $reporter)
+    {
+        $this->reporter = $reporter;
+    }
+
+    /**
      * @param $row
-     * @return bool
      */
     public function validate($row): bool
     {
-        $isValid = true;
+        $isValid = false;
 
         if ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
-            && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST
-            or $row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
-            $isValid = false;
-        } else {
-            if (!is_string($row[self::PRODUCT_NAME_COLUMN])
-                or !is_string($row[self::PRODUCT_DESCRIPTION_COLUMN])
-                or !is_string($row[self::PRODUCT_CODE_COLUMN])
-                or !is_numeric($row[self::PRODUCT_COST_COLUMN])
-                or !is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
-                $isValid = false;
-            }
+            && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST) {
+            $this->reporter->setMessages('Stock is less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.
+                                        ' and cost less than '.self::PRODUCT_RULE_MIN_COST);
         }
 
+        elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
+            $this->reporter->setMessages('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
+        }
+
+        elseif (!is_string($row[self::PRODUCT_NAME_COLUMN])) {
+            $this->reporter->setMessages('Invalid product name');
+        }
+
+        elseif (!is_string($row[self::PRODUCT_DESCRIPTION_COLUMN])) {
+            $this->reporter->setMessages('Invalid product description');
+        }
+
+        elseif (!is_string($row[self::PRODUCT_CODE_COLUMN])) {
+            $this->reporter->setMessages('Invalid product code');
+        }
+
+        elseif (!is_numeric($row[self::PRODUCT_COST_COLUMN])) {
+            $this->reporter->setMessages('Invalid product cost');
+        }
+
+        elseif (!is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
+            $this->reporter->setMessages('Invalid product stock');
+        } else {
+            $isValid = true;
+        }
         return $isValid;
     }
 }

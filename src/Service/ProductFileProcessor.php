@@ -10,7 +10,7 @@ use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class ImportProductsFromFile
+class ProductFileProcessor
 {
     /**
      * @var EntityManagerInterface
@@ -35,7 +35,7 @@ class ImportProductsFromFile
      */
 
     /**
-     * ImportProductsFromFile constructor.
+     * ProductFileProcessor constructor.
      */
     public function __construct(
         EntityManagerInterface $em,

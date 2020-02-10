@@ -35,13 +35,14 @@ class ProductImportFileCreator implements ProductCreatorInterface
         if ('yes' === $row[ProductImportFileValidator::PRODUCT_DISCONTINUED_COLUMN]) {
             $isDiscontinued = true;
         }
-        $product = new Product($row[ProductImportFileValidator::PRODUCT_NAME_COLUMN],
+        $product = new Product(
+            $row[ProductImportFileValidator::PRODUCT_NAME_COLUMN],
             $row[ProductImportFileValidator::PRODUCT_DESCRIPTION_COLUMN],
             $row[ProductImportFileValidator::PRODUCT_CODE_COLUMN],
             (int) $row[ProductImportFileValidator::PRODUCT_STOCK_COLUMN],
             (int) $row[ProductImportFileValidator::PRODUCT_COST_COLUMN],
             $isDiscontinued
-            );
+        );
         $this->em->persist($product);
     }
 }

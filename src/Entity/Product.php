@@ -76,21 +76,16 @@ class Product
     /**
      * Product constructor.
      *
-     * @param string $name
-     * @param string $description
-     * @param string $code
-     * @param int $stock
-     * @param int $cost
-     * @param bool $isDiscontinued
      * @throws Exception
      */
-    public function __construct(string $name,
-                                string $description,
-                                string $code,
-                                int $stock,
-                                int $cost,
-                                bool $isDiscontinued)
-    {
+    public function __construct(
+        string $name,
+        string $description,
+        string $code,
+        int $stock,
+        int $cost,
+        bool $isDiscontinued
+    ) {
         $this->name = $name;
         $this->description = $description;
         $this->code = $code;
@@ -103,9 +98,6 @@ class Product
         }
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
@@ -117,7 +109,6 @@ class Product
     }
 
     /**
-     * @param string $name
      * @return $this
      */
     public function setName(string $name): self
@@ -133,7 +124,6 @@ class Product
     }
 
     /**
-     * @param string $description
      * @return $this
      */
     public function setDescription(string $description): self
@@ -149,7 +139,6 @@ class Product
     }
 
     /**
-     * @param string $code
      * @return $this
      */
     public function setCode(string $code): self
@@ -165,7 +154,6 @@ class Product
     }
 
     /**
-     * @param \DateTimeInterface|null $added
      * @return $this
      */
     public function setAdded(?\DateTimeInterface $added): self
@@ -181,7 +169,6 @@ class Product
     }
 
     /**
-     * @param \DateTimeInterface|null $isDiscontinued
      * @return $this
      */
     public function setIsDiscontinued(?\DateTimeInterface $isDiscontinued): self
@@ -197,7 +184,6 @@ class Product
     }
 
     /**
-     * @param \DateTimeInterface $timestamp
      * @return $this
      */
     public function setTimestamp(\DateTimeInterface $timestamp): self
@@ -213,7 +199,6 @@ class Product
     }
 
     /**
-     * @param int|null $Stock
      * @return $this
      */
     public function setStock(?int $Stock): self
@@ -229,8 +214,6 @@ class Product
     }
 
     /**
-     * @param int $Cost
-     *
      * @return $this
      */
     public function setCost(int $Cost): self

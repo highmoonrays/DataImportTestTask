@@ -47,6 +47,9 @@ class ImportProductsFromFileCommand extends Command
 
     /**
      * ImportProductsFromFileCommand constructor.
+     * @param ImportProcessor $processor
+     * @param EntityManagerInterface $em
+     * @param FileImportReporter $reporter
      */
     public function __construct(
         ImportProcessor $processor,
@@ -75,8 +78,6 @@ class ImportProductsFromFileCommand extends Command
     }
 
     /**
-     * @return int
-     *
      * @throws \Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -93,12 +94,15 @@ class ImportProductsFromFileCommand extends Command
 
         $isProcessed = $this->processor->process($pathToProcessFile);
 
+        $messages = $this->reporter->getMessages();
+
         if (false === $isProcessed) {
             $output->writeln('<fg=red>Unsupported Extension!</>');
         } else {
-            foreach ($this->reporter->getInvalidProducts() as $invalidItem) {
+            foreach ($this->reporter->getInvalidProducts() as $key => $invalidItem) {
                 $invalidItem = json_encode($invalidItem);
                 $output->writeln('<fg=red>Not Saved!</>');
+                $output->writeln("<fg=red>$messages[$key]</>");
                 $output->writeln("<fg=blue>$invalidItem</>");
             }
 

@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
-use App\Service\ImportProductsFromFile;
+use App\Service\ProductFileProcessor;
 
 class ImportProcessor
 {
     /**
-     * @var ImportProductsFromFile
+     * @var productFileProcessor
      */
     private $productFileProcessor;
 
@@ -21,11 +21,9 @@ class ImportProcessor
 
     /**
      * ImportProductsFromFileCommand constructor.
-     * @param ImportProductsFromFile $productCsvFileProcessor
-     * @param ReaderFactory $readerFactory
      */
     public function __construct(
-        ImportProductsFromFile $productCsvFileProcessor,
+        ProductFileProcessor $productCsvFileProcessor,
         ReaderFactory $readerFactory
     ) {
         $this->productFileProcessor = $productCsvFileProcessor;
@@ -34,8 +32,6 @@ class ImportProcessor
 
     /**
      * @param $pathToProcessFile
-     *
-     * @return bool
      *
      * @throws \Exception
      */

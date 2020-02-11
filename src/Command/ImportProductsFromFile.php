@@ -7,6 +7,7 @@ namespace App\Command;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -81,7 +82,7 @@ class ImportProductsFromFile extends Command
      * @param InputInterface $input
      * @param OutputInterface $output
      * @return int
-     * @throws \Exception
+     * @throws Exception
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

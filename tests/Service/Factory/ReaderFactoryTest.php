@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\test\Service\Factory;
+namespace App\tests\Service\Factory;
 
 use App\Service\Factory\ReaderFactory;
 use PHPUnit\Framework\TestCase;

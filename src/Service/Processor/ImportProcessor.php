@@ -20,14 +20,14 @@ class ImportProcessor
 
     /**
      * ImportProductsFromFileCommand constructor.
-     * @param ProductFileProcessor $productCsvFileProcessor
+     * @param ProductFileProcessor $productFileProcessor
      * @param ReaderFactory $readerFactory
      */
     public function __construct(
-        ProductFileProcessor $productCsvFileProcessor,
+        ProductFileProcessor $productFileProcessor,
         ReaderFactory $readerFactory
     ) {
-        $this->productFileProcessor = $productCsvFileProcessor;
+        $this->productFileProcessor = $productFileProcessor;
         $this->readerFactory = $readerFactory;
     }
 

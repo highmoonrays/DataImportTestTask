@@ -5,14 +5,14 @@ declare(strict_types=1);
 namespace App\tests\Entity;
 
 use App\Entity\Product;
+use Exception;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\Validator\Constraints\DateTime;
 
 class ProductTest extends TestCase
 {
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
     public function testProduct()
     {

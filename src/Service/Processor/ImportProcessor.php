@@ -20,7 +20,7 @@ class ImportProcessor
 
     /**
      * ImportProductsFromFileCommand constructor.
-     * @param ProductFileProcessor $productFileProcessor
+     * @param ProductFileProcessor $productCsvFileProcessor
      * @param ReaderFactory $readerFactory
      */
     public function __construct(

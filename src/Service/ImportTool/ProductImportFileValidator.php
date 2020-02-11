@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\ImportTools;
+namespace App\Service\ImportTool;
 
 use App\Repository\ProductRepository;
 use App\Service\Reporter\FileImportReporter;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\ImportTools;
+namespace App\Service\ImportTool;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,7 +29,7 @@ class ProductImportFileCreator implements ProductCreatorInterface
      *
      * @throws Exception
      */
-    public function save($row): void
+    public function create($row): void
     {
         $isDiscontinued = false;
 

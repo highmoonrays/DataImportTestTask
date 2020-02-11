@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Service\ImportTools;
+namespace App\Service\ImportTool;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -10,5 +10,5 @@ interface ProductCreatorInterface
 {
     public function __construct(EntityManagerInterface $em);
 
-    public function save(array $somethingToSave);
+    public function create(array $somethingToSave);
 }

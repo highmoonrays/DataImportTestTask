@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service\Processor;
 
-use App\Service\ImportTools\ProductImportFileCreator;
-use App\Service\ImportTools\ProductImportFileValidator;
+use App\Service\ImportTool\ProductImportFileCreator;
+use App\Service\ImportTool\ProductImportFileValidator;
 use App\Service\Reporter\FileImportReporter;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
 class ProductFileProcessor
@@ -71,7 +70,7 @@ class ProductFileProcessor
 
             if (true === $isValid) {
                 $this->reporter->setNumberSavedProducts($this->reporter->getNumberSavedProducts() + 1);
-                $this->saver->save($row);
+                $this->saver->create($row);
             } else {
                 $this->reporter->setInvalidProducts($row);
             }

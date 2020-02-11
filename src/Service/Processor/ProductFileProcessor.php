@@ -13,10 +13,6 @@ use Exception;
 class ProductFileProcessor
 {
     /**
-     * @var EntityManagerInterface
-     */
-    private $em;
-    /**
      * @var ProductImportFileValidator
      */
     private $validator;
@@ -36,18 +32,15 @@ class ProductFileProcessor
 
     /**
      * ProductFileProcessor constructor.
-     * @param EntityManagerInterface $em
      * @param ProductImportFileValidator $validator
      * @param ProductImportFileCreator $saver
      * @param FileImportReporter $reporter
      */
     public function __construct(
-        EntityManagerInterface $em,
         ProductImportFileValidator $validator,
         ProductImportFileCreator $saver,
         FileImportReporter $reporter
     ) {
-        $this->em = $em;
         $this->validator = $validator;
         $this->saver = $saver;
         $this->reporter = $reporter;

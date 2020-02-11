@@ -10,34 +10,38 @@ use PHPUnit\Framework\TestCase;
 
 class ProductTest extends TestCase
 {
-
+    /**
+     * @var Product
+     */
+    private $product;
     /**
      * @throws Exception
      */
-    public function testProduct()
+    public function setUp()
     {
-        $product = new Product(
+        $this->product = new Product(
             'TestName',
             'TestDescription',
             'TestCode0000',
             5,
             0,
             false
-        );
+            )
+        ;
+    }
 
-        $this->assertSame('TestName', $product->getName());
-        $this->assertSame('TestDescription', $product->getDescription());
-        $this->assertSame('TestCode0000', $product->getCode());
-        $this->assertSame(5, $product->getStock());
-        $this->assertSame(0, $product->getCost());
+    public function testCreateProduct()
+    {
+        $this->assertSame('TestName', $this->product->getName());
+        $this->assertSame('TestDescription', $this->product->getDescription());
+        $this->assertSame('TestCode0000', $this->product->getCode());
+        $this->assertSame(5, $this->product->getStock());
+        $this->assertSame(0, $this->product->getCost());
 
-        if (true === $product->getIsDiscontinued()) {
-            $this->assertIsObject($product->getIsDiscontinued());
+        if (true === $this->product->getIsDiscontinued()) {
+            $this->assertIsObject($this->product->getIsDiscontinued());
+        } else {
+            $this->assertEmpty($this->product->getIsDiscontinued());
         }
-
-        else {
-            $this->assertEmpty($product->getIsDiscontinued());
-        }
-
     }
 }

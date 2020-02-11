@@ -38,7 +38,7 @@ class ImportProcessorTest extends TestCase
         $mockReaderFactory
             ->expects($this->once())
             ->method('getFileReader')
-            ->willReturn(new Xlsx())
+            ->willReturn(new Csv())
         ;
 
         $this->importProcessor = new ImportProcessor($mockProductFileProcessor, $mockReaderFactory);
@@ -51,6 +51,7 @@ class ImportProcessorTest extends TestCase
     {
         $processor = $this->importProcessor;
 
-        $this->assertSame(true, $processor->process('data/stock.xlsx'));
+        $this->assertSame(true, $processor->process('data/stock.csv'));
+
     }
 }

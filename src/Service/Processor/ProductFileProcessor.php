@@ -19,7 +19,7 @@ class ProductFileProcessor
     /**
      * @var ProductImportFileCreator
      */
-    private $saver;
+    private $creator;
 
     /**
      * @var FileImportReporter
@@ -38,18 +38,18 @@ class ProductFileProcessor
     /**
      * ProductFileProcessor constructor.
      * @param ProductImportFileValidator $validator
-     * @param ProductImportFileCreator $saver
+     * @param ProductImportFileCreator $creator
      * @param FileImportReporter $reporter
      * @param Converter $converter
      */
     public function __construct(
         ProductImportFileValidator $validator,
-        ProductImportFileCreator $saver,
+        ProductImportFileCreator $creator,
         FileImportReporter $reporter,
         Converter $converter
     ) {
         $this->validator = $validator;
-        $this->saver = $saver;
+        $this->creator = $creator;
         $this->reporter = $reporter;
         $this->converter = $converter;
     }
@@ -57,20 +57,23 @@ class ProductFileProcessor
     /**
      * @param $rows
      *
+     * @return bool
      * @throws Exception
      */
-    public function importProductsFromFile($rows): void
+    public function importProductsFromFile($rows): bool
     {
+        $isValid = false;
         $rowsWithKeys = $this->converter->arrayToAssociative($rows);
         foreach ($rowsWithKeys as $row) {
             $isValid = $this->validator->validate($row);
 
             if (true === $isValid) {
-                $this->reporter->setNumberSavedProducts($this->reporter->getNumberSavedProducts() + 1);
-                $this->saver->create($row);
+                $this->reporter->setNumberCreatedProducts($this->reporter->getNumberCreatedProducts() + 1);
+                $this->creator->create($row);
             } else {
                 $this->reporter->setInvalidProducts($row);
             }
         }
+        return $isValid;
     }
 }

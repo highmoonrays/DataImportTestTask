@@ -115,7 +115,7 @@ class ImportProductsFromFile extends Command
             }
             $io->success('Command exited cleanly,'.count($this->reporter->getInvalidProducts())
                 .' and there invalid items, '
-                .$this->reporter->getNumberSavedProducts()
+                .$this->reporter->getNumberCreatedProducts()
                 .' items are saved');
         }
 

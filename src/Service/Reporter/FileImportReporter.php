@@ -19,22 +19,22 @@ class FileImportReporter
     /**
      * @var int
      */
-    private $numberSavedProducts = 0;
+    private $numberCreatedProducts = 0;
 
     /**
      * @return int
      */
-    public function getNumberSavedProducts(): int
+    public function getNumberCreatedProducts(): int
     {
-        return $this->numberSavedProducts;
+        return $this->numberCreatedProducts;
     }
 
     /**
-     * @param int $numberSavedProducts
+     * @param int $numberCreatedProducts
      */
-    public function setNumberSavedProducts(int $numberSavedProducts): void
+    public function setNumberCreatedProducts(int $numberCreatedProducts): void
     {
-        $this->numberSavedProducts = $numberSavedProducts;
+        $this->numberCreatedProducts = $numberCreatedProducts;
     }
 
     /**

@@ -19,7 +19,7 @@ class ImportProcessor
     private $readerFactory;
 
     /**
-     * ImportProductsFromFileCommand constructor.
+     * ImportProductsFromFile constructor.
      * @param ProductFileProcessor $productCsvFileProcessor
      * @param ReaderFactory $readerFactory
      */

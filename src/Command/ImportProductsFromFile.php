@@ -16,19 +16,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 /**
- * Class ImportProductsFromFileCommand.
+ * Class ImportProductsFromFile.
  */
-class ImportProductsFromFileCommand extends Command
+class ImportProductsFromFile extends Command
 {
     /**
      * @var string
      */
-    private const OPTION_TEST_MODE = 'test-mode';
+    public const OPTION_TEST_MODE = 'test-mode';
 
     /**
      * @var string
      */
-    const ARGUMENT_PATH_TO_FILE = 'path';
+    public const ARGUMENT_PATH_TO_FILE = 'path';
 
     /**
      * @var EntityManagerInterface
@@ -46,7 +46,7 @@ class ImportProductsFromFileCommand extends Command
     private $reporter;
 
     /**
-     * ImportProductsFromFileCommand constructor.
+     * ImportProductsFromFile constructor.
      * @param ImportProcessor $processor
      * @param EntityManagerInterface $em
      * @param FileImportReporter $reporter

@@ -27,7 +27,7 @@ class ProductFileProcessor
     private $reporter;
 
     /**
-     * ImportProductsFromFileCommand constructor.
+     * ImportProductsFromFile constructor.
      */
 
     /**

@@ -10,5 +10,5 @@ interface ProductCreatorInterface
 {
     public function __construct(EntityManagerInterface $em);
 
-    public function create(array $somethingToSave);
+    public function create(array $somethingToCreate);
 }

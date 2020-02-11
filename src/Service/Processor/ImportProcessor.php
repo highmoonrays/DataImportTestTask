@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
+use Exception;
 
 class ImportProcessor
 {
@@ -20,7 +21,7 @@ class ImportProcessor
 
     /**
      * ImportProductsFromFile constructor.
-     * @param ProductFileProcessor $productCsvFileProcessor
+     * @param ProductFileProcessor $productFileProcessor
      * @param ReaderFactory $readerFactory
      */
     public function __construct(
@@ -35,7 +36,7 @@ class ImportProcessor
      * @param $pathToProcessFile
      *
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function process($pathToProcessFile): bool
     {

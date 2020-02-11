@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Processor;
 
+use App\Service\ImportTool\Converter;
 use App\Service\ImportTool\ProductImportFileCreator;
 use App\Service\ImportTool\ProductImportFileValidator;
 use App\Service\Reporter\FileImportReporter;
@@ -26,6 +27,11 @@ class ProductFileProcessor
     private $reporter;
 
     /**
+     * @var Converter
+     */
+    private $converter;
+
+    /**
      * ImportProductsFromFile constructor.
      */
 
@@ -34,15 +40,18 @@ class ProductFileProcessor
      * @param ProductImportFileValidator $validator
      * @param ProductImportFileCreator $saver
      * @param FileImportReporter $reporter
+     * @param Converter $converter
      */
     public function __construct(
         ProductImportFileValidator $validator,
         ProductImportFileCreator $saver,
-        FileImportReporter $reporter
+        FileImportReporter $reporter,
+        Converter $converter
     ) {
         $this->validator = $validator;
         $this->saver = $saver;
         $this->reporter = $reporter;
+        $this->converter = $converter;
     }
 
     /**
@@ -52,19 +61,7 @@ class ProductFileProcessor
      */
     public function importProductsFromFile($rows): void
     {
-        $headers = $rows[0];
-        unset($rows[0]);
-        $rowsWithKeys = [];
-
-        foreach ($rows as $row) {
-            $newRow = [];
-
-            foreach ($headers as $key => $value) {
-                $newRow[$value] = $row[$key];
-            }
-            $rowsWithKeys[] = $newRow;
-        }
-
+        $rowsWithKeys = $this->converter->arrayToAssociative($rows);
         foreach ($rowsWithKeys as $row) {
             $isValid = $this->validator->validate($row);
 

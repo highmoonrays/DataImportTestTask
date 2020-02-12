@@ -34,38 +34,46 @@ class FileDataValidatorTest extends TestCase
         $this->validator = new FileDataValidator($mockReporter, $mockProductRepository);
 
         $this->dataToValidate = ([
-            'Product Name' => 'Action',
-            'Product Description' => 'he is stupid but cute',
-            'Product Code' => 'JustCode0000',
-            'Stock' => 100,
-            'Cost in GBP' => 25,
-            'Discontinued' => 'yes'
+            'Product Name' => null,
+            'Product Description' => null,
+            'Product Code' => null,
+            'Stock' => null,
+            'Cost in GBP' => null,
+            'Discontinued' => null
         ]);
     }
 
     /**
+     * @param $name
+     * @param $description
+     * @param $code
+     * @param $discontinued
      * @param $stock
      * @param $cost
      *
      * @dataProvider provideDataToValidate
      */
-    public function testValidate($stock, $cost)
+    public function testValidate($name, $description, $code, $discontinued, $stock, $cost)
     {
+        $this->dataToValidate['Product Name'] = $name;
+        $this->dataToValidate['Product Description'] = $description;
+        $this->dataToValidate['Product Code'] = $code;
         $this->dataToValidate['Stock'] = $stock;
         $this->dataToValidate['Cost in GBP'] = $cost;
+        $this->dataToValidate['Discontinued'] = $discontinued;
 
         $isValidData = $this->validator->validate($this->dataToValidate);
 
-        $this->assertSame(false, $isValidData);
+        $this->assertSame(true, $isValidData);
     }
 
     public function provideDataToValidate()
     {
         return[
-            [2, 2],
-            [4, 3],
-            [20, 10],
-            [0, 50]
+            [null, 'Invalid Name in this one', 'testCode0000', 'yes', 9, 100],
+            ['Invalid Product', 'because of cost and stock', 'testCode0001', '', 4, 3],
+            ['Valid Product', 'Descr.', 'testCode0002', '', 20, 10],
+            [null, null, null, null, 50, 100]
         ];
     }
 }

@@ -42,17 +42,17 @@ class FileDataValidator
     /**
      * @var int
      */
-    private const PRODUCT_RULE_MIN_COST = 5;
+    public const PRODUCT_RULE_MIN_COST = 5;
 
     /**
      * @var int
      */
-    private const PRODUCT_RULE_MAX_COST = 1000;
+    public const PRODUCT_RULE_MAX_COST = 1000;
 
     /**
      * @var int
      */
-    private const PRODUCT_RULE_STOCK_MIN_RULE = 10;
+    public const PRODUCT_RULE_STOCK_MIN_RULE = 10;
 
     /**
      * @var FileImportReporter
@@ -87,12 +87,11 @@ class FileDataValidator
 
         if ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
             && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST) {
-            $this->reporter->addMessage('Stock is less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.
-                                        ' and cost less than '.self::PRODUCT_RULE_MIN_COST);
+            $this->reporter->addMessage('Stock and cost are less than rule');
         }
 
         elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
-            $this->reporter->addMessage('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
+            $this->reporter->addMessage('Cost is more than rule');
         }
 
         elseif (!is_string($row[self::PRODUCT_NAME_COLUMN])) {

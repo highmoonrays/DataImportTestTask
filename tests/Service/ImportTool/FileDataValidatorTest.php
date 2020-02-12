@@ -43,18 +43,29 @@ class FileDataValidatorTest extends TestCase
         ]);
     }
 
-    public function testValidate()
+    /**
+     * @param $stock
+     * @param $cost
+     *
+     * @dataProvider provideDataToValidate
+     */
+    public function testValidate($stock, $cost)
     {
-        $isValidData = $this->validator->validate($this->dataToValidate);
-
-        $this->assertSame(true, $isValidData);
-
-        $this->dataToValidate['Stock'] = 2;
-        $this->dataToValidate['Cost in GBP'] = 10000;
+        $this->dataToValidate['Stock'] = $stock;
+        $this->dataToValidate['Cost in GBP'] = $cost;
 
         $isValidData = $this->validator->validate($this->dataToValidate);
 
         $this->assertSame(false, $isValidData);
+    }
 
+    public function provideDataToValidate()
+    {
+        return[
+            [2, 2],
+            [4, 3],
+            [20, 10],
+            [0, 50]
+        ];
     }
 }

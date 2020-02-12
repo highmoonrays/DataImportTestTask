@@ -29,7 +29,7 @@ class ProductFromFileCreator implements ProductCreatorInterface
      *
      * @throws Exception
      */
-    public function create($row): void
+    public function create(array $row): void
     {
         $isDiscontinued = false;
 

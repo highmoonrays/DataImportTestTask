@@ -23,37 +23,22 @@ class ImportProcessorTest extends TestCase
 
     public function setUp()
     {
-        $mockProductFileProcessor =
-            $this
-                ->getMockBuilder(ProductCreatorProcessor::class)
-                ->disableOriginalConstructor()
-                ->getMock()
-        ;
+        $mockProductFileProcessor = $this->getMockBuilder(ProductCreatorProcessor::class)
+                                    ->disableOriginalConstructor()
+                                    ->getMock();
 
-        $mockReaderFactory =
-            $this
-                ->getMockBuilder(ReaderFactory::class)
-                ->setMethods(['getFileReader'])
-                ->getMock()
-        ;
+        $mockReaderFactory = $this->getMockBuilder(ReaderFactory::class)
+                            ->setMethods(['getFileReader'])
+                            ->getMock();
 
-        $mockReaderFactory
-            ->expects($this->once())
+        $mockReaderFactory->expects($this->once())
             ->method('getFileReader')
             ->willReturn(new Xlsx())
         ;
 
-        $mockFileExtensionFinder =
-            $this
-                ->getMockBuilder(FileExtensionFinder::class)
-                ->getMock()
-        ;
+        $mockFileExtensionFinder = $this->getMockBuilder(FileExtensionFinder::class)->getMock();
 
-        $mockArrayTransformer =
-            $this
-                ->getMockBuilder(ArrayToAssociativeTransformer::class)
-                ->getMock()
-        ;
+        $mockArrayTransformer = $this->getMockBuilder(ArrayToAssociativeTransformer::class)->getMock();
 
         $this->importProcessor = new ImportProcessor(
             $mockProductFileProcessor,

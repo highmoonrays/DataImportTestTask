@@ -64,7 +64,7 @@ class FileImportReporter
     /**
      * @param string $message
      */
-    public function setMessages(string $message): void
+    public function addMessage(string $message): void
     {
         $this->messages[] = $message;
     }

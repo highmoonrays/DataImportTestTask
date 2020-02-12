@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\tests\Service\Factory;
 
 use App\Service\Factory\ReaderFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Csv;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
+use PhpOffice\PhpSpreadsheet\Reader\Xml;
 use PHPUnit\Framework\TestCase;
 
 class ReaderFactoryTest extends TestCase
@@ -21,8 +24,8 @@ class ReaderFactoryTest extends TestCase
 
     public function testGetFileReader()
     {
-            $this->assertIsObject($this->readerFactory->getFileReader('csv'));
-            $this->assertIsObject($this->readerFactory->getFileReader('xlsx'));
-            $this->assertIsObject($this->readerFactory->getFileReader('xml'));
+            $this->assertInstanceOf(Csv::class, $this->readerFactory->getFileReader('csv'));
+            $this->assertInstanceOf(Xlsx::class, $this->readerFactory->getFileReader('xlsx'));
+            $this->assertInstanceOf(Xml::class, $this->readerFactory->getFileReader('xml'));
     }
 }

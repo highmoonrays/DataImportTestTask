@@ -9,12 +9,17 @@ use App\Service\Reporter\FileImportReporter;
 use App\Service\ImportTool\FileDataValidator;
 use PHPUnit\Framework\TestCase;
 
-class ProductImportFileValidatorTest extends TestCase
+class FileDataValidatorTest extends TestCase
 {
     /**
      * @var FileDataValidator
      */
     private $validator;
+
+    /**
+     * @var array
+     */
+    private $dataToValidate;
 
     public function setUp()
     {
@@ -22,14 +27,13 @@ class ProductImportFileValidatorTest extends TestCase
 
         $mockReporter = $this->getMockBuilder(FileImportReporter::class)->getMock();
 
-        $mockProductRepository = $this->getMockBuilder(ProductRepository::class)->disableOriginalConstructor()->getMock();
+        $mockProductRepository = $this->getMockBuilder(ProductRepository::class)
+                                ->disableOriginalConstructor()
+                                ->getMock();
 
         $this->validator = new FileDataValidator($mockReporter, $mockProductRepository);
-    }
 
-    public function testValidate()
-    {
-        $isValidData = $this->validator->validate([
+        $this->dataToValidate = ([
             'Product Name' => 'Action',
             'Product Description' => 'he is stupid but cute',
             'Product Code' => 'JustCode0000',
@@ -37,7 +41,20 @@ class ProductImportFileValidatorTest extends TestCase
             'Cost in GBP' => 25,
             'Discontinued' => 'yes'
         ]);
+    }
+
+    public function testValidate()
+    {
+        $isValidData = $this->validator->validate($this->dataToValidate);
 
         $this->assertSame(true, $isValidData);
+
+        $this->dataToValidate['Stock'] = 2;
+        $this->dataToValidate['Cost in GBP'] = 10000;
+
+        $isValidData = $this->validator->validate($this->dataToValidate);
+
+        $this->assertSame(false, $isValidData);
+
     }
 }

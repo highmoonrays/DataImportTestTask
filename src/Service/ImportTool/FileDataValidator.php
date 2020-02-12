@@ -87,37 +87,37 @@ class FileDataValidator
 
         if ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
             && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST) {
-            $this->reporter->setMessages('Stock is less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.
+            $this->reporter->addMessage('Stock is less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.
                                         ' and cost less than '.self::PRODUCT_RULE_MIN_COST);
         }
 
         elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
-            $this->reporter->setMessages('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
+            $this->reporter->addMessage('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
         }
 
         elseif (!is_string($row[self::PRODUCT_NAME_COLUMN])) {
-            $this->reporter->setMessages('Invalid product name');
+            $this->reporter->addMessage('Invalid product name');
         }
 
         elseif ($this->productRepository->findBy(['code' => $row[self::PRODUCT_CODE_COLUMN]])) {
-            $this->reporter->setMessages('This product already exists');
+            $this->reporter->addMessage('This product already exists');
         }
 
 
         elseif (!is_string($row[self::PRODUCT_DESCRIPTION_COLUMN])) {
-            $this->reporter->setMessages('Invalid product description');
+            $this->reporter->addMessage('Invalid product description');
         }
 
         elseif (!is_string($row[self::PRODUCT_CODE_COLUMN])) {
-            $this->reporter->setMessages('Invalid product code');
+            $this->reporter->addMessage('Invalid product code');
         }
 
         elseif (!is_numeric($row[self::PRODUCT_COST_COLUMN])) {
-            $this->reporter->setMessages('Invalid product cost');
+            $this->reporter->addMessage('Invalid product cost');
         }
 
         elseif (!is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
-            $this->reporter->setMessages('Invalid product stock');
+            $this->reporter->addMessage('Invalid product stock');
         } else {
             $isValid = true;
         }

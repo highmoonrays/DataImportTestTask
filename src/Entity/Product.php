@@ -51,7 +51,7 @@ class Product
      * @var \DateTime|null
      * @ORM\Column(name="dtmDiscontinued", type="datetime", nullable=true)
      */
-    private $isDiscontinued;
+    private $discontinuedAt;
 
     /**
      * @var \DateTime
@@ -100,7 +100,7 @@ class Product
         $this->stock = $stock;
         $this->cost = $cost;
         if (true === $isDiscontinued) {
-            $this->isDiscontinued = new \DateTime();
+            $this->discontinuedAt = new \DateTime();
         }
     }
 
@@ -193,16 +193,16 @@ class Product
      */
     public function getIsDiscontinued(): ?\DateTimeInterface
     {
-        return $this->isDiscontinued;
+        return $this->discontinuedAt;
     }
 
     /**
-     * @param \DateTimeInterface|null $isDiscontinued
+     * @param \DateTimeInterface|null $discontinuedAt
      * @return $this
      */
-    public function setIsDiscontinued(?\DateTimeInterface $isDiscontinued): self
+    public function setIsDiscontinued(?\DateTimeInterface $discontinuedAt): self
     {
-        $this->isDiscontinued = $isDiscontinued;
+        $this->discontinuedAt = $isdiscontinuedAt;
 
         return $this;
     }

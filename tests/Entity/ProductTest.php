@@ -38,10 +38,37 @@ class ProductTest extends TestCase
         $this->assertSame(5, $this->product->getStock());
         $this->assertSame(0, $this->product->getCost());
 
-        if (true === $this->product->getIsDiscontinued()) {
-            $this->assertIsObject($this->product->getIsDiscontinued());
+        if (true === $this->product->getDiscontinuedAt()) {
+            $this->assertIsObject($this->product->getDiscontinuedAt()());
         } else {
-            $this->assertEmpty($this->product->getIsDiscontinued());
+            $this->assertEmpty($this->product->getDiscontinuedAt());
         }
+    }
+
+    public function testGettersAndSetters()
+    {
+        $this->product->setName('newTestNameWeExpecting');
+        $this->assertSame('newTestNameWeExpecting', $this->product->getName());
+
+        $this->product->setDescription('It is new one');
+        $this->assertSame('It is new one', $this->product->getDescription());
+
+        $this->product->setCode('RussianVodka');
+        $this->assertSame('RussianVodka', $this->product->getCode());
+
+        $this->product->setStock(100);
+        $this->assertSame(100, $this->product->getStock());
+
+        $this->product->setCost(150);
+        $this->assertSame(150, $this->product->getCost());
+
+        $this->product->setDiscontinuedAt(new \DateTime());
+        $this->assertInstanceOf(\DateTime::class, $this->product->getDiscontinuedAt());
+
+        $this->product->setAdded(new \DateTime());
+        $this->assertInstanceOf(\DateTime::class, $this->product->getAdded());
+
+        $this->product->setTimestamp(new \DateTime());
+        $this->assertInstanceOf(\DateTime::class, $this->product->getTimestamp());
     }
 }

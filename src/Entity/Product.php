@@ -191,7 +191,7 @@ class Product
     /**
      * @return \DateTimeInterface|null
      */
-    public function getIsDiscontinued(): ?\DateTimeInterface
+    public function getDiscontinuedAt(): ?\DateTimeInterface
     {
         return $this->discontinuedAt;
     }
@@ -200,9 +200,9 @@ class Product
      * @param \DateTimeInterface|null $discontinuedAt
      * @return $this
      */
-    public function setIsDiscontinued(?\DateTimeInterface $discontinuedAt): self
+    public function setDiscontinuedAt(?\DateTimeInterface $discontinuedAt): self
     {
-        $this->discontinuedAt = $isdiscontinuedAt;
+        $this->discontinuedAt = $discontinuedAt;
 
         return $this;
     }

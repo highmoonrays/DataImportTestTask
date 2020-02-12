@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
-use App\Service\ImportTool\FileDataToAssociativeArrayTransformer;
+use App\Service\Tool\ArrayToAssociativeTransformer;
 use App\Service\Tool\FileExtensionFinder;
 use Exception;
 
@@ -27,7 +27,7 @@ class ImportProcessor
     private $extensionFinder;
 
     /**
-     * @var FileDataToAssociativeArrayTransformer
+     * @var ArrayToAssociativeTransformer
      */
     private $converter;
 
@@ -36,13 +36,13 @@ class ImportProcessor
      * @param ProductCreatorProcessor $productCreator
      * @param ReaderFactory $readerFactory
      * @param FileExtensionFinder $extensionFinder
-     * @param FileDataToAssociativeArrayTransformer $converter
+     * @param ArrayToAssociativeTransformer $converter
      */
     public function __construct(
         ProductCreatorProcessor $productCreator,
         ReaderFactory $readerFactory,
         FileExtensionFinder $extensionFinder,
-        FileDataToAssociativeArrayTransformer $converter
+        ArrayToAssociativeTransformer $converter
     ) {
         $this->productCreator = $productCreator;
         $this->readerFactory = $readerFactory;

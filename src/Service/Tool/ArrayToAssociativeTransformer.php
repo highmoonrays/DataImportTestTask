@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Service\ImportTool;
+namespace App\Service\Tool;
 
-class FileDataToAssociativeArrayTransformer
+class ArrayToAssociativeTransformer
 {
     /**
      * @param array $someCasualArray
@@ -24,7 +24,6 @@ class FileDataToAssociativeArrayTransformer
             }
             $associativeArray[] = $newRow;
         }
-
         return $associativeArray;
     }
 }

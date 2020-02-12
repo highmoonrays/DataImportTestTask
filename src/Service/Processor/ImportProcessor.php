@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
-use App\Service\Tool\Converter;
+use App\Service\ImportTool\FileDataToAssociativeArrayTransformer;
 use App\Service\Tool\FileExtensionFinder;
 use Exception;
 
@@ -27,22 +27,22 @@ class ImportProcessor
     private $extensionFinder;
 
     /**
-     * @var Converter
+     * @var FileDataToAssociativeArrayTransformer
      */
     private $converter;
 
     /**
-     * ImportProductsFromFile constructor.
+     * ImportProcessor constructor.
      * @param ProductCreatorProcessor $productCreator
      * @param ReaderFactory $readerFactory
      * @param FileExtensionFinder $extensionFinder
-     * @param Converter $converter
+     * @param FileDataToAssociativeArrayTransformer $converter
      */
     public function __construct(
         ProductCreatorProcessor $productCreator,
         ReaderFactory $readerFactory,
         FileExtensionFinder $extensionFinder,
-        Converter $converter
+        FileDataToAssociativeArrayTransformer $converter
     ) {
         $this->productCreator = $productCreator;
         $this->readerFactory = $readerFactory;
@@ -67,7 +67,7 @@ class ImportProcessor
         } else {
             $spreadSheet = $reader->load($pathToProcessFile);
             $rows = $spreadSheet->getActiveSheet()->toArray();
-            $rowsWithKeys = $this->converter->convertArrayToAssociative($rows);
+            $rowsWithKeys = $this->converter->transformArrayToAssociative($rows);
             $this->productCreator->createProducts($rowsWithKeys);
             $isProcessSuccess = true;
         }

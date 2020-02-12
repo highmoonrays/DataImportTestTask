@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\tests\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
-use App\Service\Tool\Converter;
+use App\Service\ImportTool\FileDataToAssociativeArrayTransformer;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductCreatorProcessor;
 use App\Service\Tool\FileExtensionFinder;
@@ -51,7 +51,7 @@ class ImportProcessorTest extends TestCase
 
         $mockFileConverter =
             $this
-                ->getMockBuilder(Converter::class)
+                ->getMockBuilder(FileDataToAssociativeArrayTransformer::class)
                 ->getMock()
         ;
 

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Service\Tool;
+namespace App\Service\ImportTool;
 
-class Converter
+class FileDataToAssociativeArrayTransformer
 {
     /**
      * @param array $someCasualArray
      * @return array
      */
-    public function convertArrayToAssociative(array $someCasualArray): array
+    public function transformArrayToAssociative(array $someCasualArray): array
     {
         $headers = $someCasualArray[0];
         unset($someCasualArray[0]);
@@ -24,6 +24,7 @@ class Converter
             }
             $associativeArray[] = $newRow;
         }
+
         return $associativeArray;
     }
 }

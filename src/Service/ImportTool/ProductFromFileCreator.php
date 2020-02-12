@@ -16,7 +16,7 @@ class ProductFromFileCreator implements ProductCreatorInterface
     private $em;
 
     /**
-     * ProductCreatorInterface constructor.
+     * ProductFromFileCreator constructor.
      * @param EntityManagerInterface $em
      */
     public function __construct(EntityManagerInterface $em)

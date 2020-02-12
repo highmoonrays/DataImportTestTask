@@ -96,9 +96,9 @@ class ImportProductsFromFile extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $isProcessed = $this->processor->process($pathToProcessFile);
+        $isProcessSucess = $this->processor->process($pathToProcessFile);
 
-        if (false === $isProcessed) {
+        if (false === $isProcessSucess) {
             $output->writeln('<fg=red>Unsupported Extension!</>');
         } else {
             $messages = $this->reporter->getMessages();

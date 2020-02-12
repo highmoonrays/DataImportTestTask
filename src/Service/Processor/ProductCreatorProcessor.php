@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace App\Service\Processor;
 
-use App\Service\ImportTool\ProductImportFileCreator;
-use App\Service\ImportTool\ProductImportFileValidator;
+use App\Service\ImportTool\ProductFromFileCreator;
+use App\Service\ImportTool\FileDataValidator;
 use App\Service\Reporter\FileImportReporter;
 use Exception;
 
-class ProductFileProcessor
+class ProductCreatorProcessor
 {
     /**
-     * @var ProductImportFileValidator
+     * @var FileDataValidator
      */
     private $validator;
     /**
-     * @var ProductImportFileCreator
+     * @var ProductFromFileCreator
      */
     private $creator;
 
@@ -25,20 +25,15 @@ class ProductFileProcessor
      */
     private $reporter;
 
-
     /**
-     * ImportProductsFromFile constructor.
-     */
-
-    /**
-     * ProductFileProcessor constructor.
-     * @param ProductImportFileValidator $validator
-     * @param ProductImportFileCreator $creator
+     * ProductCreatorProcessor constructor.
+     * @param FileDataValidator $validator
+     * @param ProductFromFileCreator $creator
      * @param FileImportReporter $reporter
      */
     public function __construct(
-        ProductImportFileValidator $validator,
-        ProductImportFileCreator $creator,
+        FileDataValidator $validator,
+        ProductFromFileCreator $creator,
         FileImportReporter $reporter
     ) {
         $this->validator = $validator;
@@ -48,12 +43,11 @@ class ProductFileProcessor
 
     /**
      * @param $rowsWithKeys
-     * @return bool
+     * @return void
      * @throws Exception
      */
-    public function importProductsFromFile($rowsWithKeys): bool
+    public function createProducts($rowsWithKeys): void
     {
-        $isValid = false;
 
         foreach ($rowsWithKeys as $row) {
             $isValid = $this->validator->validate($row);
@@ -65,6 +59,5 @@ class ProductFileProcessor
                 $this->reporter->setInvalidProducts($row);
             }
         }
-        return $isValid;
     }
 }

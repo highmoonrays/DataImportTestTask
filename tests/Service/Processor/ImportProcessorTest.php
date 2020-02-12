@@ -7,7 +7,7 @@ namespace App\tests\Service\Processor;
 use App\Service\Factory\ReaderFactory;
 use App\Service\Tool\Converter;
 use App\Service\Processor\ImportProcessor;
-use App\Service\Processor\ProductFileProcessor;
+use App\Service\Processor\ProductCreatorProcessor;
 use App\Service\Tool\FileExtensionFinder;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
@@ -25,7 +25,7 @@ class ImportProcessorTest extends TestCase
     {
         $mockProductFileProcessor =
             $this
-                ->getMockBuilder(ProductFileProcessor::class)
+                ->getMockBuilder(ProductCreatorProcessor::class)
                 ->disableOriginalConstructor()
                 ->getMock()
         ;

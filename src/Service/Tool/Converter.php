@@ -10,7 +10,7 @@ class Converter
      * @param array $someCasualArray
      * @return array
      */
-    public function arrayToAssociative(array $someCasualArray): array
+    public function convertArrayToAssociative(array $someCasualArray): array
     {
         $headers = $someCasualArray[0];
         unset($someCasualArray[0]);

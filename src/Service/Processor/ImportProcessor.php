@@ -12,9 +12,9 @@ use Exception;
 class ImportProcessor
 {
     /**
-     * @var productFileProcessor
+     * @var ProductCreatorProcessor
      */
-    private $productFileProcessor;
+    private $productCreator;
 
     /**
      * @var ReaderFactory
@@ -33,18 +33,18 @@ class ImportProcessor
 
     /**
      * ImportProductsFromFile constructor.
-     * @param ProductFileProcessor $productFileProcessor
+     * @param ProductCreatorProcessor $productCreator
      * @param ReaderFactory $readerFactory
      * @param FileExtensionFinder $extensionFinder
      * @param Converter $converter
      */
     public function __construct(
-        ProductFileProcessor $productFileProcessor,
+        ProductCreatorProcessor $productCreator,
         ReaderFactory $readerFactory,
         FileExtensionFinder $extensionFinder,
         Converter $converter
     ) {
-        $this->productFileProcessor = $productFileProcessor;
+        $this->productCreator = $productCreator;
         $this->readerFactory = $readerFactory;
         $this->extensionFinder = $extensionFinder;
         $this->converter = $converter;
@@ -58,18 +58,20 @@ class ImportProcessor
      */
     public function process($pathToProcessFile): bool
     {
+        $isProcessSuccess = false;
         $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
         $reader = $this->readerFactory->getFileReader($fileExtension);
 
         if (null === $reader) {
-            return false;
+            return $isProcessSuccess;
         } else {
             $spreadSheet = $reader->load($pathToProcessFile);
             $rows = $spreadSheet->getActiveSheet()->toArray();
-            $rowsWithKeys = $this->converter->arrayToAssociative($rows);
-            $this->productFileProcessor->importProductsFromFile($rowsWithKeys);
+            $rowsWithKeys = $this->converter->convertArrayToAssociative($rows);
+            $this->productCreator->createProducts($rowsWithKeys);
+            $isProcessSuccess = true;
         }
 
-        return true;
+        return $isProcessSuccess;
     }
 }

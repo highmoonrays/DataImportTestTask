@@ -8,7 +8,7 @@ use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 
-class ProductImportFileCreator implements ProductCreatorInterface
+class ProductFromFileCreator implements ProductCreatorInterface
 {
     /**
      * @var EntityManagerInterface
@@ -33,15 +33,15 @@ class ProductImportFileCreator implements ProductCreatorInterface
     {
         $isDiscontinued = false;
 
-        if ('yes' === $row[ProductImportFileValidator::PRODUCT_DISCONTINUED_COLUMN]) {
+        if ('yes' === $row[FileDataValidator::PRODUCT_DISCONTINUED_COLUMN]) {
             $isDiscontinued = true;
         }
         $product = new Product(
-            $row[ProductImportFileValidator::PRODUCT_NAME_COLUMN],
-            $row[ProductImportFileValidator::PRODUCT_DESCRIPTION_COLUMN],
-            $row[ProductImportFileValidator::PRODUCT_CODE_COLUMN],
-            (int) $row[ProductImportFileValidator::PRODUCT_STOCK_COLUMN],
-            (int) $row[ProductImportFileValidator::PRODUCT_COST_COLUMN],
+            $row[FileDataValidator::PRODUCT_NAME_COLUMN],
+            $row[FileDataValidator::PRODUCT_DESCRIPTION_COLUMN],
+            $row[FileDataValidator::PRODUCT_CODE_COLUMN],
+            (int) $row[FileDataValidator::PRODUCT_STOCK_COLUMN],
+            (int) $row[FileDataValidator::PRODUCT_COST_COLUMN],
             $isDiscontinued
         );
         $this->em->persist($product);

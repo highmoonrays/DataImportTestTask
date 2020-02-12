@@ -6,13 +6,13 @@ namespace App\Tests\Service\ImportTool;
 
 use App\Repository\ProductRepository;
 use App\Service\Reporter\FileImportReporter;
-use App\Service\ImportTool\ProductImportFileValidator;
+use App\Service\ImportTool\FileDataValidator;
 use PHPUnit\Framework\TestCase;
 
 class ProductImportFileValidatorTest extends TestCase
 {
     /**
-     * @var ProductImportFileValidator
+     * @var FileDataValidator
      */
     private $validator;
 
@@ -24,7 +24,7 @@ class ProductImportFileValidatorTest extends TestCase
 
         $mockProductRepository = $this->getMockBuilder(ProductRepository::class)->disableOriginalConstructor()->getMock();
 
-        $this->validator = new ProductImportFileValidator($mockReporter, $mockProductRepository);
+        $this->validator = new FileDataValidator($mockReporter, $mockProductRepository);
     }
 
     public function testValidate()

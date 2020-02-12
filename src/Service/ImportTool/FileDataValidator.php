@@ -7,7 +7,7 @@ namespace App\Service\ImportTool;
 use App\Repository\ProductRepository;
 use App\Service\Reporter\FileImportReporter;
 
-class ProductImportFileValidator
+class FileDataValidator
 {
     /**
      * @var string
@@ -65,7 +65,7 @@ class ProductImportFileValidator
     private $productRepository;
 
     /**
-     * ProductImportFileValidator constructor.
+     * FileDataValidator constructor.
      * @param FileImportReporter $reporter
      * @param ProductRepository $productRepository
      */

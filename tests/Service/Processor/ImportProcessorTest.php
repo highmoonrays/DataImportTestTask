@@ -49,7 +49,7 @@ class ImportProcessorTest extends TestCase
                 ->getMock()
         ;
 
-        $mockFileConverter =
+        $mockArrayTransformer =
             $this
                 ->getMockBuilder(ArrayToAssociativeTransformer::class)
                 ->getMock()
@@ -59,7 +59,7 @@ class ImportProcessorTest extends TestCase
             $mockProductFileProcessor,
             $mockReaderFactory,
             $mockFileExtensionFinder,
-            $mockFileConverter
+            $mockArrayTransformer
         );
     }
 

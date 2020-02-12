@@ -29,25 +29,25 @@ class ImportProcessor
     /**
      * @var ArrayToAssociativeTransformer
      */
-    private $converter;
+    private $transformer;
 
     /**
      * ImportProcessor constructor.
      * @param ProductCreatorProcessor $productCreator
      * @param ReaderFactory $readerFactory
      * @param FileExtensionFinder $extensionFinder
-     * @param ArrayToAssociativeTransformer $converter
+     * @param ArrayToAssociativeTransformer $transformer
      */
     public function __construct(
         ProductCreatorProcessor $productCreator,
         ReaderFactory $readerFactory,
         FileExtensionFinder $extensionFinder,
-        ArrayToAssociativeTransformer $converter
+        ArrayToAssociativeTransformer $transformer
     ) {
         $this->productCreator = $productCreator;
         $this->readerFactory = $readerFactory;
         $this->extensionFinder = $extensionFinder;
-        $this->converter = $converter;
+        $this->transformer = $transformer;
     }
 
     /**
@@ -67,7 +67,7 @@ class ImportProcessor
         } else {
             $spreadSheet = $reader->load($pathToProcessFile);
             $rows = $spreadSheet->getActiveSheet()->toArray();
-            $rowsWithKeys = $this->converter->transformArrayToAssociative($rows);
+            $rowsWithKeys = $this->transformer->transformArrayToAssociative($rows);
             $this->productCreator->createProducts($rowsWithKeys);
             $isProcessSuccess = true;
         }

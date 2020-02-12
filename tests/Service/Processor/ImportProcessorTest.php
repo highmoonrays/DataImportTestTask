@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\tests\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
+use App\Service\Tool\Converter;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductFileProcessor;
 use App\Service\Tool\FileExtensionFinder;
@@ -45,9 +46,21 @@ class ImportProcessorTest extends TestCase
         $mockFileExtensionFinder =
             $this
                 ->getMockBuilder(FileExtensionFinder::class)
-                ->getMock();
+                ->getMock()
+        ;
 
-        $this->importProcessor = new ImportProcessor($mockProductFileProcessor, $mockReaderFactory, $mockFileExtensionFinder);
+        $mockFileConverter =
+            $this
+                ->getMockBuilder(Converter::class)
+                ->getMock()
+        ;
+
+        $this->importProcessor = new ImportProcessor(
+            $mockProductFileProcessor,
+            $mockReaderFactory,
+            $mockFileExtensionFinder,
+            $mockFileConverter
+        );
     }
 
     /**

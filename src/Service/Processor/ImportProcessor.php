@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
+use App\Service\Tool\Converter;
 use App\Service\Tool\FileExtensionFinder;
 use Exception;
 
@@ -26,19 +27,27 @@ class ImportProcessor
     private $extensionFinder;
 
     /**
+     * @var Converter
+     */
+    private $converter;
+
+    /**
      * ImportProductsFromFile constructor.
      * @param ProductFileProcessor $productFileProcessor
      * @param ReaderFactory $readerFactory
      * @param FileExtensionFinder $extensionFinder
+     * @param Converter $converter
      */
     public function __construct(
         ProductFileProcessor $productFileProcessor,
         ReaderFactory $readerFactory,
-        FileExtensionFinder $extensionFinder
+        FileExtensionFinder $extensionFinder,
+        Converter $converter
     ) {
         $this->productFileProcessor = $productFileProcessor;
         $this->readerFactory = $readerFactory;
         $this->extensionFinder = $extensionFinder;
+        $this->converter = $converter;
     }
 
     /**
@@ -57,7 +66,8 @@ class ImportProcessor
         } else {
             $spreadSheet = $reader->load($pathToProcessFile);
             $rows = $spreadSheet->getActiveSheet()->toArray();
-            $this->productFileProcessor->importProductsFromFile($rows);
+            $rowsWithKeys = $this->converter->arrayToAssociative($rows);
+            $this->productFileProcessor->importProductsFromFile($rowsWithKeys);
         }
 
         return true;

@@ -42,17 +42,17 @@ class FileDataValidator
     /**
      * @var int
      */
-    public const PRODUCT_RULE_MIN_COST = 5;
+    private const PRODUCT_RULE_MIN_COST = 5;
 
     /**
      * @var int
      */
-    public const PRODUCT_RULE_MAX_COST = 1000;
+    private const PRODUCT_RULE_MAX_COST = 1000;
 
     /**
      * @var int
      */
-    public const PRODUCT_RULE_STOCK_MIN_RULE = 10;
+    private const PRODUCT_RULE_STOCK_MIN_RULE = 10;
 
     /**
      * @var FileImportReporter
@@ -73,7 +73,6 @@ class FileDataValidator
     {
         $this->reporter = $reporter;
         $this->productRepository = $productRepository;
-
     }
 
     /**
@@ -98,7 +97,7 @@ class FileDataValidator
             $this->reporter->addMessage('Invalid product name');
         }
 
-        elseif ($this->productRepository->findBy(['code' => $row[self::PRODUCT_CODE_COLUMN]])) {
+        elseif ($this->productRepository->findOneBy(['code' => $row[self::PRODUCT_CODE_COLUMN]])) {
             $this->reporter->addMessage('This product already exists');
         }
 

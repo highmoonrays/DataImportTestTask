@@ -36,8 +36,8 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-    /*
-    public function findOneBySomeField($value): ?Product
+
+    public function findOneByCode($value): ?Product
     {
         return $this->createQueryBuilder('p')
             ->andWhere('p.exampleField = :val')
@@ -46,5 +46,5 @@ class ProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+
 }

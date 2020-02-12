@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\ImportTool;
 
+use App\Entity\Product;
 use App\Repository\ProductRepository;
 use App\Service\Reporter\FileImportReporter;
 use App\Service\ImportTool\FileDataValidator;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use function foo\func;
 
 class FileDataValidatorTest extends TestCase
 {
@@ -34,6 +35,26 @@ class FileDataValidatorTest extends TestCase
         $mockProductRepository = $this->getMockBuilder(ProductRepository::class)
                                 ->disableOriginalConstructor()
                                 ->getMock();
+
+        $mockProductRepository->expects($this->any())->method('findOneBy')->willReturnCallback(
+            function ($code){
+                $servername = "localhost";
+                $username = "admin";
+                $password = "Qwerty@123";
+                $dbname = "importTest";
+
+                $conn = mysqli_connect($servername, $username, $password, $dbname);
+                if (!$conn) {
+                    die("Connection failed: " . mysqli_connect_error());
+                };
+
+                $sql = "SELECT * FROM tblProduct WHERE strProductCode = P0001";
+
+                return mysqli_query($conn, $sql);
+
+                mysqli_close($conn);
+            }
+        );
 
         $this->reporter = new FileImportReporter();
 
@@ -78,16 +99,17 @@ class FileDataValidatorTest extends TestCase
     public function provideInvalidDataToValidate()
     {
         return[
-            [null, 'description', 'P0001', '', 9, 100, false, 'Invalid product name'],
-            ['name', null, 'P0002', 'yes', 9, 100, false, 'Invalid product description'],
-            ['name', 'description', null, 'yes', 9, 100, false, 'Invalid product code'],
-            ['Invalid Product', 'because of cost and stock', 'P0003', '', 4, 3, false, 'Stock and cost are less than rule'],
-            ['name', 'Desc.', 'P0004', '', 0, 120000, false, 'Cost is more than rule'],
-            ['name', 'description', 'P0005', 'yes', 9, 100, true, null],
-            ['name', 'description', 'P0006', '', 5, 11, true, null],
-            ['Valid Product', 'Descr.', 'P0007', '', 20, 10,true, null],
-            ['name', 'description', 'P0008', '', 90, 10, true, null],
-            ['name', 'description', 'P0009', 'no', 131, 115,true, null],
+            [null, 'description-1', 'P00011000', '', 9, 100, false, 'Invalid product name'],
+            ['Some name', null, 'P000250', 'yes', 9, 100, false, 'Invalid product description'],
+            ['Some Other name', 'description-1.1', null, 'yes', 9, 100, false, 'Invalid product code'],
+            ['Invalid Product', 'because of cost and stock', 'P0003000', '', 4, 3, false, 'Stock and cost are less than rule'],
+            ['Tv', 'Desc.', 'P000400000', '', 0, 120000, false, 'Cost is more than rule'],
+            ['name0', 'description0', 'P00055', 'yes', 9, 100, true, null],
+            ['name1', 'description1', 'P000666', '', 5, 11, true, null],
+            ['Valid Product', 'Descr.', 'P00070', '', 20, 10,true, null],
+            ['name2', 'description2', 'P00088', '', 90, 10, true, null],
+            ['name3', 'description3', 'P00099', 'no', 131, 115, true, null],
+            ['name4', 'description4', 'P0001', 'no', 131, 115, false, 'This product already exists'],
         ];
     }
 }

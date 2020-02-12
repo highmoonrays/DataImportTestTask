@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
+use App\Service\Tool\FileExtensionFinder;
 use Exception;
 
 class ImportProcessor
@@ -20,16 +21,24 @@ class ImportProcessor
     private $readerFactory;
 
     /**
+     * @var FileExtensionFinder
+     */
+    private $extensionFinder;
+
+    /**
      * ImportProductsFromFile constructor.
      * @param ProductFileProcessor $productFileProcessor
      * @param ReaderFactory $readerFactory
+     * @param FileExtensionFinder $extensionFinder
      */
     public function __construct(
         ProductFileProcessor $productFileProcessor,
-        ReaderFactory $readerFactory
+        ReaderFactory $readerFactory,
+        FileExtensionFinder $extensionFinder
     ) {
         $this->productFileProcessor = $productFileProcessor;
         $this->readerFactory = $readerFactory;
+        $this->extensionFinder = $extensionFinder;
     }
 
     /**
@@ -40,8 +49,7 @@ class ImportProcessor
      */
     public function process($pathToProcessFile): bool
     {
-        $fileNameParts = pathinfo($pathToProcessFile);
-        $fileExtension = $fileNameParts['extension'];
+        $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
         $reader = $this->readerFactory->getFileReader($fileExtension);
 
         if (null === $reader) {

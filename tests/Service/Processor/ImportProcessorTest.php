@@ -7,6 +7,7 @@ namespace App\tests\Service\Processor;
 use App\Service\Factory\ReaderFactory;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductFileProcessor;
+use App\Service\Tool\FileExtensionFinder;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Xml;
@@ -38,10 +39,15 @@ class ImportProcessorTest extends TestCase
         $mockReaderFactory
             ->expects($this->once())
             ->method('getFileReader')
-            ->willReturn(new Csv())
+            ->willReturn(new Xlsx())
         ;
 
-        $this->importProcessor = new ImportProcessor($mockProductFileProcessor, $mockReaderFactory);
+        $mockFileExtensionFinder =
+            $this
+                ->getMockBuilder(FileExtensionFinder::class)
+                ->getMock();
+
+        $this->importProcessor = new ImportProcessor($mockProductFileProcessor, $mockReaderFactory, $mockFileExtensionFinder);
     }
 
     /**
@@ -51,7 +57,7 @@ class ImportProcessorTest extends TestCase
     {
         $processor = $this->importProcessor;
 
-        $this->assertSame(true, $processor->process('data/stock.csv'));
+        $this->assertSame(true, $processor->process('data/stock.xlsx'));
 
     }
 }

@@ -60,17 +60,23 @@ class FileDataValidatorTest extends TestCase
                                 ->setMethods(['FindOneBy'])
                                 ->getMock();
 
-        $this->reporter = new FileImportReporter();
-
         $this->mockProductRepository->expects($this->any())
             ->method('findOneBy')
-            ->willReturnCallback(function ($code){
-                    if ('P00050' === $code) {
-                        return new Product('First one', 'ddd', 'P00050', 10, 20, true);
-                    }
-                    return null;
+            ->willReturnCallback(function ($code) {
+                if (['code' => 'P00050'] === $code) {
+                    return new Product(
+                        'Already',
+                        'Existing product, so validation will fail',
+                        'P00050',
+                        10,
+                        20,
+                        true);
                 }
+                return null;
+            }
             );
+
+        $this->reporter = new FileImportReporter();
 
         $this->validator = new FileDataValidator($this->reporter, $this->mockProductRepository);
     }
@@ -178,7 +184,18 @@ class FileDataValidatorTest extends TestCase
                     FileDataValidatorTest::EXPECTED_RESULT_KEY => [true],
                     FileDataValidatorTest::EXPECTED_MESSAGE_KEY => [null]
                 ],
-//                [['name4', 'description4', 'P00050', 'no', 131, 115], [false], ['This product already exists']],
+                [
+                    FileDataValidatorTest::DATA_TO_VALIDATE_KEY => [
+                        FileDataValidator::PRODUCT_NAME_COLUMN => 'name3',
+                        FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 'description 3',
+                        FileDataValidator::PRODUCT_CODE_COLUMN => 'P00050',
+                        FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => '',
+                        FileDataValidator::PRODUCT_STOCK_COLUMN => 5,
+                        FileDataValidator::PRODUCT_COST_COLUMN => 100
+                    ],
+                    FileDataValidatorTest::EXPECTED_RESULT_KEY => [false],
+                    FileDataValidatorTest::EXPECTED_MESSAGE_KEY => ['This product already exists']
+                ],
         ];
     }
 }

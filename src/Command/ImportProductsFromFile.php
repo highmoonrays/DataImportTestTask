@@ -96,27 +96,30 @@ class ImportProductsFromFile extends Command
 
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
-        $isProcessSucess = $this->processor->process($pathToProcessFile);
+        try {
+            $isProcessSucess = $this->processor->process($pathToProcessFile);
+            if (false === $isProcessSucess) {
+                $output->writeln('<fg=red>Unsupported Extension!</>');
+            } else {
+                $messages = $this->reporter->getMessages();
 
-        if (false === $isProcessSucess) {
-            $output->writeln('<fg=red>Unsupported Extension!</>');
-        } else {
-            $messages = $this->reporter->getMessages();
+                foreach ($this->reporter->getInvalidProducts() as $key => $invalidItem) {
+                    $invalidItem = json_encode($invalidItem);
+                    $output->writeln('<fg=red>Not Saved!</>');
+                    $output->writeln("<fg=red>$messages[$key]</>");
+                    $output->writeln("<fg=blue>$invalidItem</>");
+                }
 
-            foreach ($this->reporter->getInvalidProducts() as $key => $invalidItem) {
-                $invalidItem = json_encode($invalidItem);
-                $output->writeln('<fg=red>Not Saved!</>');
-                $output->writeln("<fg=red>$messages[$key]</>");
-                $output->writeln("<fg=blue>$invalidItem</>");
+                if (!$isTestMode) {
+                    $this->em->flush();
+                }
+                $io->success('Command exited cleanly,'.count($this->reporter->getInvalidProducts())
+                    .' and there invalid items, '
+                    .$this->reporter->getNumberCreatedProducts()
+                    .' items are saved');
             }
-
-            if (!$isTestMode) {
-                $this->em->flush();
-            }
-            $io->success('Command exited cleanly,'.count($this->reporter->getInvalidProducts())
-                .' and there invalid items, '
-                .$this->reporter->getNumberCreatedProducts()
-                .' items are saved');
+        } catch (\Exception $exception){
+            $io->error($exception->getMessage());
         }
 
         return 0;

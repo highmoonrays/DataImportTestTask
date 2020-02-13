@@ -38,6 +38,10 @@ class ImportProcessorTest extends TestCase
 
         $mockFileExtensionFinder = $this->getMockBuilder(FileExtensionFinder::class)->getMock();
 
+        $mockFileExtensionFinder->expects($this->any())
+            ->method('findFileExtensionFromPath')
+            ->willReturn('xlsx');
+
         $mockArrayTransformer = $this->getMockBuilder(MatrixToAssociativeArrayTransformer::class)->getMock();
 
         $this->importProcessor = new ImportProcessor(

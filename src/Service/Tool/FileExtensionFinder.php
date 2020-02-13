@@ -19,16 +19,17 @@ class FileExtensionFinder
     /**
      * @param $pathToFile
      * @return string
+     * @throws \Exception
      */
-    public function findFileExtensionFromPath($pathToFile):? string
+    public function findFileExtensionFromPath($pathToFile): string
     {
-        $fileNameParts = pathinfo($pathToFile);
-
-        if(!$fileNameParts[self::EXTENSION]) {
-            return null;
+        try {
+            $fileNameParts = pathinfo($pathToFile);
+            $this->fileExtension = $fileNameParts[self::EXTENSION];
         }
-        $this->fileExtension = $fileNameParts[self::EXTENSION];
-
+        catch (\Exception $exception){
+            throw new \Exception('Incorrect extension');
+        }
         return $this->fileExtension;
     }
 }

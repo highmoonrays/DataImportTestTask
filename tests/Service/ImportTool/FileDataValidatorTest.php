@@ -91,12 +91,12 @@ class FileDataValidatorTest extends TestCase
         $this->dataToValidate[FileDataValidator::PRODUCT_STOCK_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_STOCK_COLUMN];
         $this->dataToValidate[FileDataValidator::PRODUCT_COST_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_COST_COLUMN];
 
-        $isValid = $this->validator->validate($this->dataToValidate);
+        $isValid[] = $this->validator->validate($this->dataToValidate);
 
-        $this->assertSame($isValid, $result[0]);
-        if ($result[0] != true) {
+        $this->assertSame($isValid, $result);
+        if ($result != true) {
             $realMessage = $this->reporter->getMessages();
-            $this->assertSame($expectedMessage[0], $realMessage[0]);
+            $this->assertSame($expectedMessage, $realMessage);
         }
     }
 

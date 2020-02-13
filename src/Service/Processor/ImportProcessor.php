@@ -12,7 +12,7 @@ use Exception;
 class ImportProcessor
 {
     /**
-     * @var ProductCreatorProcessor
+     * @var ProductCreator
      */
     private $productCreator;
 
@@ -33,13 +33,13 @@ class ImportProcessor
 
     /**
      * ImportProcessor constructor.
-     * @param ProductCreatorProcessor $productCreator
+     * @param ProductCreator $productCreator
      * @param ReaderFactory $readerFactory
      * @param FileExtensionFinder $extensionFinder
      * @param MatrixToAssociativeArrayTransformer $transformer
      */
     public function __construct(
-        ProductCreatorProcessor $productCreator,
+        ProductCreator $productCreator,
         ReaderFactory $readerFactory,
         FileExtensionFinder $extensionFinder,
         MatrixToAssociativeArrayTransformer $transformer
@@ -60,16 +60,17 @@ class ImportProcessor
     {
         $isProcessSuccess = false;
         $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
-        $reader = $this->readerFactory->getFileReader($fileExtension);
 
-        if (null === $reader) {
-            return $isProcessSuccess;
-        } else {
-            $spreadSheet = $reader->load($pathToProcessFile);
-            $rows = $spreadSheet->getActiveSheet()->toArray();
-            $rowsWithKeys = $this->transformer->transformArrayToAssociative($rows);
-            $this->productCreator->createProducts($rowsWithKeys);
-            $isProcessSuccess = true;
+        if($fileExtension) {
+            $reader = $this->readerFactory->getFileReader($fileExtension);
+
+            if($reader){
+                $spreadSheet = $reader->load($pathToProcessFile);
+                $rows = $spreadSheet->getActiveSheet()->toArray();
+                $rowsWithKeys = $this->transformer->transformArrayToAssociative($rows);
+                $this->productCreator->createProducts($rowsWithKeys);
+                $isProcessSuccess = true;
+            }
         }
 
         return $isProcessSuccess;

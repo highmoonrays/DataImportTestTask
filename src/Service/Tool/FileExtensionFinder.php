@@ -20,10 +20,15 @@ class FileExtensionFinder
      * @param $pathToFile
      * @return string
      */
-    public function findFileExtensionFromPath($pathToFile): string
+    public function findFileExtensionFromPath($pathToFile):? string
     {
         $fileNameParts = pathinfo($pathToFile);
+
+        if(!$fileNameParts[self::EXTENSION]) {
+            return null;
+        }
         $this->fileExtension = $fileNameParts[self::EXTENSION];
+
         return $this->fileExtension;
     }
 }

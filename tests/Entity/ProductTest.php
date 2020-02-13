@@ -14,6 +14,7 @@ class ProductTest extends TestCase
      * @var Product
      */
     private $product;
+
     /**
      * @throws Exception
      */

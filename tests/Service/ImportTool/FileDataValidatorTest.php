@@ -19,11 +19,6 @@ class FileDataValidatorTest extends TestCase
     private $validator;
 
     /**
-     * @var array
-     */
-    private $dataToValidate;
-
-    /**
      * @var FileImportReporter
      */
     private $reporter;
@@ -93,6 +88,7 @@ class FileDataValidatorTest extends TestCase
         $isValid[] = $this->validator->validate($dataToValidate);
 
         $this->assertSame($isValid, $result);
+
         if ($result != true) {
             $realMessage = $this->reporter->getMessages();
             $this->assertSame($expectedMessage, $realMessage);

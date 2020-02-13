@@ -26,7 +26,8 @@ class FileExtensionFinderTest extends TestCase
      */
     public function testFindFileExtensionFromPath(): void
     {
-        self::assertSame('data', $this->extensionFinder->findFileExtensionFromPath('testfile.data'));
+        $this->assertSame('data', $this->extensionFinder->findFileExtensionFromPath('testfile.data'));
+        $this->assertSame('', $this->extensionFinder->findFileExtensionFromPath('testfile.'));
+        $this->assertSame(null, $this->extensionFinder->findFileExtensionFromPath('testfile'));
     }
-
 }

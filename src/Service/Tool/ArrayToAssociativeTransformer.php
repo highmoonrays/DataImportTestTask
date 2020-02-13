@@ -7,16 +7,16 @@ namespace App\Service\Tool;
 class ArrayToAssociativeTransformer
 {
     /**
-     * @param array $someCasualArray
+     * @param array $someCasualMatrix
      * @return array
      */
-    public function transformArrayToAssociative(array $someCasualArray): array
+    public function transformArrayToAssociative(array $someCasualMatrix): array
     {
-        $headers = $someCasualArray[0];
-        unset($someCasualArray[0]);
+        $headers = $someCasualMatrix[0];
+        unset($someCasualMatrix[0]);
         $associativeArray = [];
 
-        foreach ($someCasualArray as $row) {
+        foreach ($someCasualMatrix as $row) {
             $newRow = [];
 
             foreach ($headers as $key => $value) {

@@ -68,8 +68,11 @@ class ImportProcessor
                 $spreadSheet = $reader->load($pathToProcessFile);
                 $rows = $spreadSheet->getActiveSheet()->toArray();
                 $rowsWithKeys = $this->transformer->transformArrayToAssociative($rows);
-                $this->productCreator->createProducts($rowsWithKeys);
-                $isProcessSuccess = true;
+                if ($rowsWithKeys != null) {
+                    $this->productCreator->createProducts($rowsWithKeys);
+                    $isProcessSuccess = true;
+                }
+                else throw new Exception('File is empty!');
             }
         }
 

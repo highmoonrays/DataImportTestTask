@@ -23,6 +23,7 @@ class ImportProcessorTest extends TestCase
 
     public function setUp()
     {
+        parent::setUp();
         $mockProductFileProcessor = $this->getMockBuilder(ProductCreator::class)
                                     ->disableOriginalConstructor()
                                     ->getMock();

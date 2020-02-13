@@ -98,6 +98,7 @@ class ImportProductsFromFile extends Command
 
         try {
             $isProcessSucess = $this->processor->process($pathToProcessFile);
+
             if (false === $isProcessSucess) {
                 $output->writeln('<fg=red>Unsupported Extension!</>');
             } else {

@@ -36,7 +36,7 @@ class ProductRepository extends ServiceEntityRepository
     }
     */
 
-
+    /*
     public function findOneByCode($value): ?Product
     {
         return $this->createQueryBuilder('p')
@@ -46,5 +46,6 @@ class ProductRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+    */
 
 }

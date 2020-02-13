@@ -90,14 +90,7 @@ class FileDataValidatorTest extends TestCase
      */
     public function testValidateInvalidProducts($dataToValidate, $result, $expectedMessage): void
     {
-        $this->dataToValidate[FileDataValidator::PRODUCT_NAME_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_NAME_COLUMN];
-        $this->dataToValidate[FileDataValidator::PRODUCT_DESCRIPTION_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_DESCRIPTION_COLUMN];
-        $this->dataToValidate[FileDataValidator::PRODUCT_CODE_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_CODE_COLUMN];
-        $this->dataToValidate[FileDataValidator::PRODUCT_DISCONTINUED_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_DISCONTINUED_COLUMN];
-        $this->dataToValidate[FileDataValidator::PRODUCT_STOCK_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_STOCK_COLUMN];
-        $this->dataToValidate[FileDataValidator::PRODUCT_COST_COLUMN] = $dataToValidate[FileDataValidator::PRODUCT_COST_COLUMN];
-
-        $isValid[] = $this->validator->validate($this->dataToValidate);
+        $isValid[] = $this->validator->validate($dataToValidate);
 
         $this->assertSame($isValid, $result);
         if ($result != true) {

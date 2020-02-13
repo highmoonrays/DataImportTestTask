@@ -30,15 +30,22 @@ class MatrixToAssociativeArrayTransformerTest extends TestCase
     {
         $matrix = $matrixToTransform;
         $expectedResultArray = $this->transformer->transformArrayToAssociative($matrix);
-        self::assertSame($expectedResultArray, $resultArray);
+        $this->assertSame($expectedResultArray, $resultArray);
     }
 
+    /**
+     * @return array
+     */
     public function provideMatrixToTransform(): array
     {
         return[
             [
                 [['key1', 'key2', 'key3'], ['value1', 'value2', 'value3']],
                [['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']]
+            ],
+            [
+                [['key1', 'key2', 'key3'], ['value1', 'value2', 'value3'], ['value1', 'value2', 'value3']],
+                [['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3'], ['key1' => 'value1', 'key2' => 'value2', 'key3' => 'value3']]
             ]
         ];
     }

@@ -9,6 +9,7 @@ use App\Service\Tool\MatrixToAssociativeArrayTransformer;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductCreator;
 use App\Service\Tool\FileExtensionFinder;
+use Exception;
 use PhpOffice\PhpSpreadsheet\Reader\Csv;
 use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Reader\Xml;
@@ -21,46 +22,78 @@ class ImportProcessorTest extends TestCase
      */
     private $importProcessor;
 
-    public function setUp()
+    /**
+     * @var ReaderFactory
+     */
+    private $readerFactory;
+
+    /**
+     * @var FileExtensionFinder
+     */
+    private $extensionFinder;
+
+    /**
+     * @var MatrixToAssociativeArrayTransformer
+     */
+    private $transformer;
+
+    public function setUp(): void
     {
         parent::setUp();
-        $mockProductFileProcessor = $this->getMockBuilder(ProductCreator::class)
+        $mockProductCreator = $this->getMockBuilder(ProductCreator::class)
                                     ->disableOriginalConstructor()
                                     ->getMock();
 
-        $mockReaderFactory = $this->getMockBuilder(ReaderFactory::class)
-                            ->setMethods(['getFileReader'])
-                            ->getMock();
+        $this->readerFactory = new ReaderFactory();
 
-        $mockReaderFactory->expects($this->once())
-            ->method('getFileReader')
-            ->willReturn(new Xlsx())
-        ;
+        $this->extensionFinder = new FileExtensionFinder();
 
-        $mockFileExtensionFinder = $this->getMockBuilder(FileExtensionFinder::class)->getMock();
-
-        $mockFileExtensionFinder->expects($this->any())
-            ->method('findFileExtensionFromPath')
-            ->willReturn('xlsx');
-
-        $mockArrayTransformer = $this->getMockBuilder(MatrixToAssociativeArrayTransformer::class)->getMock();
+        $this->transformer = new MatrixToAssociativeArrayTransformer();
 
         $this->importProcessor = new ImportProcessor(
-            $mockProductFileProcessor,
-            $mockReaderFactory,
-            $mockFileExtensionFinder,
-            $mockArrayTransformer
+            $mockProductCreator,
+            $this->readerFactory,
+            $this->extensionFinder,
+            $this->transformer
         );
     }
 
     /**
-     * @throws \Exception
+     * @throws Exception
      */
-    public function testProcess()
+    public function testProcess(): void
     {
         $processor = $this->importProcessor;
 
         $this->assertSame(true, $processor->process('data/stock.xlsx'));
+    }
 
+    /**
+     * @dataProvider provideInvalidData
+     *
+     * @param $invalidPathOrFile
+     * @param $expectedMessage
+     * @throws Exception
+     */
+    public function testExceptionCase($invalidPathOrFile, $expectedMessage): void
+    {
+        try {
+            $this->assertSame(false, $this->importProcessor->process($invalidPathOrFile[0]));
+        }
+        catch (Exception $exception){
+            $this->expectExceptionMessage($expectedMessage[0]);
+            throw new Exception($exception->getMessage());
+        }
+    }
+
+    /**
+     * @return array
+     */
+    public function provideInvalidData(): array
+    {
+        return[
+            [['stock2.csv'], ['File "stock2.csv" does not exist.']],
+            [['data/stock2.csv'], ['Invalid data in given file!']]
+        ];
     }
 }

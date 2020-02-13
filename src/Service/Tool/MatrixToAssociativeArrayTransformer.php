@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Tool;
 
-class ArrayToAssociativeTransformer
+class MatrixToAssociativeArrayTransformer
 {
     /**
      * @param array $someCasualMatrix

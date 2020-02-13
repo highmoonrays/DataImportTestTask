@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\tests\Service\Processor;
 
 use App\Service\Factory\ReaderFactory;
-use App\Service\Tool\ArrayToAssociativeTransformer;
+use App\Service\Tool\MatrixToAssociativeArrayTransformer;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductCreatorProcessor;
 use App\Service\Tool\FileExtensionFinder;
@@ -38,7 +38,7 @@ class ImportProcessorTest extends TestCase
 
         $mockFileExtensionFinder = $this->getMockBuilder(FileExtensionFinder::class)->getMock();
 
-        $mockArrayTransformer = $this->getMockBuilder(ArrayToAssociativeTransformer::class)->getMock();
+        $mockArrayTransformer = $this->getMockBuilder(MatrixToAssociativeArrayTransformer::class)->getMock();
 
         $this->importProcessor = new ImportProcessor(
             $mockProductFileProcessor,

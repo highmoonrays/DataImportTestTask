@@ -8,7 +8,15 @@ use Doctrine\ORM\EntityManagerInterface;
 
 interface ProductCreatorInterface
 {
+    /**
+     * ProductCreatorInterface constructor.
+     * @param EntityManagerInterface $em
+     */
     public function __construct(EntityManagerInterface $em);
 
-    public function create(array $somethingToCreate);
+    /**
+     * @param array $productData
+     * @return mixed
+     */
+    public function create(array $productData);
 }

@@ -44,7 +44,7 @@
         "symfony/phpunit-bridge": "^5.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*",
-      "ext-mysqli": "*"
+        "ext-mysqli": "*"
     },
     "config": {
         "preferred-install": {

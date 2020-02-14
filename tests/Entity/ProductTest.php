@@ -18,7 +18,7 @@ class ProductTest extends TestCase
     /**
      * @throws Exception
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->product = new Product(
             'TestName',
@@ -31,7 +31,7 @@ class ProductTest extends TestCase
         ;
     }
 
-    public function testCreateProduct()
+    public function testCreateProduct(): void
     {
         $this->assertSame('TestName', $this->product->getName());
         $this->assertSame('TestDescription', $this->product->getDescription());
@@ -46,7 +46,7 @@ class ProductTest extends TestCase
         }
     }
 
-    public function testGettersAndSetters()
+    public function testGettersAndSetters(): void
     {
         $this->product->setName('newTestNameWeExpecting');
         $this->assertSame('newTestNameWeExpecting', $this->product->getName());

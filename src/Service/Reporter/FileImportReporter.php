@@ -24,7 +24,7 @@ class FileImportReporter
     /**
      * @return int
      */
-    public function getNumberCreatedProducts(): int
+    public function getNumberCreatedProducts():? int
     {
         return $this->numberCreatedProducts;
     }
@@ -40,7 +40,7 @@ class FileImportReporter
     /**
      * @return array
      */
-    public function getInvalidProducts(): array
+    public function getInvalidProducts():? array
     {
         return $this->invalidProducts;
     }
@@ -56,7 +56,7 @@ class FileImportReporter
     /**
      * @return array
      */
-    public function getMessages(): array
+    public function getMessages():? array
     {
         return $this->messages;
     }

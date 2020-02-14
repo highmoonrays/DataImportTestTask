@@ -27,5 +27,7 @@ class ReaderFactoryTest extends TestCase
             $this->assertInstanceOf(Csv::class, $this->readerFactory->getFileReader('csv'));
             $this->assertInstanceOf(Xlsx::class, $this->readerFactory->getFileReader('xlsx'));
             $this->assertInstanceOf(Xml::class, $this->readerFactory->getFileReader('xml'));
+            $this->assertSame(null, $this->readerFactory->getFileReader('data'));
+            $this->assertSame(null, $this->readerFactory->getFileReader('Непонятныйязыкммм'));
     }
 }

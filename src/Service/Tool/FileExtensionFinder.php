@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Service\Tool;
 
+use App\Exception\InvalidExtensionException;
+use Exception;
+
 class FileExtensionFinder
 {
     /**
@@ -19,7 +22,7 @@ class FileExtensionFinder
     /**
      * @param $pathToFile
      * @return string
-     * @throws \Exception
+     * @throws Exception
      */
     public function findFileExtensionFromPath($pathToFile): string
     {
@@ -27,8 +30,8 @@ class FileExtensionFinder
             $fileNameParts = pathinfo($pathToFile);
             $this->fileExtension = $fileNameParts[self::EXTENSION];
         }
-        catch (\Exception $exception){
-            throw new \Exception('Incorrect extension');
+        catch (Exception $exception){
+            throw new InvalidExtensionException('Invalid extension');
         }
         return $this->fileExtension;
     }

@@ -10,9 +10,6 @@ use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductCreator;
 use App\Service\Tool\FileExtensionFinder;
 use Exception;
-use PhpOffice\PhpSpreadsheet\Reader\Csv;
-use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
-use PhpOffice\PhpSpreadsheet\Reader\Xml;
 use PHPUnit\Framework\TestCase;
 
 class ImportProcessorTest extends TestCase
@@ -66,6 +63,8 @@ class ImportProcessorTest extends TestCase
         $processor = $this->importProcessor;
 
         $this->assertSame(true, $processor->process('data/stock.xlsx'));
+        $this->assertSame(true, $processor->process('data/stock.csv'));
+        $this->assertSame(true, $processor->process('data/stock.xml'));
     }
 
     /**
@@ -77,13 +76,8 @@ class ImportProcessorTest extends TestCase
      */
     public function testExceptionCase($invalidPathOrFile, $expectedMessage): void
     {
-        try {
-            $this->assertSame(false, $this->importProcessor->process($invalidPathOrFile[0]));
-        }
-        catch (Exception $exception){
-            $this->expectExceptionMessage($expectedMessage[0]);
-            throw new Exception($exception->getMessage());
-        }
+        $this->expectExceptionMessage($expectedMessage[0]);
+        $this->assertSame(false, $this->importProcessor->process($invalidPathOrFile[0]));
     }
 
     /**

@@ -33,12 +33,7 @@ class FileExtensionFinderTest extends TestCase
      */
     public function testExceptionCase(): void
     {
-        try {
-            $this->assertSame(null, $this->extensionFinder->findFileExtensionFromPath('testfile'));
-        }
-        catch (Exception $exception){
-            $this->expectExceptionMessage('Incorrect extension');
-            throw new Exception($exception->getMessage());
-        }
+        $this->expectExceptionMessage('Invalid extension');
+        $this->assertSame(null, $this->extensionFinder->findFileExtensionFromPath('testfile'));
     }
 }

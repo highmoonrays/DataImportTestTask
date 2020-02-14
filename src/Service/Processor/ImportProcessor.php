@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Service\Processor;
 
+use App\Exception\InvalidDataInFileException;
 use App\Service\Factory\ReaderFactory;
 use App\Service\Tool\MatrixToAssociativeArrayTransformer;
 use App\Service\Tool\FileExtensionFinder;
@@ -73,7 +74,7 @@ class ImportProcessor
                     $this->productCreator->createProducts($rowsWithKeys);
                     $isProcessSuccess = true;
                 }
-                else throw new Exception('Invalid data in given file!');
+                else throw new InvalidDataInFileException('Invalid data in given file!');
             }
         }
 

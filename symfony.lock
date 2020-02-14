@@ -1,4 +1,13 @@
 {
+    "dama/doctrine-test-bundle": {
+        "version": "4.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "4.0",
+            "ref": "56eaa387b5e48ebcc7c95a893b47dfa1ad51449c"
+        }
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -90,6 +99,9 @@
     "egulias/email-validator": {
         "version": "2.1.15"
     },
+    "fzaninotto/faker": {
+        "version": "v1.9.1"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
     },
@@ -101,6 +113,12 @@
     },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.0.1"
+    },
+    "markbaker/complex": {
+        "version": "1.4.7"
+    },
+    "markbaker/matrix": {
+        "version": "1.2.0"
     },
     "monolog/monolog": {
         "version": "2.0.2"
@@ -126,6 +144,9 @@
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
     },
+    "phpoffice/phpspreadsheet": {
+        "version": "1.10.1"
+    },
     "psr/cache": {
         "version": "1.0.1"
     },
@@ -140,6 +161,9 @@
     },
     "psr/log": {
         "version": "1.1.2"
+    },
+    "psr/simple-cache": {
+        "version": "1.0.1"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",

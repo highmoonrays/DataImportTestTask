@@ -12,6 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CreateProductFromUploadedFileController extends AbstractController
@@ -45,6 +48,18 @@ class CreateProductFromUploadedFileController extends AbstractController
         $this->importReporter = $importReporter;
         $this->importProcessor = $importProcessor;
         $this->em = $em;
+    }
+
+    public function __invoke(Publisher $publisher): Response
+    {
+        $update = new Update(
+            'http://example.com/books/1',
+            json_encode(['status' => 'OutOfStock'])
+        );
+
+        $publisher($update);
+
+        return new Response('published!');
     }
 
     /**

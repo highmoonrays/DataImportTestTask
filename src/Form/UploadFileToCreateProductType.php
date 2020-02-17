@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 
-class FileUploadType extends AbstractType
+class UploadFileToCreateProductType extends AbstractType
 {
     /**
      * @param FormBuilderInterface $builder
@@ -32,6 +33,9 @@ class FileUploadType extends AbstractType
                         'mimeTypesMessage' => 'Please upload a valid document',
                     ])
                 ],
+            ])
+            ->add('isTest', CheckboxType::class, [
+                'required' => false,
             ])
         ;
     }

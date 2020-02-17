@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\FileUploadType;
+use App\Form\UploadFileToCreateProductType;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Reporter\FileImportReporter;
 use App\Service\Uploader\FileUploader;
@@ -60,7 +60,7 @@ class LoadFileController extends AbstractController
         FileUploader $uploader,
         Request $request): Response
     {
-        $form = $this->createForm(FileUploadType::class);
+        $form = $this->createForm(UploadFileToCreateProductType::class);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
@@ -69,7 +69,9 @@ class LoadFileController extends AbstractController
             $uploader->upload($uploadDir, $file, $fileName);
             $report = $this->createProduct($uploadDir, $fileName);
 
-            $this->em->flush();
+            if(false === $form->get('isTest')->getData()){
+                $this->em->flush();
+            }
 
             return $this->render('load/report.html.twig', [
                 'numberInvalidProducts' => count($report)/2,

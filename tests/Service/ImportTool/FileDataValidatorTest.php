@@ -147,7 +147,8 @@ class FileDataValidatorTest extends TestCase
                         FileDataValidator::PRODUCT_COST_COLUMN => 4
                     ],
                     FileDataValidatorTest::EXPECTED_RESULT_KEY => [false],
-                    FileDataValidatorTest::EXPECTED_MESSAGE_KEY => ['Stock and cost are less than rule']
+                    FileDataValidatorTest::EXPECTED_MESSAGE_KEY => [
+                        'Stock and cost are less than '.FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE.' and '.FileDataValidator::PRODUCT_RULE_MIN_COST]
                 ],
                 [
                     FileDataValidatorTest::DATA_TO_VALIDATE_KEY => [
@@ -159,7 +160,7 @@ class FileDataValidatorTest extends TestCase
                         FileDataValidator::PRODUCT_COST_COLUMN => 10000
                     ],
                     FileDataValidatorTest::EXPECTED_RESULT_KEY => [false],
-                    FileDataValidatorTest::EXPECTED_MESSAGE_KEY => ['Cost is more than rule']
+                    FileDataValidatorTest::EXPECTED_MESSAGE_KEY => ['Cost is more than '.FileDataValidator::PRODUCT_RULE_MAX_COST]
                 ],
                 [
                     FileDataValidatorTest::DATA_TO_VALIDATE_KEY => [

@@ -27,7 +27,7 @@ class LoadFileController extends AbstractController
     private $importReporter;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
@@ -64,10 +64,9 @@ class LoadFileController extends AbstractController
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
-            $file = $form->get('file')->getData();
-            $fileName = $file->getClientOriginalName();
-            $uploader->upload($uploadDir, $file, $fileName);
-            $report = $this->createProduct($uploadDir, $fileName);
+            $pathToFile = $uploader->upload($uploadDir, $form);
+            $this->importProcessor->process($pathToFile);
+            $report = $this->importReporter->getReport();
 
             if(false === $form->get('isTest')->getData()){
                 $this->em->flush();
@@ -83,27 +82,5 @@ class LoadFileController extends AbstractController
         return $this->render('load/loadFile.html.twig', [
             'form' => $form->createView(),
         ]);
-    }
-
-    /**
-     * @Route ("/createProduct", name="createProduct")
-     * @param $uploadDir
-     * @param $fileName
-     * @return array
-     * @throws \Exception
-     */
-    public function createProduct($uploadDir, $fileName): array
-    {
-        $this->importProcessor->process($uploadDir.'/'.$fileName);
-
-        $invalidProductsReport = [];
-        $messages = $this->importReporter->getMessages();
-
-        foreach ($this->importReporter->getInvalidProducts() as $key => $invalidItem) {
-            $invalidItem = json_encode($invalidItem);
-            $invalidProductsReport[] = $messages[$key];
-            $invalidProductsReport[] = $invalidItem;
-        }
-        return $invalidProductsReport;
     }
 }

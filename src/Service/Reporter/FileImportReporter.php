@@ -68,4 +68,18 @@ class FileImportReporter
     {
         $this->messages[] = $message;
     }
+
+    public function getReport(): array
+    {
+        $invalidProductsReport = [];
+        $messages = $this->getMessages();
+
+        foreach ($this->getInvalidProducts() as $key => $invalidItem) {
+            $invalidItem = json_encode($invalidItem);
+            $invalidProductsReport[] = $messages[$key];
+            $invalidProductsReport[] = $invalidItem;
+        }
+
+        return $invalidProductsReport;
+    }
 }

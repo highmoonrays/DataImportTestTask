@@ -66,15 +66,17 @@ class CreateProductFromUploadedFileController extends AbstractController
         if($form->isSubmitted() && $form->isValid()){
             $pathToFile = $uploader->upload($uploadDir, $form);
             $this->importProcessor->process($pathToFile);
-            $report = $this->importReporter->getReport();
+            $invalidProducts = $this->importReporter->getInvalidProducts();
+            $messages = $this->importReporter->getMessages();
 
             if(false === $form->get('isTest')->getData()){
                 $this->em->flush();
             }
 
             return $this->render('load/report.html.twig', [
-                'numberInvalidProducts' => count($report)/2,
-                'invalidProducts' => $report,
+                'numberInvalidProducts' => count($this->importReporter->getInvalidProducts()),
+                'messages' => $messages,
+                'invalidProducts' => $invalidProducts,
                 'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
             ]);
         }

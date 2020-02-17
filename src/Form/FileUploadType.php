@@ -24,7 +24,7 @@ class FileUploadType extends AbstractType
                 'required' => false,
                 'constraints' => [
                     new File([
-                        'maxSize' => '10M',
+                        'maxSize' => '10Mi',
                         'mimeTypes' => [
                             'text/plain',
                             'text/xml',

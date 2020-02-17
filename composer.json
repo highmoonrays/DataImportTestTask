@@ -9,6 +9,7 @@
         "fzaninotto/faker": "^1.9",
         "phpoffice/phpspreadsheet": "^1.10",
         "sensio/framework-extra-bundle": "^5.5",
+        "sensiolabs/ansi-to-html": "^1.1",
         "symfony/asset": "5.0.*",
         "symfony/console": "5.0.*",
         "symfony/dependency-injection": "5.0.*",

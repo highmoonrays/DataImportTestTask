@@ -29,13 +29,3 @@ services:
         tags: ['controller.service_arguments']
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-
-# if i will somewhy write wiring by your hands pal
-#    app.productimportcsvfile_reader:
-#        class: App\Entity\ProductImportCsvFileReader
-#        calls:
-#            - [validate, ['@validator']]
-#    app.save_service:
-#        class: App\Entity\ProductCreatorInterface
-#        calls:
-#            - [save, ['@saver']]

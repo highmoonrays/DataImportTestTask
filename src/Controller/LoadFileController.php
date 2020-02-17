@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
-use App\Form\FIleUploadType;
+use App\Form\FileUploadType;
 use App\Service\Uploader\FileUploader;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,19 +23,20 @@ class LoadFileController extends AbstractController
     public function uploadFile(
         string $uploadDir,
         FileUploader $uploader,
-        Request $request
-    ): Response
+        Request $request): Response
     {
-        $form = $this->createForm(FIleUploadType::class);
+        $form = $this->createForm(FileUploadType::class);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()){
             $file = $form->get('file')->getData();
             $filename = $file->getClientOriginalName();
             $uploader->upload($uploadDir, $file, $filename);
+
             return new Response("File uploaded",  Response::HTTP_OK,
                 ['content-type' => 'text/plain']);
         }
+
         return $this->render('load/loadFile.html.twig', [
             'form' => $form->createView(),
         ]);

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block body %}
+there {{ numberInvalidProducts }} products are invalid
+<br>
+{% for index in 0..numberInvalidProducts-1 %}
+    <br>
+    {% for productData in invalidProducts[index] %}
+        {{ productData }}
+    {% endfor %}
+    {{ messages[index] }}
+{% endfor %}
+<br>
+and {{ numberCreatedProducts }} are created successfully
+{% endblock %}

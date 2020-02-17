@@ -86,14 +86,13 @@ class ImportProductsFromFile extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $start = microtime(true);
         $io = new SymfonyStyle($input, $output);
-
         $isTestMode = $input->getOption(self::OPTION_TEST_MODE);
 
         if ($isTestMode) {
             $io->success('Test mode is on, no records will be altered.');
         }
-
         $pathToProcessFile = $input->getArgument(self::ARGUMENT_PATH_TO_FILE);
 
         try {
@@ -102,27 +101,28 @@ class ImportProductsFromFile extends Command
             if (false === $isProcessSuccess) {
                 $output->writeln('<fg=red>Unsupported Extension!</>');
             } else {
-                $messages = $this->reporter->getMessages();
 
-                foreach ($this->reporter->getInvalidProducts() as $key => $invalidItem) {
-                    $invalidItem = json_encode($invalidItem);
-                    $output->writeln('<fg=red>Not Saved!</>');
-                    $output->writeln("<fg=red>$messages[$key]</>");
-                    $output->writeln("<fg=blue>$invalidItem</>");
+                if ($this->reporter->getMessages()) {
+                    $messages = $this->reporter->getMessages();
+
+                    foreach ($this->reporter->getInvalidProducts() as $key => $invalidItem) {
+                        $invalidItem = json_encode($invalidItem);
+                        $output->writeln('<fg=red>Not Saved!</>');
+                        $output->writeln("<fg=red>$messages[$key]</>");
+                        $output->writeln("<fg=blue>$invalidItem</>");
+                    }
+                    $io->success(count($this->reporter->getInvalidProducts()).' invalid items!');
                 }
-
                 if (!$isTestMode) {
                     $this->em->flush();
                 }
-                $io->success('Command exited cleanly,'.count($this->reporter->getInvalidProducts())
-                    .' and there invalid items, '
-                    .$this->reporter->getNumberCreatedProducts()
-                    .' items are saved');
+                $io->success('Command exited cleanly,' . $this->reporter->getNumberCreatedProducts() . ' items are saved');
             }
         } catch (\Exception $exception){
             $io->error($exception->getMessage());
         }
-
+        $time_elapsed_secs = microtime(true) - $start;
+        $io->success($time_elapsed_secs. ' seconds spent');
         return 0;
     }
 }

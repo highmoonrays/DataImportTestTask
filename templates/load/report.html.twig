@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Home page{% endblock %}
+
+{% block body %}
+there {{ numberInvalidProducts }} products are invalid
+<br>
+{% for invalidProduct in invalidProducts %}
+    {{ invalidProduct }}
+    <br>
+{% endfor %}
+<br>
+and {{ numberCreatedProducts }} are created successfully
+{% endblock %}

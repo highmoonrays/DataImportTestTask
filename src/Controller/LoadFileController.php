@@ -5,28 +5,46 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\FileUploadType;
+use App\Service\Processor\ImportProcessor;
+use App\Service\Reporter\FileImportReporter;
 use App\Service\Uploader\FileUploader;
-use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
-use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class LoadFileController extends AbstractController
 {
     /**
-     * @var KernelInterface
+     * @var ImportProcessor
      */
-    private $kernel;
+    private $importProcessor;
 
-    public function __construct(KernelInterface $kernel)
+    /**
+     * @var FileImportReporter
+     */
+    private $importReporter;
+
+    /**
+     * @var EntityManager
+     */
+    private $em;
+
+    /**
+     * LoadFileController constructor.
+     * @param ImportProcessor $importProcessor
+     * @param FileImportReporter $importReporter
+     * @param EntityManagerInterface $em
+     */
+    public function __construct(
+        ImportProcessor $importProcessor,
+        FileImportReporter $importReporter,
+        EntityManagerInterface $em)
     {
-        $this->kernel = $kernel;
+        $this->importReporter = $importReporter;
+        $this->importProcessor = $importProcessor;
+        $this->em = $em;
     }
 
     /**
@@ -50,9 +68,14 @@ class LoadFileController extends AbstractController
             $fileName = $file->getClientOriginalName();
             $uploader->upload($uploadDir, $file, $fileName);
             $report = $this->createProduct($uploadDir, $fileName);
-            $converter = new AnsiToHtmlConverter();
-            $html = $converter->convert($report);
-            return new Response($html);
+
+            $this->em->flush();
+
+            return $this->render('load/report.html.twig', [
+                'numberInvalidProducts' => count($report)/2,
+                'invalidProducts' => $report,
+                'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
+            ]);
         }
 
         return $this->render('load/loadFile.html.twig', [
@@ -64,26 +87,21 @@ class LoadFileController extends AbstractController
      * @Route ("/createProduct", name="createProduct")
      * @param $uploadDir
      * @param $fileName
-     * @return string
+     * @return array
      * @throws \Exception
      */
-    public function createProduct($uploadDir, $fileName)
+    public function createProduct($uploadDir, $fileName): array
     {
-        $application = new Application($this->kernel);
-        $application->setAutoExit(false);
+        $this->importProcessor->process($uploadDir.'/'.$fileName);
 
-        $input = new ArrayInput(array(
-            'command' => 'file:import',
-            'path' => $uploadDir.'/'.$fileName,
-            '--test-mode' => 'test-mode',
-        ));
+        $invalidProductsReport = [];
+        $messages = $this->importReporter->getMessages();
 
-        $output = new BufferedOutput(
-            OutputInterface::VERBOSITY_NORMAL,
-            true
-        );
-        $application->run($input, $output);
-
-        return $output->fetch();
+        foreach ($this->importReporter->getInvalidProducts() as $key => $invalidItem) {
+            $invalidItem = json_encode($invalidItem);
+            $invalidProductsReport[] = $messages[$key];
+            $invalidProductsReport[] = $invalidItem;
+        }
+        return $invalidProductsReport;
     }
 }

@@ -86,7 +86,7 @@ class ImportProductsFromFile extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-	    $start = microtime(true);
+        $start = microtime(true);
         $io = new SymfonyStyle($input, $output);
         $isTestMode = $input->getOption(self::OPTION_TEST_MODE);
 

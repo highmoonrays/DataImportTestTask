@@ -9,14 +9,26 @@ use Psr\Log\LoggerInterface;
 
 class FileUploader
 {
+    /**
+     * @var LoggerInterface
+     */
     private $logger;
 
+    /**
+     * FileUploader constructor.
+     * @param LoggerInterface $logger
+     */
     public function __construct(LoggerInterface $logger)
     {
         $this->logger = $logger;
     }
 
-    public function upload($uploadDir, $file, $filename)
+    /**
+     * @param $uploadDir
+     * @param $file
+     * @param $filename
+     */
+    public function upload($uploadDir, $file, $filename): void
     {
         try {
 

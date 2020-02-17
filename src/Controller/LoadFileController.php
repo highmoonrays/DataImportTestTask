@@ -24,7 +24,7 @@ class LoadFileController extends AbstractController
         string $uploadDir,
         FileUploader $uploader,
         Request $request
-    )
+    ): Response
     {
         $form = $this->createForm(FIleUploadType::class);
         $form->handleRequest($request);

@@ -14,7 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class LoadFileController extends AbstractController
+class CreateProductFromUploadedFileController extends AbstractController
 {
     /**
      * @var ImportProcessor
@@ -32,7 +32,7 @@ class LoadFileController extends AbstractController
     private $em;
 
     /**
-     * LoadFileController constructor.
+     * CreateProductFromUploadedFileController constructor.
      * @param ImportProcessor $importProcessor
      * @param FileImportReporter $importReporter
      * @param EntityManagerInterface $em
@@ -48,14 +48,14 @@ class LoadFileController extends AbstractController
     }
 
     /**
-     * @Route("/uploadFile", name="uploadFile")
+     * @Route("/createProductFromUploadedFile", name="createProductFromUploadedFile")
      * @param string $uploadDir
      * @param FileUploader $uploader
      * @param Request $request
      * @return Response
      * @throws \Exception
      */
-    public function uploadFile(
+    public function createProductFromUploadedFile(
         string $uploadDir,
         FileUploader $uploader,
         Request $request): Response

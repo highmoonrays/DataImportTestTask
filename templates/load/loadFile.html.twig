@@ -3,8 +3,13 @@
 {% block title %}Home page{% endblock %}
 
 {% block body %}
+    {% for message in app.flashes('products are valid') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Upload') }}</button>
+    <button class="btn">{{ button_label|default('Create') }}</button>
     {{ form_end(form) }}
 {% endblock %}

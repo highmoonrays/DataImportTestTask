@@ -9,7 +9,7 @@ class FileImportReporter
     /**
      * @var array
      */
-    private $invalidProducts;
+    private $invalidProducts = [];
 
     /**
      * @var array

@@ -60,22 +60,69 @@ class ImportProcessor
     public function process($pathToProcessFile): bool
     {
         $isProcessSuccess = false;
-        $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
+        $rows = $this->readFile($pathToProcessFile);
+
+        if($rows) {
+            $rowsWithKeys = $this->transformArrayToAssociative($rows);
+            $isProcessSuccess = $this->scheduleProductCreation($rowsWithKeys);
+        } else {
+            throw new InvalidDataInFileException('Invalid data in given file!');
+        }
+
+        return $isProcessSuccess;
+    }
+
+    /**
+     * @param $pathToProcessFile
+     * @return string|null
+     * @throws Exception
+     */
+    public function getFileExtension($pathToProcessFile):? string
+    {
+        return $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
+    }
+
+    /**
+     * @param $pathToProcessFile
+     * @return object|null
+     * @throws Exception
+     */
+    public function readFile($pathToProcessFile):? array
+    {
+        $fileExtension = $this->getFileExtension($pathToProcessFile);
 
         if($fileExtension) {
             $reader = $this->readerFactory->getFileReader($fileExtension);
 
-            if($reader){
+            if ($reader) {
                 $spreadSheet = $reader->load($pathToProcessFile);
-                $rows = $spreadSheet->getActiveSheet()->toArray();
-                $rowsWithKeys = $this->transformer->transformArrayToAssociative($rows);
-
-                if (count($rowsWithKeys) > 1) {
-                    $this->productCreator->createProducts($rowsWithKeys);
-                    $isProcessSuccess = true;
-                }
-                else throw new InvalidDataInFileException('Invalid data in given file!');
+                return $spreadSheet->getActiveSheet()->toArray();
             }
+        }
+        return null;
+    }
+
+    /**
+     * @param $rows
+     * @return array
+     */
+    public function transformArrayToAssociative($rows): array
+    {
+        return $this->transformer->transformArrayToAssociative($rows);
+    }
+
+    /**
+     * @param $rowsWithKeys
+     * @return bool
+     * @throws Exception
+     */
+    public function scheduleProductCreation($rowsWithKeys): bool
+    {
+        $isProcessSuccess = false;
+
+        if (count($rowsWithKeys) > 1) {
+            $this->productCreator->createProducts($rowsWithKeys);
+            $isProcessSuccess = true;
         }
 
         return $isProcessSuccess;

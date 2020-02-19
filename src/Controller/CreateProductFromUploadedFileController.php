@@ -74,6 +74,7 @@ class CreateProductFromUploadedFileController extends AbstractController
      * @param Request $request
      * @param MessageBusInterface $messageBus
      * @return Response
+     * @throws \Exception
      */
     public function createProductFromUploadedFile(
         string $uploadDir,
@@ -88,8 +89,9 @@ class CreateProductFromUploadedFileController extends AbstractController
             $this->addFlash('Process is started', 'Process has been started');
             $file = $form->get('file')->getData();
             $pathToFile = $uploader->upload($uploadDir, $file);
-
-            $message = new CreateProductFromFile($pathToFile);
+            $rows = $this->importProcessor->readFile($pathToFile);
+            $rowsWithKeys = $this->importProcessor->transformArrayToAssociative($rows);
+            $message = new CreateProductFromFile($rowsWithKeys);
             $messageBus->dispatch($message);
 
 //            if (false === $form->get('isTest')->getData()) {

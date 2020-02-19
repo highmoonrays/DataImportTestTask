@@ -12,12 +12,19 @@ class CreateProductFromFile
     private $rowsWithKeys;
 
     /**
+     * @var bool
+     */
+    private $isTestMode;
+
+    /**
      * CreateProductFromFile constructor.
      * @param $rowsWithKeys
+     * @param $isTestMode
      */
-    public function __construct($rowsWithKeys)
+    public function __construct($rowsWithKeys, $isTestMode)
     {
         $this->rowsWithKeys = $rowsWithKeys;
+        $this->isTestMode = $isTestMode;
     }
 
     /**
@@ -26,5 +33,10 @@ class CreateProductFromFile
     public function getRowsWithKeys(): array
     {
         return $this->rowsWithKeys;
+    }
+
+    public function isTest()
+    {
+        return $this->isTestMode;
     }
 }

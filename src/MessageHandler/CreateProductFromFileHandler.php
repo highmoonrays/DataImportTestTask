@@ -53,6 +53,8 @@ class CreateProductFromFileHandler implements MessageHandlerInterface
     {
         $rowsWithKeys = $createProductFromFile->getRowsWithKeys();
         $this->importProcessor->scheduleProductCreation($rowsWithKeys);
-        $this->em->flush();
+        if(false === $isTestMode = $createProductFromFile->isTest()){
+            $this->em->flush();
+        }
     }
 }

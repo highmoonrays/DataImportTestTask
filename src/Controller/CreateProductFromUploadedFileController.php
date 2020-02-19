@@ -87,16 +87,19 @@ class CreateProductFromUploadedFileController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addFlash('Process is started', 'Process has been started');
+
             $file = $form->get('file')->getData();
             $pathToFile = $uploader->upload($uploadDir, $file);
             $rows = $this->importProcessor->readFile($pathToFile);
             $rowsWithKeys = $this->importProcessor->transformArrayToAssociative($rows);
-            $message = new CreateProductFromFile($rowsWithKeys);
-            $messageBus->dispatch($message);
+            $isTestMode = false;
 
-//            if (false === $form->get('isTest')->getData()) {
-                $this->em->flush();
-//            }
+            if (true === $form->get('isTest')->getData()) {
+                $isTestMode = true;
+            }
+
+            $message = new CreateProductFromFile($rowsWithKeys, $isTestMode);
+            $messageBus->dispatch($message);
 //            $invalidProducts = $this->importReporter->getInvalidProducts();
 //
 //            if ($invalidProducts) {

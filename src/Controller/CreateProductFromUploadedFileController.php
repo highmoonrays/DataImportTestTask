@@ -17,9 +17,6 @@ use Symfony\Component\Mercure\Publisher;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
-use OldSound\RabbitMqBundle\DependencyInjection\OldSoundRabbitMqExtension;
-use OldSound\RabbitMqBundle\DependencyInjection\Compiler\RegisterPartsPass;
-
 
 class CreateProductFromUploadedFileController extends AbstractController
 {

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\MessageHandler;
-
 
 use App\Message\CreateProductFromFile;
 use App\Service\Processor\ImportProcessor;
@@ -46,14 +46,12 @@ class CreateProductFromFileHandler implements MessageHandlerInterface
 
     /**
      * @param CreateProductFromFile $createProductFromFile
-     * @return
+     * @return void
      * @throws \Exception
      */
-    public function __invoke(CreateProductFromFile $createProductFromFile)
+    public function __invoke(CreateProductFromFile $createProductFromFile): void
     {
         $pathToFile = $createProductFromFile->getPathToFile();
-
         $this->importProcessor->process($pathToFile);
     }
-
 }

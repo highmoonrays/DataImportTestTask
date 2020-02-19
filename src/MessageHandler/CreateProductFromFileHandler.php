@@ -8,6 +8,7 @@ use App\Message\CreateProductFromFile;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class CreateProductFromFileHandler implements MessageHandlerInterface
@@ -46,10 +47,9 @@ class CreateProductFromFileHandler implements MessageHandlerInterface
 
     /**
      * @param CreateProductFromFile $createProductFromFile
-     * @return void
      * @throws \Exception
      */
-    public function __invoke(CreateProductFromFile $createProductFromFile): void
+    public function __invoke(CreateProductFromFile $createProductFromFile)
     {
         $rowsWithKeys = $createProductFromFile->getRowsWithKeys();
         $this->importProcessor->scheduleProductCreation($rowsWithKeys);

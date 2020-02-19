@@ -1,14 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Home page{% endblock %}
-{% block javascripts %}
-<script src="">
-    const eventSource = new EventSource('http://localhost:3000/.well-known/mercure' + encodeURIComponent('localhost:8000/createProductFromUploadedFile'));
-    eventSource.onmessage = event => {
-        console.log(JSON.parse(event.data));
-    }
-</script>
-{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('products are valid') %}
         <div class="alert alert-success">

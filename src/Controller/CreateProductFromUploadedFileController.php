@@ -11,12 +11,13 @@ use App\Service\Reporter\FileImportReporter;
 use App\Service\Uploader\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Mercure\Publisher;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Mercure\Publisher;
+use Symfony\Component\Mercure\Update;
 
 class CreateProductFromUploadedFileController extends AbstractController
 {
@@ -51,20 +52,16 @@ class CreateProductFromUploadedFileController extends AbstractController
         $this->em = $em;
     }
 
-    /**
-     * @param Publisher $publisher
-     * @return Response
-     */
     public function __invoke(Publisher $publisher): Response
     {
         $update = new Update(
-            'localhost:8000/createProductFromUploadedFile',
-            json_encode(['products are valid' => 'All products are valid, and successfully created'])
+            'https://localhost:8000/createProductFromUploadedFile',
+            "[]"
         );
 
         $publisher($update);
 
-        return new Response('created!');
+        return new Response('published!');
     }
 
     /**
@@ -86,8 +83,6 @@ class CreateProductFromUploadedFileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->addFlash('Process is started', 'Process has been started');
-
             $file = $form->get('file')->getData();
             $pathToFile = $uploader->upload($uploadDir, $file);
             $rows = $this->importProcessor->readFile($pathToFile);
@@ -100,21 +95,12 @@ class CreateProductFromUploadedFileController extends AbstractController
 
             $message = new CreateProductFromFile($rowsWithKeys, $isTestMode);
             $messageBus->dispatch($message);
-//            $invalidProducts = $this->importReporter->getInvalidProducts();
-//
-//            if ($invalidProducts) {
-//                $messages = $this->importReporter->getMessages();
-//
-//                return $this->render('load/report.html.twig', [
-//                    'numberInvalidProducts' => count($this->importReporter->getInvalidProducts()),
-//                    'messages' => $messages,
-//                    'invalidProducts' => $invalidProducts,
-//                    'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
-//                ]);
-//            } else {
-//                $this->addFlash('products are valid', 'All products are valid, and successfully created');
-//            }
+
+            return $this->render('load/report.html.twig', [
+                'processMessage' => 'Process has been started!'
+            ]);
         }
+
         return $this->render('load/loadFile.html.twig', [
             'form' => $form->createView(),
         ]);

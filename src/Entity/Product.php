@@ -9,7 +9,6 @@ use Exception;
 
 /**
  * Product.
- *
  * @ORM\Table(name="tblProductData", uniqueConstraints={@ORM\UniqueConstraint(name="tblProductData", columns={"intProductDataId"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */

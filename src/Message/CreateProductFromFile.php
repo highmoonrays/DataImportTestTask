@@ -35,7 +35,10 @@ class CreateProductFromFile
         return $this->rowsWithKeys;
     }
 
-    public function isTest()
+    /**
+     * @return bool
+     */
+    public function isTest(): bool
     {
         return $this->isTestMode;
     }

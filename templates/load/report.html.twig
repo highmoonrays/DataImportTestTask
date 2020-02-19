@@ -3,15 +3,18 @@
 {% block title %}Home page{% endblock %}
 
 {% block body %}
-there {{ numberInvalidProducts }} products are invalid
 <br>
-{% for index in 0..numberInvalidProducts-1 %}
-    <br>
-    {% for productData in invalidProducts[index] %}
-        {{ productData }}
-    {% endfor %}
-    {{ messages[index] }}
-{% endfor %}
-<br>
-and {{ numberCreatedProducts }} are created successfully
+    <h1></h1>
+    <script>
+        const url = new URL('http://localhost:3000/.well-known/mercure');
+        url.searchParams.append('topic', 'https://localhost:8000/createProductFromUploadedFile');
+        const eventSource = new EventSource(url);
+        eventSource.onmessage = e => {
+            document.querySelector('h1').insertAdjacentHTML('beforeend', '<div class="alert alert-success">Process started !</div>');
+            window.setTimeout(() => {
+                const $alert = document.querySelector('.alert');
+                $alert.parentNode.removeChild($alert)
+            }, 2000);
+        };
+    </script>
 {% endblock %}

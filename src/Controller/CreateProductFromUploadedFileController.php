@@ -85,29 +85,30 @@ class CreateProductFromUploadedFileController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-//            $this->addFlash('Process is started', 'Process has been started');
-            $pathToFile = $uploader->upload($uploadDir, $form);
+            $this->addFlash('Process is started', 'Process has been started');
+            $file = $form->get('file')->getData();
+            $pathToFile = $uploader->upload($uploadDir, $file);
 
             $message = new CreateProductFromFile($pathToFile);
             $messageBus->dispatch($message);
 
-            if (false === $form->get('isTest')->getData()) {
-                $this->em->flush();
-            }
-            $invalidProducts = $this->importReporter->getInvalidProducts();
-
-            if ($invalidProducts) {
-                $messages = $this->importReporter->getMessages();
-
-                return $this->render('load/report.html.twig', [
-                    'numberInvalidProducts' => count($this->importReporter->getInvalidProducts()),
-                    'messages' => $messages,
-                    'invalidProducts' => $invalidProducts,
-                    'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
-                ]);
-            } else {
-                $this->addFlash('products are valid', 'All products are valid, and successfully created');
-            }
+//            if (false === $form->get('isTest')->getData()) {
+//                $this->em->flush();
+//            }
+//            $invalidProducts = $this->importReporter->getInvalidProducts();
+//
+//            if ($invalidProducts) {
+//                $messages = $this->importReporter->getMessages();
+//
+//                return $this->render('load/report.html.twig', [
+//                    'numberInvalidProducts' => count($this->importReporter->getInvalidProducts()),
+//                    'messages' => $messages,
+//                    'invalidProducts' => $invalidProducts,
+//                    'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
+//                ]);
+//            } else {
+//                $this->addFlash('products are valid', 'All products are valid, and successfully created');
+//            }
         }
         return $this->render('load/loadFile.html.twig', [
             'form' => $form->createView(),

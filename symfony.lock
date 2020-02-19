@@ -1,21 +1,4 @@
 {
-    "api-platform/api-pack": {
-        "version": "v1.2.1"
-    },
-    "api-platform/core": {
-        "version": "2.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.5",
-            "ref": "a93061567140e386f107be75340ac2aee3f86cbf"
-        },
-        "files": [
-            "config/packages/api_platform.yaml",
-            "config/routes/api_platform.yaml",
-            "src/Entity/.gitignore"
-        ]
-    },
     "dama/doctrine-test-bundle": {
         "version": "4.0",
         "recipe": {
@@ -116,8 +99,8 @@
     "egulias/email-validator": {
         "version": "2.1.15"
     },
-    "fig/link-util": {
-        "version": "1.1.0"
+    "emag-tech-labs/rabbitmq-bundle": {
+        "version": "2.0.1"
     },
     "fzaninotto/faker": {
         "version": "v1.9.1"
@@ -143,18 +126,6 @@
     "monolog/monolog": {
         "version": "2.0.2"
     },
-    "nelmio/cors-bundle": {
-        "version": "1.5",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "1.5",
-            "ref": "6388de23860284db9acce0a7a5d9d13153bcb571"
-        },
-        "files": [
-            "config/packages/nelmio_cors.yaml"
-        ]
-    },
     "nikic/php-parser": {
         "version": "v4.3.0"
     },
@@ -167,17 +138,14 @@
     "php": {
         "version": "7.4"
     },
-    "phpdocumentor/reflection-common": {
-        "version": "2.0.0"
-    },
-    "phpdocumentor/reflection-docblock": {
-        "version": "4.3.4"
-    },
-    "phpdocumentor/type-resolver": {
-        "version": "1.0.1"
+    "php-amqplib/php-amqplib": {
+        "version": "v2.11.0"
     },
     "phpoffice/phpspreadsheet": {
         "version": "1.10.1"
+    },
+    "phpseclib/phpseclib": {
+        "version": "2.0.23"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -470,9 +438,6 @@
     "symfony/property-access": {
         "version": "v5.0.4"
     },
-    "symfony/property-info": {
-        "version": "v5.0.4"
-    },
     "symfony/routing": {
         "version": "4.2",
         "recipe": {
@@ -509,9 +474,6 @@
         "version": "v5.0.4"
     },
     "symfony/security-http": {
-        "version": "v5.0.4"
-    },
-    "symfony/serializer": {
         "version": "v5.0.4"
     },
     "symfony/serializer-pack": {
@@ -612,11 +574,5 @@
     },
     "webimpress/safe-writer": {
         "version": "2.0.0"
-    },
-    "webmozart/assert": {
-        "version": "1.6.0"
-    },
-    "willdurand/negotiation": {
-        "version": "v2.3.1"
     }
 }

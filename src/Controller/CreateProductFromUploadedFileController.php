@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Form\UploadFileToCreateProductType;
+use App\Message\CreateProductFromFile;
 use App\Service\Processor\ImportProcessor;
 use App\Service\Reporter\FileImportReporter;
 use App\Service\Uploader\FileUploader;
@@ -16,6 +17,9 @@ use Symfony\Component\Mercure\Publisher;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use OldSound\RabbitMqBundle\DependencyInjection\OldSoundRabbitMqExtension;
+use OldSound\RabbitMqBundle\DependencyInjection\Compiler\RegisterPartsPass;
+
 
 class CreateProductFromUploadedFileController extends AbstractController
 {
@@ -50,16 +54,20 @@ class CreateProductFromUploadedFileController extends AbstractController
         $this->em = $em;
     }
 
+    /**
+     * @param Publisher $publisher
+     * @return Response
+     */
     public function __invoke(Publisher $publisher): Response
     {
         $update = new Update(
-            'http://example.com/books/1',
-            json_encode(['status' => 'OutOfStock'])
+            'localhost:8000/createProductFromUploadedFile',
+            json_encode(['products are valid' => 'All products are valid, and successfully created'])
         );
 
         $publisher($update);
 
-        return new Response('published!');
+        return new Response('created!');
     }
 
     /**
@@ -67,28 +75,32 @@ class CreateProductFromUploadedFileController extends AbstractController
      * @param string $uploadDir
      * @param FileUploader $uploader
      * @param Request $request
+     * @param MessageBusInterface $messageBus
      * @return Response
-     * @throws \Exception
      */
     public function createProductFromUploadedFile(
         string $uploadDir,
         FileUploader $uploader,
-        Request $request): Response
+        Request $request,
+        MessageBusInterface $messageBus): Response
     {
         $form = $this->createForm(UploadFileToCreateProductType::class);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
+//            $this->addFlash('Process is started', 'Process has been started');
             $pathToFile = $uploader->upload($uploadDir, $form);
-            $this->importProcessor->process($pathToFile);
+
+            $message = new CreateProductFromFile($pathToFile);
+            $messageBus->dispatch($message);
+
+            if (false === $form->get('isTest')->getData()) {
+                $this->em->flush();
+            }
             $invalidProducts = $this->importReporter->getInvalidProducts();
 
-            if($invalidProducts) {
+            if ($invalidProducts) {
                 $messages = $this->importReporter->getMessages();
-
-                if (false === $form->get('isTest')->getData()) {
-                    $this->em->flush();
-                }
 
                 return $this->render('load/report.html.twig', [
                     'numberInvalidProducts' => count($this->importReporter->getInvalidProducts()),
@@ -96,12 +108,10 @@ class CreateProductFromUploadedFileController extends AbstractController
                     'invalidProducts' => $invalidProducts,
                     'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
                 ]);
-            }
-            else{
+            } else {
                 $this->addFlash('products are valid', 'All products are valid, and successfully created');
             }
         }
-
         return $this->render('load/loadFile.html.twig', [
             'form' => $form->createView(),
         ]);

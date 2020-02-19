@@ -2,16 +2,20 @@
 
 {% block title %}Home page{% endblock %}
 {% block javascripts %}
-<script src="CreateProductFromUploadedFileController">
-    const eventSource = new EventSource('http://localhost:3000/.well-known/mercure?topic=' + encodeURIComponent('http://example.com/books/1'));
+<script src="">
+    const eventSource = new EventSource('http://localhost:3000/.well-known/mercure' + encodeURIComponent('localhost:8000/createProductFromUploadedFile'));
     eventSource.onmessage = event => {
-// Will be called every time an update is published by the server
         console.log(JSON.parse(event.data));
     }
 </script>
 {% endblock %}
 {% block body %}
     {% for message in app.flashes('products are valid') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+    {% endfor %}
+    {% for message in app.flashes('Process is started') %}
         <div class="alert alert-success">
             {{ message }}
         </div>

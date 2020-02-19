@@ -95,7 +95,7 @@ class CreateProductFromUploadedFileController extends AbstractController
             $messageBus->dispatch($message);
 
 //            if (false === $form->get('isTest')->getData()) {
-//                $this->em->flush();
+                $this->em->flush();
 //            }
 //            $invalidProducts = $this->importReporter->getInvalidProducts();
 //

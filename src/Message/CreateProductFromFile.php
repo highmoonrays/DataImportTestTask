@@ -7,24 +7,24 @@ namespace App\Message;
 class CreateProductFromFile
 {
     /**
-     * @var string
+     * @var array
      */
-    private $pathToFile;
+    private $rowsWithKeys;
 
     /**
      * CreateProductFromFile constructor.
-     * @param $pathToFile
+     * @param $rowsWithKeys
      */
-    public function __construct($pathToFile)
+    public function __construct($rowsWithKeys)
     {
-        $this->pathToFile = $pathToFile;
+        $this->rowsWithKeys = $rowsWithKeys;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getPathToFile(): string
+    public function getRowsWithKeys(): array
     {
-        return $this->pathToFile;
+        return $this->rowsWithKeys;
     }
 }

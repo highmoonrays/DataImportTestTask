@@ -64,9 +64,12 @@ class ImportProcessor
 
         if($rows) {
             $rowsWithKeys = $this->transformArrayToAssociative($rows);
-            $isProcessSuccess = $this->scheduleProductCreation($rowsWithKeys);
-        } else {
-            throw new InvalidDataInFileException('Invalid data in given file!');
+
+            if($rowsWithKeys) {
+                $isProcessSuccess = $this->scheduleProductCreation($rowsWithKeys);
+            } else {
+                throw new InvalidDataInFileException('Invalid data in given file!');
+            }
         }
 
         return $isProcessSuccess;

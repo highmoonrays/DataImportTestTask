@@ -62,9 +62,9 @@ class ImportProcessorTest extends TestCase
     {
         $processor = $this->importProcessor;
 
-        $this->assertSame(true, $processor->process('data/stock.xlsx'));
-        $this->assertSame(true, $processor->process('data/stock.csv'));
-        $this->assertSame(true, $processor->process('data/stock.xml'));
+        $this->assertSame(true, $processor->process('public/data/stock.xlsx'));
+        $this->assertSame(true, $processor->process('public/data/stock.csv'));
+        $this->assertSame(true, $processor->process('public/data/stock.xml'));
     }
 
     /**
@@ -87,7 +87,7 @@ class ImportProcessorTest extends TestCase
     {
         return[
             [['stock2.csv'], ['File "stock2.csv" does not exist.']],
-            [['data/stock2.csv'], ['Invalid data in given file!']]
+            [['public/data/stock2.csv'], ['Invalid data in given file!']]
         ];
     }
 }

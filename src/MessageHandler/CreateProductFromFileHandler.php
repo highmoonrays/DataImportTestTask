@@ -51,7 +51,8 @@ class CreateProductFromFileHandler implements MessageHandlerInterface
      */
     public function __invoke(CreateProductFromFile $createProductFromFile): void
     {
-        $pathToFile = $createProductFromFile->getPathToFile();
-        $this->importProcessor->process($pathToFile);
+        $rowsWithKeys = $createProductFromFile->getRowsWithKeys();
+        $this->importProcessor->scheduleProductCreation($rowsWithKeys);
+        $this->em->flush();
     }
 }

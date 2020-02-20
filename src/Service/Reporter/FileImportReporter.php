@@ -9,7 +9,7 @@ class FileImportReporter
     /**
      * @var array
      */
-    private $invalidProducts = [];
+    private $invalidProducts;
 
     /**
      * @var array
@@ -67,5 +67,11 @@ class FileImportReporter
     public function addMessage(string $message): void
     {
         $this->messages[] = $message;
+    }
+
+    public function clearReport()
+    {
+        $this->messages = null;
+        $this->invalidProducts = null;
     }
 }

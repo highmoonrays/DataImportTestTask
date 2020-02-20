@@ -10,7 +10,7 @@
         url.searchParams.append('topic', 'http://localhost:8000/uploadFile');
         const eventSource = new EventSource(url);
         eventSource.onmessage = e => {
-            document.querySelector('h1').insertAdjacentHTML('afterend', JSON.parse(e.data));
+            document.querySelector('h1').insertAdjacentHTML('afterend', e.data);
         };
     </script>
 {% endblock %}

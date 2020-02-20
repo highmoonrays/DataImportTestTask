@@ -76,15 +76,16 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         if(false === $isTestMode = $productDataMessage->isTest()){
             $this->em->flush();
         }
-        $report = [];
         $invalidProducts = $this->importReporter->getInvalidProducts();
         $messages = $this->importReporter->getMessages();
-        foreach ($invalidProducts as $key => $invalidProduct) {
-            $report[] = $invalidProduct;
-            $report[] = $messages[$key];
-        }
-        $update = new Update('http://localhost:8000/uploadFile', json_encode($report));
 
+        if ($invalidProducts && $messages){
+            $update = new Update('http://localhost:8000/uploadFile', 'Invalid Product! ');
+        }
+        else {
+            $update = new Update('http://localhost:8000/uploadFile', 'Product created! ');
+        }
+        $this->importReporter->clearReport();
         $publisher = $this->publisher;
         $publisher($update);
     }

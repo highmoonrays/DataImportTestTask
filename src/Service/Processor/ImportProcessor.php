@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Service\Processor;
 
 use App\Exception\InvalidDataInFileException;
+use App\Message\ProductDataMessage;
 use App\Service\Factory\ReaderFactory;
 use App\Service\Tool\MatrixToAssociativeArrayTransformer;
 use App\Service\Tool\FileExtensionFinder;
 use Exception;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class ImportProcessor
 {
@@ -33,6 +35,11 @@ class ImportProcessor
     private $transformer;
 
     /**
+     * @var MessageBusInterface
+     */
+    private $bus;
+
+    /**
      * ImportProcessor constructor.
      * @param ProductCreator $productCreator
      * @param ReaderFactory $readerFactory
@@ -43,12 +50,14 @@ class ImportProcessor
         ProductCreator $productCreator,
         ReaderFactory $readerFactory,
         FileExtensionFinder $extensionFinder,
-        MatrixToAssociativeArrayTransformer $transformer
+        MatrixToAssociativeArrayTransformer $transformer,
+        MessageBusInterface $bus
     ) {
         $this->productCreator = $productCreator;
         $this->readerFactory = $readerFactory;
         $this->extensionFinder = $extensionFinder;
         $this->transformer = $transformer;
+        $this->bus = $bus;
     }
 
     /**
@@ -115,19 +124,21 @@ class ImportProcessor
     }
 
     /**
-     * @param $rowsWithKeys
-     * @return bool
+     * @param $pathToFile
+     * @param $isTestMode
      * @throws Exception
      */
-    public function scheduleProductCreation($rowsWithKeys): bool
+    public function scheduleProductCreation($pathToFile, $isTestMode): void
     {
-        $isProcessSuccess = false;
+        $rows = $this->readFile($pathToFile);
+        $rowsWithKeys = $this->transformArrayToAssociative($rows);
 
         if (count($rowsWithKeys) > 1) {
-            $this->productCreator->createProducts($rowsWithKeys);
-            $isProcessSuccess = true;
-        }
 
-        return $isProcessSuccess;
+            foreach ($rowsWithKeys as $rowWithKeys){
+                $message = new ProductDataMessage(array($rowWithKeys), $isTestMode);
+                $this->bus->dispatch($message);
+            }
+        }
     }
 }

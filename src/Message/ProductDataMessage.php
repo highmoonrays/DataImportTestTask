@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Message;
 
-class CreateProductFromFile
+class ProductDataMessage
 {
     /**
      * @var array
      */
-    private $rowsWithKeys;
+    private $rowWithKeys;
 
     /**
      * @var bool
@@ -17,22 +17,22 @@ class CreateProductFromFile
     private $isTestMode;
 
     /**
-     * CreateProductFromFile constructor.
-     * @param $rowsWithKeys
+     * ProductDataMessage constructor.
+     * @param $rowWithKeys
      * @param $isTestMode
      */
-    public function __construct($rowsWithKeys, $isTestMode)
+    public function __construct($rowWithKeys, $isTestMode)
     {
-        $this->rowsWithKeys = $rowsWithKeys;
+        $this->rowWithKeys = $rowWithKeys;
         $this->isTestMode = $isTestMode;
     }
 
     /**
      * @return array
      */
-    public function getRowsWithKeys(): array
+    public function getRowWithKeys(): array
     {
-        return $this->rowsWithKeys;
+        return $this->rowWithKeys;
     }
 
     /**

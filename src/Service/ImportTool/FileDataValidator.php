@@ -84,16 +84,7 @@ class FileDataValidator
     {
         $isValid = false;
 
-        if ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
-            && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST) {
-            $this->reporter->addMessage('Stock and cost are less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.' and '.self::PRODUCT_RULE_MIN_COST);
-        }
-
-        elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
-            $this->reporter->addMessage('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
-        }
-
-        elseif (!is_string($row[self::PRODUCT_NAME_COLUMN])) {
+        if (!is_string($row[self::PRODUCT_NAME_COLUMN])) {
             $this->reporter->addMessage('Invalid product name');
         }
 
@@ -116,6 +107,15 @@ class FileDataValidator
 
         elseif (!is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
             $this->reporter->addMessage('Invalid product stock');
+        }
+
+        elseif ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
+            && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST) {
+            $this->reporter->addMessage('Stock and cost are less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.' and '.self::PRODUCT_RULE_MIN_COST);
+        }
+
+        elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
+            $this->reporter->addMessage('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
         } else {
             $isValid = true;
         }

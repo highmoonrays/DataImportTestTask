@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\MessageHandler;
 
-use App\Message\CreateProductFromFile;
+use App\Message\ProductDataMessage;
 use App\Service\Processor\ImportProcessor;
+use App\Service\Processor\ProductCreator;
 use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
-class CreateProductFromFileHandler implements MessageHandlerInterface
+class ProductDataMessageHandler implements MessageHandlerInterface
 {
 
     /**
@@ -30,30 +32,42 @@ class CreateProductFromFileHandler implements MessageHandlerInterface
     private $em;
 
     /**
+     * @var ProductCreator
+     */
+    private $productCreator;
+
+    /**
      * CreateProductFromUploadedFileController constructor.
      * @param ImportProcessor $importProcessor
      * @param FileImportReporter $importReporter
      * @param EntityManagerInterface $em
+     * @param ProductCreator $productCreator
      */
     public function __construct(
         ImportProcessor $importProcessor,
         FileImportReporter $importReporter,
-        EntityManagerInterface $em)
+        EntityManagerInterface $em,
+        ProductCreator $productCreator)
     {
         $this->importReporter = $importReporter;
         $this->importProcessor = $importProcessor;
         $this->em = $em;
+        $this->productCreator = $productCreator;
     }
 
     /**
-     * @param CreateProductFromFile $createProductFromFile
+     * @param ProductDataMessage $productDataMessage
+     * @param MessageBusInterface $bus
      * @throws \Exception
      */
-    public function __invoke(CreateProductFromFile $createProductFromFile)
+    public function __invoke(ProductDataMessage $productDataMessage)
     {
-        $rowsWithKeys = $createProductFromFile->getRowsWithKeys();
-        $this->importProcessor->scheduleProductCreation($rowsWithKeys);
-        if(false === $isTestMode = $createProductFromFile->isTest()){
+        $rowWithKeys = $productDataMessage->getRowWithKeys();
+
+        $this->productCreator->createProducts($rowWithKeys);
+
+
+        if(false === $isTestMode = $productDataMessage->isTest()){
             $this->em->flush();
         }
     }

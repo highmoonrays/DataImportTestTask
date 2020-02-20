@@ -11,6 +11,7 @@ use App\Service\Processor\ProductCreator;
 use App\Service\Tool\FileExtensionFinder;
 use Exception;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Messenger\MessageBus;
 
 class ImportProcessorTest extends TestCase
 {
@@ -34,6 +35,11 @@ class ImportProcessorTest extends TestCase
      */
     private $transformer;
 
+    /**
+     * @var MessageBus
+     */
+    private $bus;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -47,11 +53,14 @@ class ImportProcessorTest extends TestCase
 
         $this->transformer = new MatrixToAssociativeArrayTransformer();
 
+        $this->bus = new MessageBus();
+
         $this->importProcessor = new ImportProcessor(
             $mockProductCreator,
             $this->readerFactory,
             $this->extensionFinder,
-            $this->transformer
+            $this->transformer,
+            $this->bus
         );
     }
 

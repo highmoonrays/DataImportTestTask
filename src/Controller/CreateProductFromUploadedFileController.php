@@ -56,11 +56,7 @@ class CreateProductFromUploadedFileController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function createProductFromUploadedFile(
-        string $uploadDir,
-        FileUploader $uploader,
-        Request $request
-        ): Response
+    public function createProductFromUploadedFile(string $uploadDir, FileUploader $uploader, Request $request): Response
     {
         $form = $this->createForm(UploadFileToCreateProductType::class);
         $form->handleRequest($request);

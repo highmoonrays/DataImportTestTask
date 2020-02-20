@@ -76,8 +76,10 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         if(false === $isTestMode = $productDataMessage->isTest()){
             $this->em->flush();
         }
+
         $invalidProducts = $this->importReporter->getInvalidProducts();
         $messages = $this->importReporter->getMessages();
+
         if ($invalidProducts && $messages){
             $productData = $this->importReporter->getInvalidProducts();
             $message= $this->importReporter->getMessages();

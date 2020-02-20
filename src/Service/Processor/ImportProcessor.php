@@ -112,6 +112,7 @@ class ImportProcessor
                 return $spreadSheet->getActiveSheet()->toArray();
             }
         }
+
         return null;
     }
 

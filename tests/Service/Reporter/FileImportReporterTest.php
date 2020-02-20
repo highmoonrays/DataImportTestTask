@@ -24,7 +24,7 @@ class FileImportReporterTest extends TestCase
 
     public function testGettersAndSetters(): void
     {
-        $this->reporter->setInvalidProducts([['product1'], ['product2'], ['product3']]);
+        $this->reporter->addInvalidProducts([['product1'], ['product2'], ['product3']]);
         $this->reporter->setNumberCreatedProducts(8);
         $this->reporter->addMessage('Product is already exists');
 

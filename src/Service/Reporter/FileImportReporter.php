@@ -46,11 +46,11 @@ class FileImportReporter
     }
 
     /**
-     * @param string $invalidProducts
+     * @param string $invalidProduct
      */
-    public function setInvalidProducts(string $invalidProducts): void
+    public function addInvalidProducts(string $invalidProduct): void
     {
-        $this->invalidProducts[] = $invalidProducts;
+        $this->invalidProducts[] = $invalidProduct;
     }
 
     /**

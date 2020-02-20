@@ -33,6 +33,7 @@ class FileExtensionFinder
         catch (Exception $exception){
             throw new InvalidExtensionException('Invalid extension');
         }
+
         return $this->fileExtension;
     }
 }

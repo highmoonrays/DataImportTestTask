@@ -24,6 +24,7 @@ class MatrixToAssociativeArrayTransformer
             }
             $associativeArray[] = $newRow;
         }
+
         return $associativeArray;
     }
 }

@@ -113,6 +113,7 @@ class ImportProductsFromFile extends Command
                     }
                     $io->success(count($this->reporter->getInvalidProducts()).' invalid items!');
                 }
+
                 if (!$isTestMode) {
                     $this->em->flush();
                 }

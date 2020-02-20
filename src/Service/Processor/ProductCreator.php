@@ -57,7 +57,7 @@ class ProductCreator
                 $this->reporter->setNumberCreatedProducts($this->reporter->getNumberCreatedProducts() + 1);
                 $this->setProduct($row);
             } else {
-                $this->reporter->setInvalidProducts($row);
+                $this->reporter->setInvalidProducts(implode(' ', $row));
             }
         }
     }

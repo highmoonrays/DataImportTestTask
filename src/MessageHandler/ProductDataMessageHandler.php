@@ -78,10 +78,11 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         }
         $invalidProducts = $this->importReporter->getInvalidProducts();
         $messages = $this->importReporter->getMessages();
-
         if ($invalidProducts && $messages){
-            $report = $this->importReporter->getReportForOneInvalidProduct();
-            $update = new Update('http://localhost:8000/uploadFile', $report);
+            $productData = $this->importReporter->getInvalidProducts();
+            $message= $this->importReporter->getMessages();
+            var_dump($message);
+            $update = new Update('http://localhost:8000/uploadFile', implode(', ', $productData).' || Error: '.implode(' ', $message));
         }
         else {
             $update = new Update('http://localhost:8000/uploadFile', 'Product created!');

@@ -9,9 +9,7 @@ use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductCreator;
 use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class ProductDataMessageHandler implements MessageHandlerInterface
 {
@@ -57,7 +55,6 @@ class ProductDataMessageHandler implements MessageHandlerInterface
 
     /**
      * @param ProductDataMessage $productDataMessage
-     * @param MessageBusInterface $bus
      * @throws \Exception
      */
     public function __invoke(ProductDataMessage $productDataMessage)
@@ -65,7 +62,6 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         $rowWithKeys = $productDataMessage->getRowWithKeys();
 
         $this->productCreator->createProducts($rowWithKeys);
-
 
         if(false === $isTestMode = $productDataMessage->isTest()){
             $this->em->flush();

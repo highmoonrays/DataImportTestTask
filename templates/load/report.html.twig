@@ -4,16 +4,13 @@
 
 {% block body %}
 <br>
-    <form action="{{ path('report') }}" method="post">
-        <button class="btn btn-primary"> Report! </button>
-    </form>
     <h1></h1>
     <script>
         const url = new URL('http://localhost:3000/.well-known/mercure');
-        url.searchParams.append('topic', 'http://localhost:8000/createProductFromUploadedFile');
+        url.searchParams.append('topic', 'http://localhost:8000/uploadFile');
         const eventSource = new EventSource(url);
         eventSource.onmessage = e => {
-            document.querySelector('h1').insertAdjacentHTML('afterend', e.data);
+            document.querySelector('h1').insertAdjacentHTML('afterend', '<div class="alert alert-success">Process started !</div>');
             window.setTimeout(() => {
                 const $alert = document.querySelector('.alert');
                 $alert.parentNode.removeChild($alert)

@@ -80,7 +80,8 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         $messages = $this->importReporter->getMessages();
 
         if ($invalidProducts && $messages){
-            $update = new Update('http://localhost:8000/uploadFile', 'Invalid Product!');
+            $report = $this->importReporter->getReportForOneInvalidProduct();
+            $update = new Update('http://localhost:8000/uploadFile', $report);
         }
         else {
             $update = new Update('http://localhost:8000/uploadFile', 'Product created!');

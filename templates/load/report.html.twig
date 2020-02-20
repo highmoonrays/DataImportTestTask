@@ -11,6 +11,7 @@
         const eventSource = new EventSource(url);
         eventSource.onmessage = e => {
             document.querySelector('h1').insertAdjacentHTML('afterend', e.data);
+            document.querySelector('h1').insertAdjacentHTML('afterend', '<br>');
         };
     </script>
 {% endblock %}

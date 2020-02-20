@@ -9,6 +9,8 @@ use App\Service\Processor\ImportProcessor;
 use App\Service\Processor\ProductCreator;
 use App\Service\Reporter\FileImportReporter;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Mercure\PublisherInterface;
+use Symfony\Component\Mercure\Update;
 use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class ProductDataMessageHandler implements MessageHandlerInterface
@@ -35,22 +37,30 @@ class ProductDataMessageHandler implements MessageHandlerInterface
     private $productCreator;
 
     /**
+     * @var PublisherInterface
+     */
+    private $publisher;
+
+    /**
      * CreateProductFromUploadedFileController constructor.
      * @param ImportProcessor $importProcessor
      * @param FileImportReporter $importReporter
      * @param EntityManagerInterface $em
      * @param ProductCreator $productCreator
+     * @param PublisherInterface $publisher
      */
     public function __construct(
         ImportProcessor $importProcessor,
         FileImportReporter $importReporter,
         EntityManagerInterface $em,
-        ProductCreator $productCreator)
+        ProductCreator $productCreator,
+        PublisherInterface $publisher)
     {
         $this->importReporter = $importReporter;
         $this->importProcessor = $importProcessor;
         $this->em = $em;
         $this->productCreator = $productCreator;
+        $this->publisher = $publisher;
     }
 
     /**
@@ -66,5 +76,8 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         if(false === $isTestMode = $productDataMessage->isTest()){
             $this->em->flush();
         }
+        $update = new Update('http://localhost:8000/uploadFile', '[]');
+        $publisher = $this->publisher;
+        $publisher($update);
     }
 }

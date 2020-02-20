@@ -67,7 +67,7 @@ class ProductDataMessageHandler implements MessageHandlerInterface
      * @param ProductDataMessage $productDataMessage
      * @throws \Exception
      */
-    public function __invoke(ProductDataMessage $productDataMessage)
+    public function __invoke(ProductDataMessage $productDataMessage): void
     {
         $rowWithKeys = $productDataMessage->getRowWithKeys();
 
@@ -76,7 +76,15 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         if(false === $isTestMode = $productDataMessage->isTest()){
             $this->em->flush();
         }
-        $update = new Update('http://localhost:8000/uploadFile', '[]');
+        $report = [];
+        $invalidProducts = $this->importReporter->getInvalidProducts();
+        $messages = $this->importReporter->getMessages();
+        foreach ($invalidProducts as $key => $invalidProduct) {
+            $report[] = $invalidProduct;
+            $report[] = $messages[$key];
+        }
+        $update = new Update('http://localhost:8000/uploadFile', json_encode($report));
+
         $publisher = $this->publisher;
         $publisher($update);
     }

@@ -6,6 +6,8 @@ namespace App\Form;
 
 use App\Form\DataTransferObject\ProductDTO;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -21,9 +23,11 @@ class ProductType extends AbstractType
             ->add('name')
             ->add('description')
             ->add('code')
-            ->add('discontinued')
-            ->add('stock')
-            ->add('cost')
+            ->add('isDiscontinued', CheckboxType::class, [
+                'required' => false,
+            ])
+            ->add('stock', IntegerType::class)
+            ->add('cost', IntegerType::class)
         ;
     }
 

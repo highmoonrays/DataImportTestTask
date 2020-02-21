@@ -62,15 +62,21 @@ class ProductController extends AbstractController
      */
     public function new(Request $request): Response
     {
-        $productDTO = new ProductDTO($this->creator);
+        $productDTO = new ProductDTO();
         $form = $this->createForm(ProductType::class, $productDTO);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
-            if (true === $productDTO->createProduct()){
-                $this->em->flush();
-            }
+            $product = new Product(
+                $productDTO->getName(),
+                $productDTO->getDescription(),
+                $productDTO->getCode(),
+                $productDTO->getStock(),
+                $productDTO->getCost(),
+                $productDTO->isDiscontinued()
+            );
+            $this->em->persist($product);
+            $this->em->flush();
 
             return $this->redirectToRoute('products');
         }

@@ -4,73 +4,62 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
+use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
-use App\Service\Processor\ProductCreator;
 
 class ProductDTO
 {
     /**
      * @var string
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *    FileDataValidator::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS,
+     *    message="Please, enter valid name"
+     * )
      */
     private $name;
 
     /**
      * @var string
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     FileDataValidator::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS,
+     *     message="Please, enter valid description"
+     * )
      */
     private $description;
 
     /**
      * @var string
+     * @Assert\NotBlank
+     * @Assert\Regex(
+     *     FileDataValidator::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS,
+     *     message="Please, enter valid code"
+     * )
      */
     private $code;
 
     /**
-     * @var string
+     * @var bool
      */
-    private $discontinued;
+    private $isDiscontinued;
 
     /**
      * @var int
+     * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(10)
      */
     private $stock;
 
     /**
      * @var int
+     * @Assert\NotBlank
+     * @Assert\Range(
+     *     min = 5,
+     *     max = 1000
+     * )
      */
     private $cost;
-
-    /**
-     * @var ProductCreator
-     */
-    private $creator;
-
-    /**
-     * ProductDTO constructor.
-     * @param ProductCreator $creator
-     */
-    public function __construct(ProductCreator $creator)
-    {
-        $this->creator = $creator;
-    }
-
-    /**
-     * @return bool
-     * @throws \Exception
-     */
-    public function createProduct(): bool
-    {
-        $productData = [
-            [
-            FileDataValidator::PRODUCT_NAME_COLUMN => $this->name,
-            FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => $this->description,
-            FileDataValidator::PRODUCT_CODE_COLUMN => $this->code,
-            FileDataValidator::PRODUCT_STOCK_COLUMN => $this->stock,
-            FileDataValidator::PRODUCT_COST_COLUMN => $this->cost,
-            FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => $this->discontinued
-            ]
-        ];
-        return $this->creator->createProducts($productData);
-    }
 
     /**
      * @return string
@@ -121,22 +110,6 @@ class ProductDTO
     }
 
     /**
-     * @return string|null
-     */
-    public function getDiscontinued():? string
-    {
-        return $this->discontinued;
-    }
-
-    /**
-     * @param string $discontinued
-     */
-    public function setDiscontinued(string $discontinued): void
-    {
-        $this->discontinued = $discontinued;
-    }
-
-    /**
      * @return int
      */
     public function getStock():? int
@@ -166,5 +139,21 @@ class ProductDTO
     public function setCost(int $cost): void
     {
         $this->cost = $cost;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDiscontinued():? bool
+    {
+        return $this->isDiscontinued;
+    }
+
+    /**
+     * @param bool $isDiscontinued
+     */
+    public function setIsDiscontinued(bool $isDiscontinued): void
+    {
+        $this->isDiscontinued = $isDiscontinued;
     }
 }

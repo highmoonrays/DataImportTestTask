@@ -15,9 +15,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/product")
- */
 class ProductController extends AbstractController
 {
     /**
@@ -54,7 +51,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="product_new", methods={"GET","POST"})
+     * @Route("/createProduct", name="createNewProduct", methods={"GET","POST"})
      * @param Request $request
      * @return Response
      * @throws \Exception
@@ -79,7 +76,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_show", methods={"GET"})
+     * @Route("/show/{id}", name="showProduct", methods={"GET"})
      * @param Product $product
      * @return Response
      */
@@ -91,7 +88,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="product_edit", methods={"GET","POST"})
+     * @Route("/{id}/edit", name="editProduct", methods={"GET","POST"})
      * @param Request $request
      * @param Product $product
      * @return Response
@@ -117,7 +114,7 @@ class ProductController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="product_delete", methods={"DELETE"})
+     * @Route("/{id}", name="deleteProduct", methods={"DELETE"})
      * @param Request $request
      * @param Product $product
      * @return Response

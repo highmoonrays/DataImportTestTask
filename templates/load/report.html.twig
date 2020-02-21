@@ -4,14 +4,16 @@
 
 {% block body %}
 <br>
-    <h1></h1>
+    <div>
+        <p></p>
+    </div>
     <script>
         const url = new URL('http://localhost:3000/.well-known/mercure');
         url.searchParams.append('topic', 'http://localhost:8000/uploadFile');
         const eventSource = new EventSource(url);
         eventSource.onmessage = e => {
-            document.querySelector('h1').insertAdjacentHTML('afterend', e.data);
-            document.querySelector('h1').insertAdjacentHTML('afterend', '<br>');
+            document.querySelector('p').insertAdjacentHTML('afterend', e.data);
+            document.querySelector('p').insertAdjacentHTML('afterend', '<br>');
         };
     </script>
 {% endblock %}

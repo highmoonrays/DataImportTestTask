@@ -84,7 +84,7 @@ class FileDataValidator
     {
         $isValid = false;
 
-        if (!is_string($row[self::PRODUCT_NAME_COLUMN])) {
+        if (!preg_match('/[a-zA-Z0-9]/', $row[self::PRODUCT_NAME_COLUMN])) {
             $this->reporter->addMessage('Invalid product name');
         }
 
@@ -93,11 +93,11 @@ class FileDataValidator
         }
 
 
-        elseif (!is_string($row[self::PRODUCT_DESCRIPTION_COLUMN])) {
+        elseif (!preg_match('/[a-zA-Z0-9]/', $row[self::PRODUCT_DESCRIPTION_COLUMN])) {
             $this->reporter->addMessage('Invalid product description');
         }
 
-        elseif (!is_string($row[self::PRODUCT_CODE_COLUMN])) {
+        elseif (!preg_match('/[a-zA-Z0-9]/', $row[self::PRODUCT_CODE_COLUMN])) {
             $this->reporter->addMessage('Invalid product code');
         }
 

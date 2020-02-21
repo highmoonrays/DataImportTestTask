@@ -62,7 +62,7 @@ class ProductDTO
     private $cost;
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getName():? string
     {
@@ -78,7 +78,7 @@ class ProductDTO
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getDescription():? string
     {
@@ -94,7 +94,7 @@ class ProductDTO
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCode():? string
     {
@@ -110,7 +110,7 @@ class ProductDTO
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getStock():? int
     {
@@ -126,7 +126,7 @@ class ProductDTO
     }
 
     /**
-     * @return int
+     * @return int|null
      */
     public function getCost():? int
     {
@@ -142,7 +142,7 @@ class ProductDTO
     }
 
     /**
-     * @return bool
+     * @return bool|null
      */
     public function isDiscontinued():? bool
     {

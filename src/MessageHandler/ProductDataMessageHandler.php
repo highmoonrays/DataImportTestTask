@@ -15,6 +15,10 @@ use Symfony\Component\Messenger\Handler\MessageHandlerInterface;
 
 class ProductDataMessageHandler implements MessageHandlerInterface
 {
+    /**
+     * @var string
+     */
+    public const TOPIC_FOR_UPDATE_REPORT_DATA = 'http://localhost:8000/uploadFile';
 
     /**
      * @var ImportProcessor
@@ -84,9 +88,9 @@ class ProductDataMessageHandler implements MessageHandlerInterface
 
             $productData = $this->importReporter->getInvalidProducts();
             $message = $this->importReporter->getMessages();
-            $update = new Update('http://localhost:8000/uploadFile', implode(', ', $productData).' || Error: '.implode(' ', $message));
+            $update = new Update(self::TOPIC_FOR_UPDATE_REPORT_DATA, implode(', ', $productData).' || Error: '.implode(' ', $message));
         } else {
-            $update = new Update('http://localhost:8000/uploadFile', 'Product created!');
+            $update = new Update(self::TOPIC_FOR_UPDATE_REPORT_DATA, 'Product created!');
         }
         $this->importReporter->clearReport();
         $publisher = $this->publisher;

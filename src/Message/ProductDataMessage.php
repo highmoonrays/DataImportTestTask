@@ -21,16 +21,16 @@ class ProductDataMessage
      * @param $rowWithKeys
      * @param $isTestMode
      */
-    public function __construct($rowWithKeys, $isTestMode)
+    public function __construct(array $rowWithKeys,bool $isTestMode)
     {
         $this->rowWithKeys = $rowWithKeys;
         $this->isTestMode = $isTestMode;
     }
 
     /**
-     * @return array
+     * @return array|null
      */
-    public function getRowWithKeys(): array
+    public function getRowWithKeys():? array
     {
         return $this->rowWithKeys;
     }

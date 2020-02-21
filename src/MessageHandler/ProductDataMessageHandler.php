@@ -73,20 +73,19 @@ class ProductDataMessageHandler implements MessageHandlerInterface
 
         $this->productCreator->createProducts($rowWithKeys);
 
-        if(false === $isTestMode = $productDataMessage->isTest()){
+        if (false === $isTestMode = $productDataMessage->isTest()) {
             $this->em->flush();
         }
 
         $invalidProducts = $this->importReporter->getInvalidProducts();
         $messages = $this->importReporter->getMessages();
 
-        if ($invalidProducts && $messages){
+        if ($invalidProducts && $messages) {
+
             $productData = $this->importReporter->getInvalidProducts();
-            $message= $this->importReporter->getMessages();
-            var_dump($message);
+            $message = $this->importReporter->getMessages();
             $update = new Update('http://localhost:8000/uploadFile', implode(', ', $productData).' || Error: '.implode(' ', $message));
-        }
-        else {
+        } else {
             $update = new Update('http://localhost:8000/uploadFile', 'Product created!');
         }
         $this->importReporter->clearReport();

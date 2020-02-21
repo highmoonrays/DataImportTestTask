@@ -71,10 +71,10 @@ class ImportProcessor
         $isProcessSuccess = false;
         $rows = $this->readFile($pathToProcessFile);
 
-        if($rows) {
+        if ($rows) {
             $rowsWithKeys = $this->transformArrayToAssociative($rows);
 
-            if($rowsWithKeys) {
+            if ($rowsWithKeys) {
                  $this->productCreator->createProducts($rowsWithKeys);
                  $isProcessSuccess = true;
             } else {
@@ -90,21 +90,21 @@ class ImportProcessor
      * @return string|null
      * @throws Exception
      */
-    public function getFileExtension($pathToProcessFile):? string
+    public function getFileExtension(string $pathToProcessFile):? string
     {
         return $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
     }
 
     /**
      * @param $pathToProcessFile
-     * @return object|null
+     * @return array|null
      * @throws Exception
      */
-    public function readFile($pathToProcessFile):? array
+    public function readFile(string $pathToProcessFile):? array
     {
         $fileExtension = $this->getFileExtension($pathToProcessFile);
 
-        if($fileExtension) {
+        if ($fileExtension) {
             $reader = $this->readerFactory->getFileReader($fileExtension);
 
             if ($reader) {
@@ -120,7 +120,7 @@ class ImportProcessor
      * @param $rows
      * @return array
      */
-    public function transformArrayToAssociative($rows): array
+    public function transformArrayToAssociative(array $rows): array
     {
         return $this->transformer->transformArrayToAssociative($rows);
     }
@@ -130,14 +130,14 @@ class ImportProcessor
      * @param $isTestMode
      * @throws Exception
      */
-    public function scheduleProductCreation($pathToFile, $isTestMode): void
+    public function scheduleProductCreation(string $pathToFile, bool $isTestMode): void
     {
         $rows = $this->readFile($pathToFile);
         $rowsWithKeys = $this->transformArrayToAssociative($rows);
 
         if (count($rowsWithKeys) > 1) {
 
-            foreach ($rowsWithKeys as $rowWithKeys){
+            foreach ($rowsWithKeys as $rowWithKeys) {
                 $message = new ProductDataMessage(array($rowWithKeys), $isTestMode);
                 $this->bus->dispatch($message);
             }

@@ -45,11 +45,12 @@ class ProductCreator
 
     /**
      * @param $rowsWithKeys
-     * @return void
+     * @return bool
      * @throws Exception
      */
-    public function createProducts($rowsWithKeys): void
+    public function createProducts(array $rowsWithKeys): bool
     {
+        $isValid = false;
         foreach ($rowsWithKeys as $row) {
             $isValid = $this->validator->validate($row);
 
@@ -60,6 +61,7 @@ class ProductCreator
                 $this->reporter->addInvalidProducts(implode(' ', $row));
             }
         }
+        return $isValid;
     }
 
         /**

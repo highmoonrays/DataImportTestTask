@@ -12,6 +12,10 @@ class FileDataValidator
     /**
      * @var string
      */
+    public const REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS = '/[a-zA-Z0-9]/';
+    /**
+     * @var string
+     */
     public const PRODUCT_NAME_COLUMN = 'Product Name';
 
     /**
@@ -84,7 +88,7 @@ class FileDataValidator
     {
         $isValid = false;
 
-        if (!preg_match('/[a-zA-Z0-9]/', $row[self::PRODUCT_NAME_COLUMN])) {
+        if (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_NAME_COLUMN])) {
             $this->reporter->addMessage('Invalid product name');
         }
 
@@ -93,11 +97,11 @@ class FileDataValidator
         }
 
 
-        elseif (!preg_match('/[a-zA-Z0-9]/', $row[self::PRODUCT_DESCRIPTION_COLUMN])) {
+        elseif (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_DESCRIPTION_COLUMN])) {
             $this->reporter->addMessage('Invalid product description');
         }
 
-        elseif (!preg_match('/[a-zA-Z0-9]/', $row[self::PRODUCT_CODE_COLUMN])) {
+        elseif (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_CODE_COLUMN])) {
             $this->reporter->addMessage('Invalid product code');
         }
 

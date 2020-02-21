@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
+use App\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
 
@@ -60,6 +61,24 @@ class ProductDTO
      * )
      */
     private $cost;
+
+    /**
+     * @param object $product
+     * @return ProductDTO|null
+     */
+    static function createDTOFromProduct(object $product):? ProductDTO
+    {
+        $productDTO = new ProductDTO();
+        $productDTO->setName($product->getName());
+        $productDTO->setDescription($product->getDescription());
+        $productDTO->setCode($product->getCode());
+        $productDTO->setStock($product->getStock());
+        $productDTO->setCost($product->getCost());
+
+        if ($product->getDiscontinuedAt() instanceof \DateTime)
+            $productDTO->setIsDiscontinued(true);
+        return $productDTO;
+    }
 
     /**
      * @return string|null

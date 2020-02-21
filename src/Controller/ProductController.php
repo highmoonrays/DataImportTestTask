@@ -8,9 +8,9 @@ use App\Entity\Product;
 use App\Form\DataTransferObject\ProductDTO;
 use App\Form\ProductType;
 use App\Repository\ProductRepository;
-use App\Service\ImportTool\FileDataValidator;
 use App\Service\Processor\ProductCreator;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +47,7 @@ class ProductController extends AbstractController
      * @param ProductRepository $productRepository
      * @return Response
      */
-    public function index(ProductRepository $productRepository): Response
+    public function products(ProductRepository $productRepository): Response
     {
         return $this->render('product/index.html.twig', [
             'products' => $productRepository->findAll(),
@@ -60,21 +60,14 @@ class ProductController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function new(Request $request): Response
+    public function createNewProduct(Request $request): Response
     {
         $productDTO = new ProductDTO();
         $form = $this->createForm(ProductType::class, $productDTO);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product = new Product(
-                $productDTO->getName(),
-                $productDTO->getDescription(),
-                $productDTO->getCode(),
-                $productDTO->getStock(),
-                $productDTO->getCost(),
-                $productDTO->isDiscontinued()
-            );
+            $product = Product::createProductFromDTO($productDTO);
             $this->em->persist($product);
             $this->em->flush();
 
@@ -91,7 +84,7 @@ class ProductController extends AbstractController
      * @param Product $product
      * @return Response
      */
-    public function show(Product $product): Response
+    public function showProduct(Product $product): Response
     {
         return $this->render('product/show.html.twig', [
             'product' => $product,
@@ -101,22 +94,25 @@ class ProductController extends AbstractController
     /**
      * @Route("/{id}/edit", name="product_edit", methods={"GET","POST"})
      * @param Request $request
-     * @param ProductDTO $productDTO
+     * @param Product $product
      * @return Response
+     * @throws \Exception
      */
-    public function edit(Request $request, ProductDTO $productDTO): Response
+    public function editProduct(Request $request, Product $product): Response
     {
+        $productDTO = ProductDTO::createDTOFromProduct($product);
         $form = $this->createForm(ProductType::class, $productDTO);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->getDoctrine()->getManager()->flush();
+            Product::updateProductFromDTO($product, $productDTO);
+            $this->em->flush();
 
             return $this->redirectToRoute('products');
         }
 
         return $this->render('product/edit.html.twig', [
-            'product' => $productDTO,
+            'product' => $product,
             'form' => $form->createView(),
         ]);
     }
@@ -127,7 +123,7 @@ class ProductController extends AbstractController
      * @param Product $product
      * @return Response
      */
-    public function delete(Request $request, Product $product): Response
+    public function deleteProduct(Request $request, Product $product): Response
     {
         if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();

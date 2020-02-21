@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Form\DataTransferObject\ProductDTO;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 
@@ -73,6 +74,45 @@ class Product
     private $cost;
 
     /**
+     * @param object $productDTO
+     * @return Product
+     * @throws Exception
+     */
+    static function createProductFromDTO(object $productDTO):? Product
+    {
+        return new Product(
+            $productDTO->getName(),
+            $productDTO->getDescription(),
+            $productDTO->getCode(),
+            $productDTO->getStock(),
+            $productDTO->getCost(),
+            $productDTO->isDiscontinued()
+        );
+    }
+
+    /**
+     * @param Product $product
+     * @param ProductDTO $productDTO
+     * @throws Exception
+     */
+    static function updateProductFromDTO(Product $product, ProductDTO $productDTO): void
+    {
+        $product->setName($productDTO->getName());
+        $product->setDescription($productDTO->getDescription());
+        $product->setCode($productDTO->getCode());
+        $product->setCost($productDTO->getCost());
+        $product->setStock($productDTO->getStock());
+
+        if (false === $productDTO->isDiscontinued()) {
+            if ($productDTO->getStock() > 0) {
+                $product->setDiscontinuedAt(null);
+            }
+        } else {
+            $product->setDiscontinuedAt(new \DateTime());
+        }
+    }
+
+    /**
      * Product constructor.
      *
      * @param string $name
@@ -98,8 +138,14 @@ class Product
         $this->timestamp = new \DateTime();
         $this->stock = $stock;
         $this->cost = $cost;
+
         if (true === $isDiscontinued) {
             $this->discontinuedAt = new \DateTime();
+        } else {
+
+            if (!$stock > 0){
+                $this->discontinuedAt = new \DateTime();
+            }
         }
     }
 

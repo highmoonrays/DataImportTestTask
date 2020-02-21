@@ -21,7 +21,7 @@ class ProductDataMessage
      * @param $rowWithKeys
      * @param $isTestMode
      */
-    public function __construct(array $rowWithKeys,bool $isTestMode)
+    public function __construct(array $rowWithKeys, bool $isTestMode)
     {
         $this->rowWithKeys = $rowWithKeys;
         $this->isTestMode = $isTestMode;

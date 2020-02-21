@@ -74,18 +74,15 @@ class ProductDataMessageHandler implements MessageHandlerInterface
     public function __invoke(ProductDataMessage $productDataMessage): void
     {
         $rowWithKeys = $productDataMessage->getRowWithKeys();
-
         $this->productCreator->createProducts($rowWithKeys);
 
         if (false === $isTestMode = $productDataMessage->isTest()) {
             $this->em->flush();
         }
-
         $invalidProducts = $this->importReporter->getInvalidProducts();
         $messages = $this->importReporter->getMessages();
 
         if ($invalidProducts && $messages) {
-
             $productData = $this->importReporter->getInvalidProducts();
             $message = $this->importReporter->getMessages();
             $update = new Update(self::TOPIC_FOR_UPDATE_REPORT_DATA, implode(', ', $productData).' || Error: '.implode(' ', $message));

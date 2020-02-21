@@ -24,7 +24,7 @@ class FileExtensionFinder
      * @return string
      * @throws Exception
      */
-    public function findFileExtensionFromPath($pathToFile): string
+    public function findFileExtensionFromPath(string $pathToFile): string
     {
         try {
             $fileNameParts = pathinfo($pathToFile);

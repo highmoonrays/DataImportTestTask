@@ -11,7 +11,7 @@ class FileUploader
      * @param $file
      * @return string
      */
-    public function upload($uploadDir, $file): string
+    public function upload(string $uploadDir, object $file): string
     {
         $fileName = $file->getClientOriginalName();
         $file->move($uploadDir, $fileName);

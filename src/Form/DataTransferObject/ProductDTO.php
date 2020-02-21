@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
-use App\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
 
@@ -66,7 +65,7 @@ class ProductDTO
      * @param object $product
      * @return ProductDTO|null
      */
-    static function createDTOFromProduct(object $product):? ProductDTO
+    static function createDTOFromProduct(object $product): ?ProductDTO
     {
         $productDTO = new ProductDTO();
         $productDTO->setName($product->getName());
@@ -83,7 +82,7 @@ class ProductDTO
     /**
      * @return string|null
      */
-    public function getName():? string
+    public function getName(): ?string
     {
         return $this->name;
     }
@@ -99,7 +98,7 @@ class ProductDTO
     /**
      * @return string|null
      */
-    public function getDescription():? string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -115,7 +114,7 @@ class ProductDTO
     /**
      * @return string|null
      */
-    public function getCode():? string
+    public function getCode(): ?string
     {
         return $this->code;
     }
@@ -131,7 +130,7 @@ class ProductDTO
     /**
      * @return int|null
      */
-    public function getStock():? int
+    public function getStock(): ?int
     {
         return $this->stock;
     }
@@ -147,7 +146,7 @@ class ProductDTO
     /**
      * @return int|null
      */
-    public function getCost():? int
+    public function getCost(): ?int
     {
         return $this->cost;
     }
@@ -163,7 +162,7 @@ class ProductDTO
     /**
      * @return bool|null
      */
-    public function isDiscontinued():? bool
+    public function isDiscontinued(): ?bool
     {
         return $this->isDiscontinued;
     }

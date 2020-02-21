@@ -90,7 +90,7 @@ class ImportProcessor
      * @return string|null
      * @throws Exception
      */
-    public function getFileExtension(string $pathToProcessFile):? string
+    public function getFileExtension(string $pathToProcessFile): ?string
     {
         return $fileExtension = $this->extensionFinder->findFileExtensionFromPath($pathToProcessFile);
     }
@@ -100,7 +100,7 @@ class ImportProcessor
      * @return array|null
      * @throws Exception
      */
-    public function readFile(string $pathToProcessFile):? array
+    public function readFile(string $pathToProcessFile): ?array
     {
         $fileExtension = $this->getFileExtension($pathToProcessFile);
 

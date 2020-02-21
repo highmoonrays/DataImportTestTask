@@ -103,7 +103,7 @@ class FileDataValidatorTest extends TestCase
         return[
                 [
                     FileDataValidatorTest::DATA_TO_VALIDATE_KEY => [
-                                FileDataValidator::PRODUCT_NAME_COLUMN => null,
+                                FileDataValidator::PRODUCT_NAME_COLUMN => '',
                                 FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 'description-1',
                                 FileDataValidator::PRODUCT_CODE_COLUMN => 'P00011000',
                                 FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => '',
@@ -116,7 +116,7 @@ class FileDataValidatorTest extends TestCase
                 [
                     FileDataValidatorTest::DATA_TO_VALIDATE_KEY => [
                         FileDataValidator::PRODUCT_NAME_COLUMN => 'Some name',
-                        FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => null,
+                        FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => '',
                         FileDataValidator::PRODUCT_CODE_COLUMN => 'P000250',
                         FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => 'yes',
                         FileDataValidator::PRODUCT_STOCK_COLUMN => 9,
@@ -129,7 +129,7 @@ class FileDataValidatorTest extends TestCase
                     FileDataValidatorTest::DATA_TO_VALIDATE_KEY => [
                         FileDataValidator::PRODUCT_NAME_COLUMN => 'Some name',
                         FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 'description',
-                        FileDataValidator::PRODUCT_CODE_COLUMN => null,
+                        FileDataValidator::PRODUCT_CODE_COLUMN => '',
                         FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => 'yes',
                         FileDataValidator::PRODUCT_STOCK_COLUMN => 9,
                         FileDataValidator::PRODUCT_COST_COLUMN => 100

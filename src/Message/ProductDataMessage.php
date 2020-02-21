@@ -30,7 +30,7 @@ class ProductDataMessage
     /**
      * @return array|null
      */
-    public function getRowWithKeys():? array
+    public function getRowWithKeys(): ?array
     {
         return $this->rowWithKeys;
     }

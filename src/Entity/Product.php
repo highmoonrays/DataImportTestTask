@@ -103,12 +103,10 @@ class Product
         $product->setCost($productDTO->getCost());
         $product->setStock($productDTO->getStock());
 
-        if (false === $productDTO->isDiscontinued()) {
-            if ($productDTO->getStock() > 0) {
-                $product->setDiscontinuedAt(null);
-            }
+        if (true === $productDTO->isDiscontinued() || 0 === $productDTO->getStock()) {
+                $product->setDiscontinuedAt(new \DateTime());
         } else {
-            $product->setDiscontinuedAt(new \DateTime());
+            $product->setDiscontinuedAt(null);
         }
     }
 
@@ -142,10 +140,7 @@ class Product
         if (true === $isDiscontinued) {
             $this->discontinuedAt = new \DateTime();
         } else {
-
-            if (!$stock > 0){
-                $this->discontinuedAt = new \DateTime();
-            }
+            $this->discontinuedAt = null;
         }
     }
 

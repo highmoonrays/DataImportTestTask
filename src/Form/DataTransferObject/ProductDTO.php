@@ -47,17 +47,13 @@ class ProductDTO
     /**
      * @var int
      * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(10)
      */
     private $stock;
 
     /**
      * @var int
      * @Assert\NotBlank
-     * @Assert\Range(
-     *     min = 5,
-     *     max = 1000
-     * )
+     * @Assert\LessThan(1000)
      */
     private $cost;
 
@@ -172,6 +168,14 @@ class ProductDTO
      */
     public function setIsDiscontinued(bool $isDiscontinued): void
     {
-        $this->isDiscontinued = $isDiscontinued;
+        $this->isDiscontinued = (0 === $this->stock )? true : false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function checkRules(): bool
+    {
+        return ($this->cost < 5 && $this->stock < 10)? false : true;
     }
 }

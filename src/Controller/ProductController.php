@@ -63,11 +63,15 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $product = Product::createProductFromDTO($productDTO);
-            $this->em->persist($product);
-            $this->em->flush();
 
-            return $this->redirectToRoute('products');
+            if ($productDTO->checkRules()) {
+                $product = Product::createProductFromDTO($productDTO);
+                $this->em->persist($product);
+                $this->em->flush();
+                return $this->redirectToRoute('products');
+            } else {
+                $this->addFlash('Invalid product', 'Cost is less than 5 and stock is less than 10!');
+            }
         }
 
         return $this->render('product/new.html.twig', [
@@ -101,10 +105,14 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            Product::updateProductFromDTO($product, $productDTO);
-            $this->em->flush();
 
-            return $this->redirectToRoute('products');
+            if ($productDTO->checkRules()){
+                Product::updateProductFromDTO($product, $productDTO);
+                $this->em->flush();
+                return $this->redirectToRoute('products');
+            } else {
+                $this->addFlash('Invalid product', 'Cost is less than 5 and stock is less than 10!');
+            }
         }
 
         return $this->render('product/edit.html.twig', [

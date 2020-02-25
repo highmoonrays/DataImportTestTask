@@ -45,7 +45,7 @@ class Product
      * @var \DateTime|null
      * @ORM\Column(name="dtmAdded", type="datetime", nullable=true)
      */
-    private $added;
+    private $addedAt;
 
     /**
      * @var \DateTime|null
@@ -134,7 +134,7 @@ class Product
         $this->name = $name;
         $this->description = $description;
         $this->code = $code;
-        $this->added = new \DateTime();
+        $this->addedAt = new \DateTime();
         $this->timestamp = new \DateTime();
         $this->stock = $stock;
         $this->cost = $cost;
@@ -217,18 +217,18 @@ class Product
     /**
      * @return \DateTimeInterface|null
      */
-    public function getAdded(): ?\DateTimeInterface
+    public function getAddedAt(): ?\DateTimeInterface
     {
-        return $this->added;
+        return $this->addedAt;
     }
 
     /**
-     * @param \DateTimeInterface|null $added
+     * @param \DateTimeInterface|null $addedAt
      * @return $this
      */
-    public function setAdded(?\DateTimeInterface $added): self
+    public function setAddedAt(?\DateTimeInterface $addedAt): self
     {
-        $this->added = $added;
+        $this->addedAt = $addedAt;
 
         return $this;
     }

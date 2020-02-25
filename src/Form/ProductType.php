@@ -25,7 +25,8 @@ class ProductType extends AbstractType
             ->add('code')
             ->add('isDiscontinued', CheckboxType::class, [
                 'required' => false,
-            ])
+                'label' => 'Is Discontinued',
+                ])
             ->add('stock', IntegerType::class)
             ->add('cost', IntegerType::class)
         ;

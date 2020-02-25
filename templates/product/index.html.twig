@@ -17,7 +17,7 @@
                 <th>Timestamp</th>
                 <th>Stock</th>
                 <th>Cost</th>
-                <th>actions</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -33,8 +33,8 @@
                 <td>{{ product.stock }}</td>
                 <td>{{ product.cost }}</td>
                 <td>
-                    <a href="{{ path('showProduct', {'id': product.id}) }}">show</a>
-                    <a href="{{ path('editProduct', {'id': product.id}) }}">edit</a>
+                    <a href="{{ path('showProduct', {'id': product.id}) }}">Show </a>
+                    <a href="{{ path('editProduct', {'id': product.id}) }}">Edit </a>
                 </td>
             </tr>
         {% else %}
@@ -44,6 +44,5 @@
         {% endfor %}
         </tbody>
     </table>
-
     <a href="{{ path('createNewProduct') }}">Create new</a>
 {% endblock %}

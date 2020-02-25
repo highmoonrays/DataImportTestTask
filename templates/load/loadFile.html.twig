@@ -5,6 +5,6 @@
 {% block body %}
     {{ form_start(form) }}
     {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Create') }}</button>
+    <button class="btn" onclick="alert('Process has been started!')">{{ button_label|default('Create') }}</button>
     {{ form_end(form) }}
 {% endblock %}

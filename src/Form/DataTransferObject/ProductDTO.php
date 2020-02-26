@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
-use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
 
@@ -71,8 +70,11 @@ class ProductDTO
         $productDTO->setStock($product->getStock());
         $productDTO->setCost($product->getCost());
 
-        ($product->getDiscontinuedAt() instanceof \DateTime)?
-            $productDTO->setIsDiscontinued(true) : $productDTO->setIsDiscontinued(false);
+        if ($product->getDiscontinuedAt() != null || $product->getStock() === 0) {
+            $productDTO->setIsDiscontinued(true);
+        } else {
+            $productDTO->setIsDiscontinued(false);
+        }
 
         return $productDTO;
     }
@@ -170,7 +172,7 @@ class ProductDTO
      */
     public function setIsDiscontinued(bool $isDiscontinued): void
     {
-        $this->isDiscontinued = (0 === $this->stock )? true : false;
+        $this->isDiscontinued = $isDiscontinued;
     }
 
     /**

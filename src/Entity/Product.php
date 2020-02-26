@@ -80,11 +80,12 @@ class Product
      */
     static function createProductFromDTO(object $productDTO):? Product
     {
-        if ($productDTO->getStock === 0){
+        if ($productDTO->getStock() === 0){
             $isDiscontinued = true;
         } else {
-            $isDiscontinued = ($productDTO->getIsDiscontinued === true)? true : false;
+            $isDiscontinued = ($productDTO->isDiscontinued() === true)? true : false;
         }
+
         return new Product(
             $productDTO->getName(),
             $productDTO->getDescription(),
@@ -108,17 +109,13 @@ class Product
         $product->setCost($productDTO->getCost());
         $product->setStock($productDTO->getStock());
 
-        if (true === $productDTO->isDiscontinued()) {
-            $product->setDiscontinuedAt(new \DateTime());
+        if (true === $productDTO->isDiscontinued() || 0 === $productDTO->getStock()) {
 
-        } else {
-
-            if ($productDTO->getStock() === 0){
+            if (null === $product->getDiscontinuedAt()) {
                 $product->setDiscontinuedAt(new \DateTime());
-            } else {
-                $product->setDiscontinuedAt(null);
             }
-
+        } else {
+            $product->setDiscontinuedAt(null);
         }
     }
 

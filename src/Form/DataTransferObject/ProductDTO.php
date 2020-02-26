@@ -6,6 +6,7 @@ namespace App\Form\DataTransferObject;
 
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ProductDTO
 {
@@ -176,12 +177,29 @@ class ProductDTO
     }
 
     /**
-     * @return bool
-     * @Assert\IsTrue(
-     *     message="Cost is less than 5 and Stock is less than 10")
+     * @param ExecutionContextInterface $context
+     * @Assert\Callback()
      */
-    public function isRules(): bool
+    public function isRules(ExecutionContextInterface $context): void
     {
-        return ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST && $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE)? false : true;
+        if ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST && $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE) {
+            $context->buildViolation(
+                'Cost is less than '
+                .FileDataValidator::PRODUCT_RULE_MIN_COST
+                .' and stock less than '
+                .FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE
+            )
+                ->atPath('stock')
+                ->addViolation();
+
+            $context->buildViolation(
+                'Cost is less than '
+                .FileDataValidator::PRODUCT_RULE_MIN_COST
+                .' and stock less than '
+                .FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE
+            )
+                ->atPath('cost')
+                ->addViolation();
+        }
     }
 }

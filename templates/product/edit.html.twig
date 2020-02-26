@@ -4,12 +4,6 @@
 
 {% block body %}
     <h1>Edit Product</h1>
-
-    {% for error in errors %}
-        <li>{{ error.message }}</li>
-    {% endfor %}
-
-
     {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
 
     <a href="{{ path('products') }}">back to list</a>

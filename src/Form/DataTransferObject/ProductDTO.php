@@ -192,12 +192,7 @@ class ProductDTO
                 ->atPath('stock')
                 ->addViolation();
 
-            $context->buildViolation(
-                'Cost is less than '
-                .FileDataValidator::PRODUCT_RULE_MIN_COST
-                .' and stock less than '
-                .FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE
-            )
+            $context->buildViolation("")
                 ->atPath('cost')
                 ->addViolation();
         }

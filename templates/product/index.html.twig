@@ -4,7 +4,7 @@
 
 {% block body %}
     <h1>Products</h1>
-
+    <a href="{{ path('createNewProduct') }}">Create new</a>
     {% for product in products %}
         <br>
         <div class="row">
@@ -51,5 +51,4 @@
             </div>
         </div>
     {% endfor %}
-    <a href="{{ path('createNewProduct') }}">Create new</a>
 {% endblock %}

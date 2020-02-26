@@ -5,11 +5,10 @@
 {% block body %}
     <h1>Edit Product</h1>
 
-    {% for message in app.flashes('Invalid product') %}
-        <div class="alert alert-notice">
-            {{ message }}
-        </div>
+    {% for error in errors %}
+        <li>{{ error.message }}</li>
     {% endfor %}
+
 
     {{ include('product/_form.html.twig', {'button_label': 'Update'}) }}
 

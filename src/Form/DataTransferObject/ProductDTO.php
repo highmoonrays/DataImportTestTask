@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
 
@@ -70,8 +71,9 @@ class ProductDTO
         $productDTO->setStock($product->getStock());
         $productDTO->setCost($product->getCost());
 
-        if ($product->getDiscontinuedAt() instanceof \DateTime)
-            $productDTO->setIsDiscontinued(true);
+        ($product->getDiscontinuedAt() instanceof \DateTime)?
+            $productDTO->setIsDiscontinued(true) : $productDTO->setIsDiscontinued(false);
+
         return $productDTO;
     }
 
@@ -173,9 +175,11 @@ class ProductDTO
 
     /**
      * @return bool
+     * @Assert\IsTrue(
+     *     message="Cost is less than 5 and Stock is less than 10")
      */
-    public function checkRules(): bool
+    public function isRules(): bool
     {
-        return ($this->cost < 5 && $this->stock < 10)? false : true;
+        return ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST && $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE)? false : true;
     }
 }

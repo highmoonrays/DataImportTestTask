@@ -3,10 +3,9 @@
 {% block title %}New Product{% endblock %}
 
 {% block body %}
-    {% for message in app.flashes('Invalid product') %}
-        <div class="alert alert-notice">
-            {{ message }}
-        </div>
+
+    {% for error in errors %}
+        <li>{{ error.message }}</li>
     {% endfor %}
     <header>
     <h3 align="center" style="color: #00b89c">

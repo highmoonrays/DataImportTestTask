@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  * Class ProductDTO
  * @package App\Form\DataTransferObject
  * @AcmeAssert\CustomUniqueEntity(
- *     fields={"code"},
+ *     fields="code",
  *     message="Product with this code already exists!"
  * )
  */

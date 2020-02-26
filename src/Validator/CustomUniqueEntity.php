@@ -36,5 +36,4 @@ class CustomUniqueEntity extends Constraint
     {
         return self::CLASS_CONSTRAINT;
     }
-
 }

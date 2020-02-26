@@ -40,7 +40,6 @@ class CustomUniqueEntityValidator extends ConstraintValidator
      */
     public function validate($property, Constraint $constraint): void
     {
-
         if (!$constraint instanceof CustomUniqueEntity) {
             throw new UnexpectedTypeException($constraint, CustomUniqueEntity::class);
         }
@@ -49,13 +48,13 @@ class CustomUniqueEntityValidator extends ConstraintValidator
             return;
         }
 
-        if (!is_string($property)) {
-            throw new UnexpectedValueException($property, 'string');
+        if (!is_object($property)) {
+            throw new UnexpectedValueException($property, 'object');
         }
 
-        if ($this->em->getRepository(Product::class)->findOneBy(['code' => $property])) {
+        if ($this->em->getRepository(Product::class)->findOneByCode($property->getCode())) {
             $this->context->buildViolation($constraint->message)
-                ->atPath("$property")
+                ->atPath("code")
                 ->addViolation();
         }
     }

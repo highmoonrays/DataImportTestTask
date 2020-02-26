@@ -9,7 +9,7 @@ class FileImportReporter
     /**
      * @var array
      */
-    private $invalidProducts = [];
+    private $invalidProducts;
 
     /**
      * @var array
@@ -24,7 +24,7 @@ class FileImportReporter
     /**
      * @return int
      */
-    public function getNumberCreatedProducts():? int
+    public function getNumberCreatedProducts(): ?int
     {
         return $this->numberCreatedProducts;
     }
@@ -40,23 +40,23 @@ class FileImportReporter
     /**
      * @return array
      */
-    public function getInvalidProducts():? array
+    public function getInvalidProducts(): ?array
     {
         return $this->invalidProducts;
     }
 
     /**
-     * @param array $invalidProducts
+     * @param string $invalidProduct
      */
-    public function setInvalidProducts(array $invalidProducts): void
+    public function addInvalidProducts(string $invalidProduct): void
     {
-        $this->invalidProducts[] = $invalidProducts;
+        $this->invalidProducts[] = $invalidProduct;
     }
 
     /**
      * @return array
      */
-    public function getMessages():? array
+    public function getMessages(): ?array
     {
         return $this->messages;
     }
@@ -67,5 +67,14 @@ class FileImportReporter
     public function addMessage(string $message): void
     {
         $this->messages[] = $message;
+    }
+
+    /**
+     * @return void
+     */
+    public function clearReport(): void
+    {
+        $this->messages = null;
+        $this->invalidProducts = null;
     }
 }

@@ -8,12 +8,11 @@ class FileUploader
 {
     /**
      * @param $uploadDir
-     * @param $form
+     * @param $file
      * @return string
      */
-    public function upload($uploadDir, $form): string
+    public function upload(string $uploadDir, object $file): string
     {
-        $file = $form->get('file')->getData();
         $fileName = $file->getClientOriginalName();
         $file->move($uploadDir, $fileName);
 

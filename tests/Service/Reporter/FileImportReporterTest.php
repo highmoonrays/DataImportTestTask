@@ -24,11 +24,11 @@ class FileImportReporterTest extends TestCase
 
     public function testGettersAndSetters(): void
     {
-        $this->reporter->setInvalidProducts([['product1'], ['product2'], ['product3']]);
+        $this->reporter->addInvalidProducts(implode([implode(['product1']), implode(['product2']), implode(['product3'])]));
         $this->reporter->setNumberCreatedProducts(8);
         $this->reporter->addMessage('Product is already exists');
 
-        $expectedInvalidProducts[] = [['product1'], ['product2'], ['product3']];
+        $expectedInvalidProducts[] = implode([implode(['product1']), implode(['product2']), implode(['product3'])]);
 
         $this->assertSame($expectedInvalidProducts, $this->reporter->getInvalidProducts());
 

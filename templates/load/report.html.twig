@@ -3,15 +3,17 @@
 {% block title %}Home page{% endblock %}
 
 {% block body %}
-there {{ numberInvalidProducts }} products are invalid
 <br>
-{% for index in 0..numberInvalidProducts-1 %}
-    <br>
-    {% for productData in invalidProducts[index] %}
-        {{ productData }}
-    {% endfor %}
-    {{ messages[index] }}
-{% endfor %}
-<br>
-and {{ numberCreatedProducts }} are created successfully
+    <div>
+        <p></p>
+    </div>
+    <script>
+        const url = new URL('http://localhost:3000/.well-known/mercure');
+        url.searchParams.append('topic', 'http://localhost:8000/uploadFile');
+        const eventSource = new EventSource(url);
+        eventSource.onmessage = e => {
+            document.querySelector('p').insertAdjacentHTML('afterend', e.data);
+            document.querySelector('p').insertAdjacentHTML('afterend', '<br>');
+        };
+    </script>
 {% endblock %}

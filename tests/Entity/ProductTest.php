@@ -66,8 +66,8 @@ class ProductTest extends TestCase
         $this->product->setDiscontinuedAt(new \DateTime());
         $this->assertInstanceOf(\DateTime::class, $this->product->getDiscontinuedAt());
 
-        $this->product->setAdded(new \DateTime());
-        $this->assertInstanceOf(\DateTime::class, $this->product->getAdded());
+        $this->product->setAddedAt(new \DateTime());
+        $this->assertInstanceOf(\DateTime::class, $this->product->getAddedAt());
 
         $this->product->setTimestamp(new \DateTime());
         $this->assertInstanceOf(\DateTime::class, $this->product->getTimestamp());

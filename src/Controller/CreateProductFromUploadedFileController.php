@@ -48,43 +48,30 @@ class CreateProductFromUploadedFileController extends AbstractController
     }
 
     /**
-     * @Route("/createProductFromUploadedFile", name="createProductFromUploadedFile")
+     * @Route("/uploadFile", name="uploadFile")
      * @param string $uploadDir
      * @param FileUploader $uploader
      * @param Request $request
      * @return Response
      * @throws \Exception
      */
-    public function createProductFromUploadedFile(
-        string $uploadDir,
-        FileUploader $uploader,
-        Request $request): Response
+    public function createProductFromUploadedFile(string $uploadDir, FileUploader $uploader, Request $request): Response
     {
         $form = $this->createForm(UploadFileToCreateProductType::class);
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid()){
-            $pathToFile = $uploader->upload($uploadDir, $form);
-            $this->importProcessor->process($pathToFile);
-            $invalidProducts = $this->importReporter->getInvalidProducts();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $file = $form->get('file')->getData();
+            $pathToFile = $uploader->upload($uploadDir, $file);
 
-            if($invalidProducts) {
-                $messages = $this->importReporter->getMessages();
+            $isTestMode = false;
 
-                if (false === $form->get('isTest')->getData()) {
-                    $this->em->flush();
-                }
-
-                return $this->render('load/report.html.twig', [
-                    'numberInvalidProducts' => count($this->importReporter->getInvalidProducts()),
-                    'messages' => $messages,
-                    'invalidProducts' => $invalidProducts,
-                    'numberCreatedProducts' => $this->importReporter->getNumberCreatedProducts()
-                ]);
+            if (true === $form->get('isTest')->getData()) {
+                $isTestMode = true;
             }
-            else{
-                $this->addFlash('products are valid', 'All products are valid, and successfully created');
-            }
+            $this->importProcessor->scheduleProductCreation($pathToFile, $isTestMode);
+
+            return $this->render('load/report.html.twig');
         }
 
         return $this->render('load/loadFile.html.twig', [

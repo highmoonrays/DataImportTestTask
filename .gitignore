@@ -17,4 +17,5 @@
 
 #Ignore .idea files
 /.idea
-/data
+/public/data
+/mercure

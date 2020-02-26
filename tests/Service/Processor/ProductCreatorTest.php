@@ -99,17 +99,7 @@ class ProductCreatorTest extends TestCase
                     ]
                 ],
                 [
-                    'invalidProducts' => [
-                        [
-                            FileDataValidator::PRODUCT_NAME_COLUMN => 9,
-                            FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 197,
-                            FileDataValidator::PRODUCT_CODE_COLUMN => null,
-                            FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => 'error',
-                            FileDataValidator::PRODUCT_STOCK_COLUMN => 1,
-                            FileDataValidator::PRODUCT_COST_COLUMN => 0,
-                            'isValid' => 'no'
-                        ],
-                    ],
+                    'invalidProducts' => ["9 197  error 1 0 no"],
                     'numberCreatedProducts' => 2
                 ]
             ],
@@ -182,36 +172,12 @@ class ProductCreatorTest extends TestCase
                     ]
                 ],
                 [
-                    'invalidProducts' => [
-                        [
-                            FileDataValidator::PRODUCT_NAME_COLUMN => 9,
-                            FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 197,
-                            FileDataValidator::PRODUCT_CODE_COLUMN => null,
-                            FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => 'error',
-                            FileDataValidator::PRODUCT_STOCK_COLUMN => 1,
-                            FileDataValidator::PRODUCT_COST_COLUMN => 0,
-                            'isValid' => 'no'
-                        ],
-                        [
-                            FileDataValidator::PRODUCT_NAME_COLUMN => 'dam',
-                            FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 13,
-                            FileDataValidator::PRODUCT_CODE_COLUMN => null,
-                            FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => 'Fatal error',
-                            FileDataValidator::PRODUCT_STOCK_COLUMN => 1,
-                            FileDataValidator::PRODUCT_COST_COLUMN => 100000,
-                            'isValid' => 'no'
-                        ],
-                        [
-                            FileDataValidator::PRODUCT_NAME_COLUMN => 'name',
-                            FileDataValidator::PRODUCT_DESCRIPTION_COLUMN => 'old smoke',
-                            FileDataValidator::PRODUCT_CODE_COLUMN => 'codddd',
-                            FileDataValidator::PRODUCT_DISCONTINUED_COLUMN => 'error',
-                            FileDataValidator::PRODUCT_STOCK_COLUMN => 1,
-                            FileDataValidator::PRODUCT_COST_COLUMN => 3,
-                            'isValid' => 'no'
-                        ],
+                    'invalidProducts' =>[
+                        "9 197  error 1 0 no",
+                        "dam 13  Fatal error 1 100000 no",
+                        "name old smoke codddd error 1 3 no",
                     ],
-                    'numberCreatedProducts' => 4
+                    'numberCreatedProducts' => 4,
                 ]
             ],
         ];

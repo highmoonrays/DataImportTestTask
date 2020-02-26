@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Form\DataTransferObject\ProductDTO;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 
 /**
  * Product.
- *
  * @ORM\Table(name="tblProductData", uniqueConstraints={@ORM\UniqueConstraint(name="tblProductData", columns={"intProductDataId"})})
  * @ORM\Entity(repositoryClass="App\Repository\ProductRepository")
  */
@@ -45,7 +45,7 @@ class Product
      * @var \DateTime|null
      * @ORM\Column(name="dtmAdded", type="datetime", nullable=true)
      */
-    private $added;
+    private $addedAt;
 
     /**
      * @var \DateTime|null
@@ -74,6 +74,52 @@ class Product
     private $cost;
 
     /**
+     * @param object $productDTO
+     * @return Product
+     * @throws Exception
+     */
+    static function createProductFromDTO(object $productDTO):? Product
+    {
+        if ($productDTO->getStock() === 0){
+            $isDiscontinued = true;
+        } else {
+            $isDiscontinued = ($productDTO->isDiscontinued() === true)? true : false;
+        }
+
+        return new Product(
+            $productDTO->getName(),
+            $productDTO->getDescription(),
+            $productDTO->getCode(),
+            $productDTO->getStock(),
+            $productDTO->getCost(),
+            $isDiscontinued
+        );
+    }
+
+    /**
+     * @param Product $product
+     * @param ProductDTO $productDTO
+     * @throws Exception
+     */
+    static function updateProductFromDTO(Product $product, ProductDTO $productDTO): void
+    {
+        $product->setName($productDTO->getName());
+        $product->setDescription($productDTO->getDescription());
+        $product->setCode($productDTO->getCode());
+        $product->setCost($productDTO->getCost());
+        $product->setStock($productDTO->getStock());
+
+        if (true === $productDTO->isDiscontinued() || 0 === $productDTO->getStock()) {
+
+            if (null === $product->getDiscontinuedAt()) {
+                $product->setDiscontinuedAt(new \DateTime());
+            }
+        } else {
+            $product->setDiscontinuedAt(null);
+        }
+    }
+
+    /**
      * Product constructor.
      *
      * @param string $name
@@ -95,12 +141,15 @@ class Product
         $this->name = $name;
         $this->description = $description;
         $this->code = $code;
-        $this->added = new \DateTime();
+        $this->addedAt = new \DateTime();
         $this->timestamp = new \DateTime();
         $this->stock = $stock;
         $this->cost = $cost;
+
         if (true === $isDiscontinued) {
             $this->discontinuedAt = new \DateTime();
+        } else {
+            $this->discontinuedAt = null;
         }
     }
 
@@ -172,18 +221,18 @@ class Product
     /**
      * @return \DateTimeInterface|null
      */
-    public function getAdded(): ?\DateTimeInterface
+    public function getAddedAt(): ?\DateTimeInterface
     {
-        return $this->added;
+        return $this->addedAt;
     }
 
     /**
-     * @param \DateTimeInterface|null $added
+     * @param \DateTimeInterface|null $addedAt
      * @return $this
      */
-    public function setAdded(?\DateTimeInterface $added): self
+    public function setAddedAt(?\DateTimeInterface $addedAt): self
     {
-        $this->added = $added;
+        $this->addedAt = $addedAt;
 
         return $this;
     }

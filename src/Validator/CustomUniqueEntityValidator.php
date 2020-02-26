@@ -9,13 +9,15 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
+use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+
 
 /**
  * Class UniqueProductValidator
  * @package App\Validator\Constraint
  * @Annotation
  */
-class UniqueProductValidator extends ConstraintValidator
+class CustomUniqueEntityValidator extends ConstraintValidator
 {
     /**
      * @var EntityManagerInterface
@@ -38,6 +40,11 @@ class UniqueProductValidator extends ConstraintValidator
      */
     public function validate($property, Constraint $constraint): void
     {
+
+        if (!$constraint instanceof CustomUniqueEntity) {
+            throw new UnexpectedTypeException($constraint, CustomUniqueEntity::class);
+        }
+
         if (null === $property || '' === $property) {
             return;
         }
@@ -46,7 +53,7 @@ class UniqueProductValidator extends ConstraintValidator
             throw new UnexpectedValueException($property, 'string');
         }
 
-        if ($this->em->getRepository(Product::class)->findOneByCode($property)) {
+        if ($this->em->getRepository(Product::class)->findOneBy(['code' => $property])) {
             $this->context->buildViolation($constraint->message)
                 ->atPath("$property")
                 ->addViolation();

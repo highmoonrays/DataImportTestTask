@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
-use App\Validator\UniqueProduct;
+use App\Validator as AcmeAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -12,6 +12,10 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * Class ProductDTO
  * @package App\Form\DataTransferObject
+ * @AcmeAssert\CustomUniqueEntity(
+ *     fields={"code"},
+ *     message="Product with this code already exists!"
+ * )
  */
 class ProductDTO
 {
@@ -42,7 +46,6 @@ class ProductDTO
      *     FileDataValidator::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS,
      *     message="Please, enter valid code"
      * )
-     * * @UniqueProduct()
      */
     private $code;
 

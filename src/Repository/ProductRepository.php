@@ -23,15 +23,15 @@ class ProductRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param $value
+     * @param $code
      * @return Product|null
      * @throws NonUniqueResultException
      */
-    public function findOneBySomeField($value): ?Product
+    public function findOneByCode($code): ?Product
     {
-        return $this->createQueryBuilder('a')
-            ->andWhere('a.exampleField = :val')
-            ->setParameter('val', $value)
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.code= :code')
+            ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult()
             ;

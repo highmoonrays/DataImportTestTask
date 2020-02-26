@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Validator\Constraint;
+namespace App\Validator;
 
 use App\Entity\Product;
-use App\Repository\ProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
-use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 
 /**
- * Class UniqueProductCodeValidator
+ * Class UniqueProductValidator
  * @package App\Validator\Constraint
  * @Annotation
  */
@@ -40,10 +38,6 @@ class UniqueProductValidator extends ConstraintValidator
      */
     public function validate($property, Constraint $constraint): void
     {
-        if (!$constraint instanceof UniqueProductValidator) {
-            throw new UnexpectedTypeException($constraint, UniqueProductValidator::class);
-        }
-
         if (null === $property || '' === $property) {
             return;
         }
@@ -52,7 +46,7 @@ class UniqueProductValidator extends ConstraintValidator
             throw new UnexpectedValueException($property, 'string');
         }
 
-        if ($this->em->getRepository(Product::class)->findOneBySomeField($property)) {
+        if ($this->em->getRepository(Product::class)->findOneByCode($property)) {
             $this->context->buildViolation($constraint->message)
                 ->atPath("$property")
                 ->addViolation();

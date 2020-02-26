@@ -7,6 +7,7 @@ namespace App\Repository;
 use App\Entity\Product;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * @method Product|null find($id, $lockMode = null, $lockVersion = null)
@@ -19,5 +20,20 @@ class ProductRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Product::class);
+    }
+
+    /**
+     * @param $value
+     * @return Product|null
+     * @throws NonUniqueResultException
+     */
+    public function findOneBySomeField($value): ?Product
+    {
+        return $this->createQueryBuilder('a')
+            ->andWhere('a.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
     }
 }

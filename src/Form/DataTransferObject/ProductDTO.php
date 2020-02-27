@@ -11,17 +11,11 @@ use App\Service\ImportTool\FileDataValidator;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
- * Class ProductDTO
- * @package App\Form\DataTransferObject
  * @AcmeAssert\CustomUniqueEntity(
- *     field="code",
- *     message="Product with this code already exists!",
+ *     fields={"code", "name"},
+ *     message="Product with this code or name already exists!",
  *     className=Product::class,
- * )
- * @AcmeAssert\CustomUniqueEntity(
- *     field="name",
- *     message="Product with this name already exists!",
- *     className=Product::class,
+ *     fieldToFireError="name"
  * )
  */
 class ProductDTO

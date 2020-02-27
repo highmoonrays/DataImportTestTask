@@ -19,7 +19,7 @@ class CustomUniqueEntity extends Constraint
     /**
      * @var mixed
      */
-    public $field;
+    public $fields;
 
     /**
      * @var object
@@ -34,7 +34,7 @@ class CustomUniqueEntity extends Constraint
     /**
      * @return string
      */
-    public function validatedBy()
+    public function validatedBy(): string
     {
         return \get_class($this).'Validator';
     }

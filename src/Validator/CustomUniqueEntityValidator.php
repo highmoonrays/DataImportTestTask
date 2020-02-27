@@ -11,7 +11,6 @@ use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
-
 /**
  * Class UniqueProductValidator
  * @package App\Validator\Constraint
@@ -63,11 +62,16 @@ class CustomUniqueEntityValidator extends ConstraintValidator
             throw new UnexpectedValueException($objectToValidate, 'object');
         }
         $arrayToValidate = $this->objectToAssociativeArrayTransform->transform($objectToValidate);
+        $uniqueFields = [];
+
+        foreach ($constraint->fields as $field){
+            $uniqueFields[$field] = $arrayToValidate[$field];
+        }
 
         if ($this->em->getRepository($constraint->className)
-            ->findOneBy([$constraint->field => $arrayToValidate[$constraint->field]])) {
+            ->findAll($uniqueFields)) {
             $this->context->buildViolation($constraint->message)
-                ->atPath($constraint->field)
+                ->atPath($constraint->fieldToFireError)
                 ->addViolation();
         }
     }

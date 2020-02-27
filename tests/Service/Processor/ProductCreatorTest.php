@@ -32,12 +32,13 @@ class ProductCreatorTest extends TestCase
 
         $mockValidator->expects($this->any())
             ->method('validate')
-            ->willReturnCallback(function ($isValid) {
-                if ('yes' === $isValid['isValid']) {
-                    return true;
+            ->willReturnCallback(
+                function ($isValid) {
+                    if ('yes' === $isValid['isValid']) {
+                        return true;
+                    }
+                    return false;
                 }
-                return false;
-            }
             );
 
         $mockEm = $this->getMockBuilder(EntityManager::class)->disableOriginalConstructor()->getMock();

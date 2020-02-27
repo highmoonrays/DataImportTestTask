@@ -101,7 +101,6 @@ class ImportProductsFromFile extends Command
             if (false === $isProcessSuccess) {
                 $output->writeln('<fg=red>Unsupported Extension!</>');
             } else {
-
                 if ($this->reporter->getMessages()) {
                     $messages = $this->reporter->getMessages();
 
@@ -119,7 +118,7 @@ class ImportProductsFromFile extends Command
                 }
                 $io->success('Command exited cleanly,' . $this->reporter->getNumberCreatedProducts() . ' items are saved');
             }
-        } catch (\Exception $exception){
+        } catch (\Exception $exception) {
             $io->error($exception->getMessage());
         }
         $time_elapsed_secs = microtime(true) - $start;

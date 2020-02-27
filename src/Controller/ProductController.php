@@ -63,7 +63,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $product = Product::createProductFromDTO($productDTO);
             $this->em->persist($product);
             $this->em->flush();

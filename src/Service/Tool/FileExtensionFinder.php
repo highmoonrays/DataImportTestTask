@@ -29,8 +29,7 @@ class FileExtensionFinder
         try {
             $fileNameParts = pathinfo($pathToFile);
             $this->fileExtension = $fileNameParts[self::EXTENSION];
-        }
-        catch (Exception $exception){
+        } catch (Exception $exception) {
             throw new InvalidExtensionException('Invalid extension');
         }
 

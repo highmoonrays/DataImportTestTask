@@ -78,9 +78,9 @@ class Product
      * @return Product
      * @throws Exception
      */
-    static function createProductFromDTO(object $productDTO):? Product
+    public static function createProductFromDTO(object $productDTO):? Product
     {
-        if ($productDTO->getStock() === 0){
+        if ($productDTO->getStock() === 0) {
             $isDiscontinued = true;
         } else {
             $isDiscontinued = ($productDTO->isDiscontinued() === true)? true : false;
@@ -101,7 +101,7 @@ class Product
      * @param ProductDTO $productDTO
      * @throws Exception
      */
-    static function updateProductFromDTO(Product $product, ProductDTO $productDTO): void
+    public static function updateProductFromDTO(Product $product, ProductDTO $productDTO): void
     {
         $product->setName($productDTO->getName());
         $product->setDescription($productDTO->getDescription());
@@ -110,7 +110,6 @@ class Product
         $product->setStock($productDTO->getStock());
 
         if (true === $productDTO->isDiscontinued() || 0 === $productDTO->getStock()) {
-
             if (null === $product->getDiscontinuedAt()) {
                 $product->setDiscontinuedAt(new \DateTime());
             }

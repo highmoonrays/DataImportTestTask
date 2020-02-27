@@ -32,6 +32,11 @@ class CustomUniqueEntity extends Constraint
     public $fieldToFireError;
 
     /**
+     * @var string
+     */
+    public $primaryKey;
+
+    /**
      * @return string
      */
     public function validatedBy(): string

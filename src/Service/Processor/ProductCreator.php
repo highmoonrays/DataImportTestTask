@@ -64,12 +64,12 @@ class ProductCreator
         return $isValid;
     }
 
-        /**
-         * @param $row
-         *
-         * @throws Exception
-         */
-        public function setProduct(array $row): void
+    /**
+     * @param $row
+     *
+     * @throws Exception
+     */
+    public function setProduct(array $row): void
     {
         $isDiscontinued = false;
 

@@ -15,7 +15,8 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *     fields={"code"},
  *     message="Product with this code already exists!",
  *     className=Product::class,
- *     fieldToFireError="code"
+ *     fieldToFireError="code",
+ *     primaryKey="id"
  * )
  */
 class ProductDTO
@@ -76,7 +77,7 @@ class ProductDTO
      * @param object $product
      * @return ProductDTO|null
      */
-    static function createDTOFromProduct(object $product): ?ProductDTO
+    public static function createDTOFromProduct(object $product): ?ProductDTO
     {
         $productDTO = new ProductDTO();
         $productDTO->setId($product->getId());
@@ -197,7 +198,9 @@ class ProductDTO
      */
     public function isRules(ExecutionContextInterface $context): void
     {
-        if ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST && $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE) {
+        if ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST &&
+            $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE
+        ) {
             $context->buildViolation(
                 'Cost is less than '
                 .FileDataValidator::PRODUCT_RULE_MIN_COST

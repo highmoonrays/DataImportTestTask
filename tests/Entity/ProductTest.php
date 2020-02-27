@@ -27,7 +27,7 @@ class ProductTest extends TestCase
             5,
             0,
             false
-            )
+        )
         ;
     }
 

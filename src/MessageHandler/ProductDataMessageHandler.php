@@ -58,8 +58,8 @@ class ProductDataMessageHandler implements MessageHandlerInterface
         FileImportReporter $importReporter,
         EntityManagerInterface $em,
         ProductCreator $productCreator,
-        PublisherInterface $publisher)
-    {
+        PublisherInterface $publisher
+    ) {
         $this->importReporter = $importReporter;
         $this->importProcessor = $importProcessor;
         $this->em = $em;

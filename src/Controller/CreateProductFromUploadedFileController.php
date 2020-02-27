@@ -40,8 +40,8 @@ class CreateProductFromUploadedFileController extends AbstractController
     public function __construct(
         ImportProcessor $importProcessor,
         FileImportReporter $importReporter,
-        EntityManagerInterface $em)
-    {
+        EntityManagerInterface $em
+    ) {
         $this->importReporter = $importReporter;
         $this->importProcessor = $importProcessor;
         $this->em = $em;

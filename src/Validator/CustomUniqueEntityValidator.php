@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
-use App\Service\Tool\ObjectToAssociativeArrayTransform;
+use App\Service\Tool\ObjectToAssociativeArrayTransformer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -24,20 +24,19 @@ class CustomUniqueEntityValidator extends ConstraintValidator
     private $em;
 
     /**
-     * @var ObjectToAssociativeArrayTransform
+     * @var ObjectToAssociativeArrayTransformer
      */
     private $objectToAssociativeArrayTransform;
 
     /**
      * UniqueProductValidator constructor.
      * @param EntityManagerInterface $em
-     * @param ObjectToAssociativeArrayTransform $objectToAssociativeArrayTransform
+     * @param ObjectToAssociativeArrayTransformer $objectToAssociativeArrayTransform
      */
     public function __construct(
         EntityManagerInterface $em,
-        ObjectToAssociativeArrayTransform $objectToAssociativeArrayTransform
-    )
-    {
+        ObjectToAssociativeArrayTransformer $objectToAssociativeArrayTransform
+    ) {
         $this->em = $em;
         $this->objectToAssociativeArrayTransform = $objectToAssociativeArrayTransform;
     }
@@ -62,18 +61,20 @@ class CustomUniqueEntityValidator extends ConstraintValidator
             throw new UnexpectedValueException($objectToValidate, 'object');
         }
         $arrayToValidate = $this->objectToAssociativeArrayTransform->transform($objectToValidate);
-        $uniqueFields = [];
+        $criteria = [];
 
-        foreach ($constraint->fields as $field){
-            $uniqueFields[$field] = $arrayToValidate[$field];
+        foreach ($constraint->fields as $field) {
+            $criteria[$field] = $arrayToValidate[$field];
         }
-        $foundedObject = $this->em->getRepository($constraint->className)->findOneBy($uniqueFields);
+        $foundedObject = $this->em->getRepository($constraint->className)->findOneBy($criteria);
 
         if ($foundedObject) {
-            $foundedAndTransformedArrayToCompare = $this->objectToAssociativeArrayTransform->transform($foundedObject);
+            $foundedAndTransformedObjectToCompare = $this->objectToAssociativeArrayTransform->transform($foundedObject);
 
-            if ($foundedAndTransformedArrayToCompare['id'] === $arrayToValidate['id']) {
-
+            if (
+                $foundedAndTransformedObjectToCompare[$constraint->primaryKey] ===
+                $arrayToValidate[$constraint->primaryKey]
+            ) {
                 return;
             } else {
                 $this->context->buildViolation($constraint->message)

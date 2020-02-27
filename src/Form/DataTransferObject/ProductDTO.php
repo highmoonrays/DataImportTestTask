@@ -4,11 +4,27 @@ declare(strict_types=1);
 
 namespace App\Form\DataTransferObject;
 
+use App\Validator as AcmeAssert;
+use App\Entity\Product;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Service\ImportTool\FileDataValidator;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @AcmeAssert\CustomUniqueEntity(
+ *     fields={"code"},
+ *     message="Product with this code already exists!",
+ *     className=Product::class,
+ *     fieldToFireError="code",
+ *     primaryKey="id"
+ * )
+ */
 class ProductDTO
 {
+    /**
+     * @var int
+     */
+    private $id;
     /**
      * @var string
      * @Assert\NotBlank
@@ -61,9 +77,10 @@ class ProductDTO
      * @param object $product
      * @return ProductDTO|null
      */
-    static function createDTOFromProduct(object $product): ?ProductDTO
+    public static function createDTOFromProduct(object $product): ?ProductDTO
     {
         $productDTO = new ProductDTO();
+        $productDTO->setId($product->getId());
         $productDTO->setName($product->getName());
         $productDTO->setDescription($product->getDescription());
         $productDTO->setCode($product->getCode());
@@ -176,12 +193,42 @@ class ProductDTO
     }
 
     /**
-     * @return bool
-     * @Assert\IsTrue(
-     *     message="Cost is less than 5 and Stock is less than 10")
+     * @param ExecutionContextInterface $context
+     * @Assert\Callback()
      */
-    public function isRules(): bool
+    public function isRules(ExecutionContextInterface $context): void
     {
-        return ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST && $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE)? false : true;
+        if ($this->cost < FileDataValidator::PRODUCT_RULE_MIN_COST &&
+            $this->stock < FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE
+        ) {
+            $context->buildViolation(
+                'Cost is less than '
+                .FileDataValidator::PRODUCT_RULE_MIN_COST
+                .' and stock less than '
+                .FileDataValidator::PRODUCT_RULE_STOCK_MIN_RULE
+            )
+                ->atPath('stock')
+                ->addViolation();
+
+            $context->buildViolation("")
+                ->atPath('cost')
+                ->addViolation();
+        }
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

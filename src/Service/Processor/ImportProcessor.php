@@ -75,8 +75,8 @@ class ImportProcessor
             $rowsWithKeys = $this->transformArrayToAssociative($rows);
 
             if ($rowsWithKeys) {
-                 $this->productCreator->createProducts($rowsWithKeys);
-                 $isProcessSuccess = true;
+                $this->productCreator->createProducts($rowsWithKeys);
+                $isProcessSuccess = true;
             } else {
                 throw new InvalidDataInFileException('Invalid data in given file!');
             }
@@ -136,7 +136,6 @@ class ImportProcessor
         $rowsWithKeys = $this->transformArrayToAssociative($rows);
 
         if (count($rowsWithKeys) > 1) {
-
             foreach ($rowsWithKeys as $rowWithKeys) {
                 $message = new ProductDataMessage(array($rowWithKeys), $isTestMode);
                 $this->bus->dispatch($message);

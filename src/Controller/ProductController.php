@@ -63,7 +63,6 @@ class ProductController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $product = Product::createProductFromDTO($productDTO);
             $this->em->persist($product);
             $this->em->flush();
@@ -73,7 +72,6 @@ class ProductController extends AbstractController
 
         return $this->render('product/new.html.twig', [
             'form' => $form->createView(),
-            'errors' => $form->getErrors(),
         ]);
     }
 
@@ -112,7 +110,6 @@ class ProductController extends AbstractController
         return $this->render('product/edit.html.twig', [
             'product' => $product,
             'form' => $form->createView(),
-            'errors' => $form->getErrors(),
         ]);
     }
 

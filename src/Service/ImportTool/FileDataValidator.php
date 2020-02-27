@@ -90,35 +90,20 @@ class FileDataValidator
 
         if (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_NAME_COLUMN])) {
             $this->reporter->addMessage('Invalid product name');
-        }
-
-        elseif ($this->productRepository->findOneBy(['code' => $row[self::PRODUCT_CODE_COLUMN]])) {
-            $this->reporter->addMessage('This product already exists');
-        }
-
-
-        elseif (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_DESCRIPTION_COLUMN])) {
+        } elseif ($this->productRepository->findOneBy(['code' => $row[self::PRODUCT_CODE_COLUMN]])) {
+            $this->reporter->addMessage('Product with this code is already exists!');
+        } elseif (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_DESCRIPTION_COLUMN])) {
             $this->reporter->addMessage('Invalid product description');
-        }
-
-        elseif (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_CODE_COLUMN])) {
+        } elseif (!preg_match(self::REGULAR_EXPRESSION_TO_AVOID_SPECIAL_CHARACTERS, $row[self::PRODUCT_CODE_COLUMN])) {
             $this->reporter->addMessage('Invalid product code');
-        }
-
-        elseif (!is_numeric($row[self::PRODUCT_COST_COLUMN])) {
+        } elseif (!is_numeric($row[self::PRODUCT_COST_COLUMN])) {
             $this->reporter->addMessage('Invalid product cost');
-        }
-
-        elseif (!is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
+        } elseif (!is_numeric($row[self::PRODUCT_STOCK_COLUMN])) {
             $this->reporter->addMessage('Invalid product stock');
-        }
-
-        elseif ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
+        } elseif ($row[self::PRODUCT_STOCK_COLUMN] < self::PRODUCT_RULE_STOCK_MIN_RULE
             && (int) $row[self::PRODUCT_COST_COLUMN] < self::PRODUCT_RULE_MIN_COST) {
             $this->reporter->addMessage('Stock and cost are less than '.self::PRODUCT_RULE_STOCK_MIN_RULE.' and '.self::PRODUCT_RULE_MIN_COST);
-        }
-
-        elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
+        } elseif ($row[self::PRODUCT_COST_COLUMN] > self::PRODUCT_RULE_MAX_COST) {
             $this->reporter->addMessage('Cost is more than '.self::PRODUCT_RULE_MAX_COST);
         } else {
             $isValid = true;

@@ -57,18 +57,20 @@ class FileDataValidatorTest extends TestCase
 
         $this->mockProductRepository->expects($this->any())
             ->method('findOneBy')
-            ->willReturnCallback(function ($code) {
-                if (['code' => 'P00050'] === $code) {
-                    return new Product(
+            ->willReturnCallback(
+                function ($code) {
+                    if (['code' => 'P00050'] === $code) {
+                        return new Product(
                         'Already',
                         'Existing product, so validation will fail',
                         'P00050',
                         10,
                         20,
-                        true);
+                        true
+                    );
+                    }
+                    return null;
                 }
-                return null;
-            }
             );
 
         $this->reporter = new FileImportReporter();

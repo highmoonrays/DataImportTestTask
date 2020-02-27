@@ -5,46 +5,48 @@
 {% block body %}
     <h1>Product</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ product.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ product.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ product.description }}</td>
-            </tr>
-            <tr>
-                <th>Code</th>
-                <td>{{ product.code }}</td>
-            </tr>
-            <tr>
-                <th>Added</th>
-                <td>{{ product.addedAt ? product.addedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DiscontinuedAt</th>
-                <td>{{ product.discontinuedAt ? product.discontinuedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Timestamp</th>
-                <td>{{ product.timestamp ? product.timestamp|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Stock</th>
-                <td>{{ product.stock }}</td>
-            </tr>
-            <tr>
-                <th>Cost</th>
-                <td>{{ product.cost }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="row">
+        <div class="col">
+            <p> Id </p>
+            <p>{{ product.id }}</p>
+        </div>
+        <div class="col">
+            <p> Name </p>
+            <p>{{ product.name }}</p>
+        </div>
+        <div class="col">
+            <p> Description </p>
+            <p>{{ product.description }}</p>
+        </div>
+        <div class="col">
+            <p> Product Code </p>
+            <p>{{ product.code }}</p>
+        </div>
+        <div class="col">
+            <p> Added at </p>
+            <p>{{ product.addedAt ? product.addedAt|date('Y-m-d H:i:s') : '' }}</p>
+        </div>
+        <div class="col">
+            <p> Timestamp </p>
+            <p>{{ product.timestamp ? product.timestamp|date('Y-m-d H:i:s') : '' }}</p>
+        </div>
+        <div class="col">
+            <p> Discontinued at </p>
+            <p>{{ product.discontinuedAt ? product.discontinuedAt|date('Y-m-d H:i:s') : '' }}</p>
+        </div>
+        <div class="col">
+            <p> Stock </p>
+            <p>{{ product.stock }}</p>
+        </div>
+        <div class="col">
+            <p> Cost </p>
+            <p>{{ product.cost }}</p>
+        </div>
+        <div class="col">
+            <p> Actions: </p>
+            <a href="{{ path('editProduct', {'id': product.id}) }}">Edit </a>
+        </div>
+    </div>
 
     <a href="{{ path('products') }}">back to list</a>
 

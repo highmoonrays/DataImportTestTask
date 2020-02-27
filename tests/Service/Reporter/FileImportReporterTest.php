@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Tests\Service\Reporter;
 
-
 use App\Service\Reporter\FileImportReporter;
 use PHPUnit\Framework\TestCase;
 

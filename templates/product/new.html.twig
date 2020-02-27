@@ -3,10 +3,6 @@
 {% block title %}New Product{% endblock %}
 
 {% block body %}
-
-    {% for error in errors %}
-        <li>{{ error.message }}</li>
-    {% endfor %}
     <header>
     <h3 align="center" style="color: #00b89c">
         Create new Product!
@@ -14,4 +10,5 @@
     </header>
     {{ include('product/_form.html.twig') }}
     <a href="{{ path('products') }}">back to list</a>
+</div>
 {% endblock %}

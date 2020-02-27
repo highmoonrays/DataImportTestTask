@@ -67,12 +67,19 @@ class CustomUniqueEntityValidator extends ConstraintValidator
         foreach ($constraint->fields as $field){
             $uniqueFields[$field] = $arrayToValidate[$field];
         }
+        $foundedObject = $this->em->getRepository($constraint->className)->findOneBy($uniqueFields);
 
-        if ($this->em->getRepository($constraint->className)
-            ->findAll($uniqueFields)) {
-            $this->context->buildViolation($constraint->message)
-                ->atPath($constraint->fieldToFireError)
-                ->addViolation();
+        if ($foundedObject) {
+            $foundedAndTransformedArrayToCompare = $this->objectToAssociativeArrayTransform->transform($foundedObject);
+
+            if ($foundedAndTransformedArrayToCompare['id'] === $arrayToValidate['id']) {
+
+                return;
+            } else {
+                $this->context->buildViolation($constraint->message)
+                    ->atPath($constraint->fieldToFireError)
+                    ->addViolation();
+            }
         }
     }
 }

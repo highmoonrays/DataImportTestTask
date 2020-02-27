@@ -12,14 +12,18 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @AcmeAssert\CustomUniqueEntity(
- *     fields={"code", "name"},
- *     message="Product with this code or name already exists!",
+ *     fields={"code"},
+ *     message="Product with this code already exists!",
  *     className=Product::class,
- *     fieldToFireError="name"
+ *     fieldToFireError="code"
  * )
  */
 class ProductDTO
 {
+    /**
+     * @var int
+     */
+    private $id;
     /**
      * @var string
      * @Assert\NotBlank
@@ -75,6 +79,7 @@ class ProductDTO
     static function createDTOFromProduct(object $product): ?ProductDTO
     {
         $productDTO = new ProductDTO();
+        $productDTO->setId($product->getId());
         $productDTO->setName($product->getName());
         $productDTO->setDescription($product->getDescription());
         $productDTO->setCode($product->getCode());
@@ -206,5 +211,21 @@ class ProductDTO
                 ->atPath('cost')
                 ->addViolation();
         }
+    }
+
+    /**
+     * @return int
+     */
+    public function getId(): int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param int $id
+     */
+    public function setId(int $id): void
+    {
+        $this->id = $id;
     }
 }

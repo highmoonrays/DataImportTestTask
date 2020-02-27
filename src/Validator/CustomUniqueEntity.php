@@ -19,7 +19,17 @@ class CustomUniqueEntity extends Constraint
     /**
      * @var mixed
      */
-    public $fields;
+    public $field;
+
+    /**
+     * @var object
+     */
+    public $className;
+
+    /**
+     * @var string
+     */
+    public $fieldToFireError;
 
     /**
      * @return string

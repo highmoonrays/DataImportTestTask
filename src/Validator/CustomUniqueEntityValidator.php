@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
-use App\Entity\Product;
+use App\Service\Tool\ObjectToAssociativeArrayTransform;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
@@ -25,36 +25,49 @@ class CustomUniqueEntityValidator extends ConstraintValidator
     private $em;
 
     /**
+     * @var ObjectToAssociativeArrayTransform
+     */
+    private $objectToAssociativeArrayTransform;
+
+    /**
      * UniqueProductValidator constructor.
      * @param EntityManagerInterface $em
+     * @param ObjectToAssociativeArrayTransform $objectToAssociativeArrayTransform
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(
+        EntityManagerInterface $em,
+        ObjectToAssociativeArrayTransform $objectToAssociativeArrayTransform
+    )
     {
         $this->em = $em;
+        $this->objectToAssociativeArrayTransform = $objectToAssociativeArrayTransform;
     }
 
     /**
-     * @param mixed $property
+     * @param mixed $objectToValidate
      * @param Constraint $constraint
      * @inheritDoc
+     * @throws \ReflectionException
      */
-    public function validate($property, Constraint $constraint): void
+    public function validate($objectToValidate, Constraint $constraint): void
     {
         if (!$constraint instanceof CustomUniqueEntity) {
             throw new UnexpectedTypeException($constraint, CustomUniqueEntity::class);
         }
 
-        if (null === $property || '' === $property) {
+        if (null === $objectToValidate || '' === $objectToValidate) {
             return;
         }
 
-        if (!is_object($property)) {
-            throw new UnexpectedValueException($property, 'object');
+        if (!is_object($objectToValidate)) {
+            throw new UnexpectedValueException($objectToValidate, 'object');
         }
+        $arrayToValidate = $this->objectToAssociativeArrayTransform->transform($objectToValidate);
 
-        if ($this->em->getRepository(Product::class)->findOneByCode($property->getCode())) {
+        if ($this->em->getRepository($constraint->className)
+            ->findOneBy([$constraint->field => $arrayToValidate[$constraint->field]])) {
             $this->context->buildViolation($constraint->message)
-                ->atPath("code")
+                ->atPath($constraint->fieldToFireError)
                 ->addViolation();
         }
     }

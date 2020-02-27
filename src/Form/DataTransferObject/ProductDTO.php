@@ -17,7 +17,11 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
  *     field="code",
  *     message="Product with this code already exists!",
  *     className=Product::class,
- *     fieldToFireError="code"
+ * )
+ * @AcmeAssert\CustomUniqueEntity(
+ *     field="name",
+ *     message="Product with this name already exists!",
+ *     className=Product::class,
  * )
  */
 class ProductDTO

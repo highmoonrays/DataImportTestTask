@@ -67,7 +67,7 @@ class CustomUniqueEntityValidator extends ConstraintValidator
         if ($this->em->getRepository($constraint->className)
             ->findOneBy([$constraint->field => $arrayToValidate[$constraint->field]])) {
             $this->context->buildViolation($constraint->message)
-                ->atPath($constraint->fieldToFireError)
+                ->atPath($constraint->field)
                 ->addViolation();
         }
     }
